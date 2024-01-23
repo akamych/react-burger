@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Tabs.module.css";
-import { Ingredient_tabs_keys } from "../layout/ingredients/BurgerIngredients";
+import { Ingredient_tabs_keys } from "../../types/Ingredient.type";
 
 export type TabsPropsType = {
   value: string;

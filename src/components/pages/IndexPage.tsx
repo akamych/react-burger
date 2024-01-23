@@ -1,9 +1,3 @@
-// import {
-//   Logo,
-//   BurgerIcon,
-//   ProfileIcon,
-//   ListIcon,
-// } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./IndexPage.module.css";
 
 import BurgerIngredients from "../layout/ingredients/BurgerIngredients";

@@ -1,3 +1,4 @@
 .tabs_nav {
+  composes: mb-10 from global;
   display: flex;
 }

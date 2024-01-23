@@ -1,1 +1,23 @@
+.ingredients_div {
+  position: relative;
+  display: block;
+  max-height: 100%;
+  overflow: hidden;
+}
 
+.ingredients_div_ul_holder {
+  composes: ingredients_div;
+  overflow: auto;
+  /* временный костыль для нормального оверфлоу */
+  max-height: calc(100% - 200px);
+}
+
+.ingredients_div_ul_holder::-webkit-scrollbar {
+  width: 8px;
+  background: #2f2f37;
+  border: 1px solid #8585ad;
+}
+
+.ingredients_div_ul_holder::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}

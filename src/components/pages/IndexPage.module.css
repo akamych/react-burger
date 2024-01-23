@@ -1,6 +1,9 @@
 .index_page_main {
   display: grid;
+  position: relative;
   grid-template-columns: repeat(2, min(40vw, 600px));
   justify-content: center;
   column-gap: calc(var(--offset-base-size) * 10);
+  height: calc(100svh - 96px);
+  overflow: hidden;
 }

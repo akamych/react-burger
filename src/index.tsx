@@ -10,8 +10,8 @@ import { I18nextProvider } from "react-i18next";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/Router";
 
-import common from "./bundles/common.json";
-import ingredients from "./bundles/ingredients.json";
+import common from "./constants/bundles/common.json";
+import ingredients from "./constants/bundles/ingredients.json";
 
 const resources = {
   ru: {
