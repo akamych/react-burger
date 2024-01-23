@@ -1,0 +1,8 @@
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  background: #1c1c21;
+  composes: pt-4 from global, pb-4 from global;
+  align-items: center;
+}
