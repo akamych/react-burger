@@ -5,43 +5,31 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useTranslation } from "react-i18next";
-import HeaderMenu from "./menu/HeaderMenu";
 import styles from "./Header.module.css";
+import { NavLink } from "react-router-dom";
 
 const AppHeader = () => {
   const { t } = useTranslation("common");
 
-  const handlerClick = (event: React.MouseEvent) => {
-    console.log("click on:");
-    console.log(event.target);
-  };
-
-  const leftMenu = [
-    {
-      icon: <BurgerIcon type="primary" />,
-      text: t("builder"),
-      onClick: handlerClick,
-    },
-    {
-      icon: <ListIcon type="primary" />,
-      text: t("feed"),
-      onClick: handlerClick,
-    },
-  ];
-
-  const rightMenu = [
-    {
-      icon: <ProfileIcon type="primary" />,
-      text: t("myAccount"),
-      onClick: handlerClick,
-    },
-  ];
-
   return (
     <header className={styles.header}>
-      <HeaderMenu links={leftMenu} left />
+      <nav>
+        <NavLink to="/" className={styles.header_nav_a_active}>
+          <BurgerIcon type="primary" />
+          <b className={styles.header_nav_a_b}>{t("builder")}</b>
+        </NavLink>
+        <NavLink to="/" className={`${styles.header_nav_a}`}>
+          <ListIcon type="primary" />
+          <b className={styles.header_nav_a_b}>{t("feed")}</b>
+        </NavLink>
+      </nav>
       <Logo />
-      <HeaderMenu links={rightMenu} />
+      <nav>
+        <NavLink to="/" className={`${styles.header_nav_a}`}>
+          <ProfileIcon type="primary" />
+          <b className={styles.header_nav_a_b}>{t("myAccount")}</b>
+        </NavLink>
+      </nav>
     </header>
   );
 };

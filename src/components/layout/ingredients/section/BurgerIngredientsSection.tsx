@@ -1,5 +1,4 @@
 import { IngredientType } from "../../../../types/Ingredient.type";
-import H2 from "../../../headings/h2/H2";
 import BurgerIngredientsItem from "../item/BurgerIngredientsItem";
 import styles from "./BurgerIngredientsSection.module.css";
 
@@ -13,9 +12,9 @@ const BurgerIngredientsSection = (props: propsType) => {
 
   return (
     <div className={styles.ingredients_section}>
-      <H2>{heading}</H2>
+      <h2 className="text text_type_main-medium mt-10 mb-5">{heading}</h2>
       <ul className={styles.ingredients_section_ul}>
-        {Array.isArray(ingredients) && ingredients.length
+        {ingredients.length
           ? ingredients.map((ingredient: IngredientType, index: number) => (
               <BurgerIngredientsItem key={index} ingredient={ingredient} />
             ))

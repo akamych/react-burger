@@ -8,18 +8,14 @@ type routeType = {
   element: JSX.Element;
 };
 
-const allRoutes: routeType[] = [];
-
 const routeMap: Record<string, JSX.Element> = {
   index: <IndexPage />,
 };
 
-Object.entries(routeMap).forEach(([key, value]) => {
-  allRoutes.push({
-    path: PAGES_URL[key as keyof typeof PAGES_URL],
-    element: <App page={value} />,
-  });
-});
+const allRoutes: routeType[] = Object.entries(routeMap).map(([key, value]) => ({
+  path: PAGES_URL[key as keyof typeof PAGES_URL],
+  element: <App page={value} />,
+}));
 
 const router = createBrowserRouter(allRoutes);
 

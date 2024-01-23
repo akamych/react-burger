@@ -23,7 +23,7 @@ const Tabs = (props: propsType) => {
   };
   return (
     <nav className={styles.tabs_nav}>
-      {Array.isArray(tabs) && tabs.length
+      {tabs.length
         ? tabs.map((tab: TabsPropsType, index: number) => (
             <Tab
               key={index}

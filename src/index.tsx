@@ -7,11 +7,11 @@ import detector from "i18next-browser-languagedetector";
 import backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 import { I18nextProvider } from "react-i18next";
-import { RouterProvider } from "react-router-dom";
-import router from "./router/Router";
 
 import common from "./constants/bundles/common.json";
 import ingredients from "./constants/bundles/ingredients.json";
+import { RouterProvider } from "react-router-dom";
+import router from "./router/Router";
 
 const resources = {
   ru: {
@@ -35,6 +35,7 @@ i18next
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>

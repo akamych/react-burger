@@ -1,3 +1,0 @@
-.h1 {
-  composes: text from global, text_type_main-large from global, mt-10 from global, mb-5 from global;
-}
