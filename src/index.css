@@ -12,3 +12,13 @@ body {
 #root {
   position: relative;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #2f2f37;
+  border: 1px solid #8585ad;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}

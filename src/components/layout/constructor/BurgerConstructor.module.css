@@ -1,0 +1,34 @@
+.constructor_div {
+  position: relative;
+  display: grid;
+  max-height: 100%;
+  overflow: hidden;
+  grid-template-columns: 1fr max-content max-content;
+  align-items: center;
+  justify-items: end;
+  composes: mt-25 from global, pb-2 from global;
+}
+
+.constructor_ul {
+  position: relative;
+  display: grid;
+  overflow: auto;
+  /* временный костыль для нормального оверфлоу */
+  max-height: calc(100% - 100px);
+  grid-column: 1 / -1;
+  row-gap: calc(var(--offset-base-size) * 4);
+  composes: pl-4 from global, pr-4 from global;
+}
+
+.constructor_total_price {
+  display: inilne-grid;
+  align-items: center;
+  justify-self: end;
+  composes: text from global, text_type_digits-medium from global, mr-10 from global;
+}
+
+.constructor_total_price_b {
+  font-weight: normal;
+  display: inilne-block;
+  composes: pr-2 from global;
+}

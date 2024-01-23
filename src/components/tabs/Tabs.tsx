@@ -21,7 +21,6 @@ const Tabs = (props: propsType) => {
   const handleClick = (key: string): void => {
     setActiveTab(key as possibleTabsKeys);
   };
-  console.log({ tabs, activeTab });
   return (
     <nav className={styles.tabs_nav}>
       {Array.isArray(tabs) && tabs.length
