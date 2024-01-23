@@ -11,10 +11,12 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router/Router";
 
 import common from "./bundles/common.json";
+import ingredients from "./bundles/ingredients.json";
 
 const resources = {
   ru: {
     common: common,
+    ingredients: ingredients,
   },
 };
 

@@ -12,8 +12,8 @@ const HeaderMenu = (props: propType) => {
     <ul className={left === true ? styles.header_ul_left : styles.header_ul}>
       {Array.isArray(links) && links.length
         ? links.map(
-            (link: HeaderMenuLinkPropType): JSX.Element => (
-              <HeaderMenuLink {...link} />
+            (link: HeaderMenuLinkPropType, index: number): JSX.Element => (
+              <HeaderMenuLink key={index} {...link} />
             )
           )
         : null}
