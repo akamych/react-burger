@@ -18,24 +18,22 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
 const BurgerIngredients = () => {
   const { t } = useTranslation("ingredients");
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
-  const [ingredients, setIngredients] = useState<IngredientType[]>(
-    MOCK_DATA_INGREDIENTS
+  const [ingredients] = useState<IngredientType[]>(MOCK_DATA_INGREDIENTS);
+  const ingredientsByType: Record<string, IngredientType[]> = useMemo(
+    () =>
+      ingredients.reduce((acc, item) => {
+        const type = item.type;
+
+        if (!acc[type]) {
+          acc[type] = [];
+        }
+
+        acc[type].push(item);
+
+        return acc;
+      }, {} as Record<string, IngredientType[]>),
+    [ingredients]
   );
-  const ingredientsByType: Record<string, IngredientType[]> = useMemo(() => {
-    const returnObj: Record<string, IngredientType[]> = {};
-
-    ingredients.map((item: IngredientType) => {
-      const { type } = item;
-
-      if (!returnObj[type]) {
-        returnObj[type] = [];
-      }
-
-      returnObj[type].push(item);
-    });
-
-    return returnObj;
-  }, [ingredients]);
 
   const tabs: TabsPropsType[] = Object.entries(INGREDIENTS_TABS).map(
     ([key, value]) => ({

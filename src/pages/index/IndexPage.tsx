@@ -1,7 +1,7 @@
 import styles from "./IndexPage.module.css";
 
-import BurgerIngredients from "../layout/ingredients/BurgerIngredients";
-import BurgerConstructor from "../layout/constructor/BurgerConstructor";
+import BurgerIngredients from "../../components/layout/ingredients/BurgerIngredients";
+import BurgerConstructor from "../../components/layout/constructor/BurgerConstructor";
 
 const IndexPage = () => {
   return (

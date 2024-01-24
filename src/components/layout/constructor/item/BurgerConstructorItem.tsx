@@ -9,10 +9,11 @@ type propsType = {
   thumbnail: string;
   price: number;
   isLocked: boolean;
+  type?: "top" | "bottom";
 };
 
 const BurgerConstructorItem = (props: propsType) => {
-  const { text, thumbnail, price, isLocked } = props;
+  const { text, thumbnail, price, isLocked, type } = props;
 
   return (
     <li className={styles.constructor_ul_li}>
@@ -24,6 +25,7 @@ const BurgerConstructorItem = (props: propsType) => {
         thumbnail={thumbnail}
         price={price}
         isLocked={isLocked}
+        type={type}
       />
     </li>
   );

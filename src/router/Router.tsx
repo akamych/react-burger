@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../components/app/App";
 import { PAGES_URL } from "./Routes";
-import IndexPage from "../components/pages/IndexPage";
+import IndexPage from "../pages/index/IndexPage";
 
 type routeType = {
   path: string;
