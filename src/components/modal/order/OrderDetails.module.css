@@ -1,0 +1,51 @@
+.modal_order {
+  display: grid;
+  justify-items: center;
+}
+
+.modal_order * {
+  display: block;
+}
+
+.modal_order_svg {
+  background: url("../../../assets/svg/check-mark-bg/3.svg"),
+    url("../../../assets/svg/check-mark-bg/2.svg"),
+    url("../../../assets/svg/check-mark-bg/1.svg");
+  background-size: contain;
+  background-position: center center;
+  composes: p-8 from global;
+}
+
+.modal_order_id {
+  text-shadow: 0 4px 32px rgba(51, 51, 255, 0.5),
+    0 0px 16px rgba(51, 51, 255, 0.25), 0 0px 24px rgba(51, 51, 255, 0.25);
+
+  composes: text from global, text_type_digits-large from global, mb-4 from global;
+}
+
+.modal_order_id_label {
+  composes: text from global, text_type_main-small from global, mb-10 from global;
+}
+
+.modal_order_status {
+  composes: text from global, text_type_main-small from global, mt-10 from global, mb-2 from global;
+}
+
+.modal_order_hint {
+  composes: text from global, text_type_main-small from global, text_color_inactive from global;
+}
+
+.modal_order_ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: calc(var(--offset-base-size) * 5);
+  composes: text from global, text_type_main-default from global, text_color_inactive from global;
+  text-align: center;
+  color: var(--color-sub);
+}
+
+.modal_order_ul b {
+  font-weight: normal;
+  display: block;
+}

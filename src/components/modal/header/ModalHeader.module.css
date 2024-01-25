@@ -1,4 +1,14 @@
 .modal_header {
   display: grid;
   grid-template-columns: auto max-content;
+  align-items: center;
+  justify-self: stretch;
+}
+
+.modal_header svg {
+  cursor: pointer;
+}
+
+.modal_header_h3 {
+  composes: text from global, text_type_main-large from global;
 }

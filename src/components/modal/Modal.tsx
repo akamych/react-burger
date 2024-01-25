@@ -6,9 +6,9 @@ import ModalHeader from "./header/ModalHeader";
 const modalRoot = document.getElementById("modals");
 
 type propType = {
-  children: JSX.Element;
-  header: string;
+  children: JSX.Element | JSX.Element[];
   onClose: () => void;
+  header?: string;
 };
 
 const Modal = (props: propType) => {

@@ -9,6 +9,7 @@ import { initReactI18next } from "react-i18next";
 import { I18nextProvider } from "react-i18next";
 
 import common from "./constants/bundles/common.json";
+import orders from "./constants/bundles/orders.json";
 import ingredients from "./constants/bundles/ingredients.json";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/Router";
@@ -17,6 +18,7 @@ const resources = {
   ru: {
     common: common,
     ingredients: ingredients,
+    orders: orders,
   },
 };
 

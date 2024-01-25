@@ -9,6 +9,9 @@ import { IngredientType } from "../../../types/Ingredient.type";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
 import { useOutletContext } from "react-router-dom";
 import { useIngredients } from "../../app/App";
+import useModal from "../../../hooks/useModal";
+import OrderDetails from "../../modal/order/OrderDetails";
+import Modal from "../../modal/Modal";
 
 const ELEMENT_TYPES = {
   TOP: "top",
@@ -20,6 +23,7 @@ const BurgerConstructor = () => {
   const { ingredients } = useIngredients();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const { isModalActive, showModal, closeModal } = useModal();
 
   const calculateTotal = useMemo<number>((): number => {
     return ingredients && ingredients.length
@@ -57,61 +61,74 @@ const BurgerConstructor = () => {
   );
 
   return (
-    <div className={styles.constructor_div}>
-      <ul>
-        {ingredientsByOrder[ELEMENT_TYPES.TOP] &&
-        ingredientsByOrder[ELEMENT_TYPES.TOP].length
-          ? ingredientsByOrder[ELEMENT_TYPES.TOP].map((ingredient, index) => (
-              <BurgerConstructorItem
-                key={index}
-                text={ingredient.name}
-                thumbnail={ingredient.image}
-                price={ingredient.price}
-                isLocked={true}
-                type="top"
-              />
-            ))
-          : null}
-        <ul className={styles.constructor_ul_middle}>
-          {ingredientsByOrder[ELEMENT_TYPES.MIDDLE] &&
-          ingredientsByOrder[ELEMENT_TYPES.MIDDLE].length
-            ? ingredientsByOrder[ELEMENT_TYPES.MIDDLE].map(
-                (ingredient, index) => (
-                  <BurgerConstructorItem
-                    key={index}
-                    text={ingredient.name}
-                    thumbnail={ingredient.image}
-                    price={ingredient.price}
-                    isLocked={false}
-                  />
-                )
-              )
-            : null}
-        </ul>
-        {ingredientsByOrder[ELEMENT_TYPES.BOTTOM] &&
-        ingredientsByOrder[ELEMENT_TYPES.BOTTOM].length
-          ? ingredientsByOrder[ELEMENT_TYPES.BOTTOM].map(
-              (ingredient, index) => (
+    <>
+      <div className={styles.constructor_div}>
+        <ul>
+          {ingredientsByOrder[ELEMENT_TYPES.TOP] &&
+          ingredientsByOrder[ELEMENT_TYPES.TOP].length
+            ? ingredientsByOrder[ELEMENT_TYPES.TOP].map((ingredient, index) => (
                 <BurgerConstructorItem
                   key={index}
                   text={ingredient.name}
                   thumbnail={ingredient.image}
                   price={ingredient.price}
                   isLocked={true}
-                  type="bottom"
+                  type="top"
                 />
+              ))
+            : null}
+          <ul className={styles.constructor_ul_middle}>
+            {ingredientsByOrder[ELEMENT_TYPES.MIDDLE] &&
+            ingredientsByOrder[ELEMENT_TYPES.MIDDLE].length
+              ? ingredientsByOrder[ELEMENT_TYPES.MIDDLE].map(
+                  (ingredient, index) => (
+                    <BurgerConstructorItem
+                      key={index}
+                      text={ingredient.name}
+                      thumbnail={ingredient.image}
+                      price={ingredient.price}
+                      isLocked={false}
+                    />
+                  )
+                )
+              : null}
+          </ul>
+          {ingredientsByOrder[ELEMENT_TYPES.BOTTOM] &&
+          ingredientsByOrder[ELEMENT_TYPES.BOTTOM].length
+            ? ingredientsByOrder[ELEMENT_TYPES.BOTTOM].map(
+                (ingredient, index) => (
+                  <BurgerConstructorItem
+                    key={index}
+                    text={ingredient.name}
+                    thumbnail={ingredient.image}
+                    price={ingredient.price}
+                    isLocked={true}
+                    type="bottom"
+                  />
+                )
               )
-            )
-          : null}
-      </ul>
-      <span className={styles.constructor_total_price}>
-        <b className={styles.constructor_total_price_b}>{totalPrice}</b>
-        <CurrencyIcon type="primary" />
-        <Button htmlType="button" type="primary" size="large">
-          {t("buttons.order")}
-        </Button>
-      </span>
-    </div>
+            : null}
+        </ul>
+        <span className={styles.constructor_total_price}>
+          <b className={styles.constructor_total_price_b}>{totalPrice}</b>
+          <CurrencyIcon type="primary" />
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={showModal}
+          >
+            {t("buttons.order")}
+          </Button>
+        </span>
+      </div>
+
+      {isModalActive && (
+        <Modal onClose={closeModal}>
+          <OrderDetails _id="034536" status="cooking" />
+        </Modal>
+      )}
+    </>
   );
 };
 

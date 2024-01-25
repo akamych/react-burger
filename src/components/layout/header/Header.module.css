@@ -18,23 +18,11 @@
 }
 
 .header_nav_a_b {
-  composes: pl-2 from global, text from global, text_type_main-small from global;
-}
-
-.header_nav_a svg {
-  fill: var(--color-sub);
-}
-
-.header_nav_a b {
-  color: var(--color-sub);
+  composes: pl-2 from global, text from global, text_type_main-small from global, text_color_inactive from global;
 }
 
 .header_nav_a_active {
   composes: header_nav_a;
-}
-
-.header_nav_a_active svg {
-  fill: var(--color-main);
 }
 
 .header_nav_a_active b {

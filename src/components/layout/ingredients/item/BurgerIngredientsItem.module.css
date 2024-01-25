@@ -5,6 +5,7 @@
   align-items: start;
   text-align: center;
   composes: mb-4 from global;
+  cursor: pointer;
 }
 
 .ingredients_section_ul_li_img {

@@ -1,4 +1,5 @@
 :root {
+  --color-bg: #2f2f37;
   --color-sub: #8585ad;
   --color-main: #f2f2f3;
 }
@@ -15,7 +16,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 8px;
-  background: #2f2f37;
+  background: var(--color-bg);
   border: 1px solid #8585ad;
 }
 

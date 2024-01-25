@@ -4,4 +4,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 720px;
+  height: auto;
+  background: rgba(0, 0, 0, 60);
+  border-radius: 40px;
+  composes: p-10 from global, pb-15 from global;
+}
+
+.modal_h3 {
+  composes: text from global, text_type_main-large from global;
 }
