@@ -1,7 +1,9 @@
+import { useEffect, useCallback } from "react";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
 import ModalOverlay from "./overlay/ModalOverlay";
 import ModalHeader from "./header/ModalHeader";
+import React from "react";
 
 const modalRoot = document.getElementById("modals");
 
@@ -13,6 +15,18 @@ type propType = {
 
 const Modal = (props: propType) => {
   const { children, header, onClose } = props;
+
+  const handleEscapePress = useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscapePress);
+    return () => document.removeEventListener("keydown", handleEscapePress);
+  });
+
   return (
     modalRoot &&
     ReactDOM.createPortal(
