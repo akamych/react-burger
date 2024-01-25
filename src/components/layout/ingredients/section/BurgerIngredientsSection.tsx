@@ -14,7 +14,7 @@ const BurgerIngredientsSection = (props: propsType) => {
     <div className={styles.ingredients_section}>
       <h2 className="text text_type_main-medium mt-10 mb-5">{heading}</h2>
       <ul className={styles.ingredients_section_ul}>
-        {ingredients.length
+        {Array.isArray(ingredients) && ingredients.length
           ? ingredients.map((ingredient: IngredientType, index: number) => (
               <BurgerIngredientsItem key={index} ingredient={ingredient} />
             ))

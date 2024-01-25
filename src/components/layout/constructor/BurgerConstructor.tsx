@@ -6,8 +6,9 @@ import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
 import { IngredientType } from "../../../types/Ingredient.type";
-import { MOCK_DATA_INGREDIENTS } from "../../../constants/MockData";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
+import { useOutletContext } from "react-router-dom";
+import { useIngredients } from "../../app/App";
 
 const ELEMENT_TYPES = {
   TOP: "top",
@@ -16,36 +17,42 @@ const ELEMENT_TYPES = {
 };
 
 const BurgerConstructor = () => {
+  const { ingredients } = useIngredients();
   const { t } = useTranslation("ingredients");
-  const [ingredients] = useState<IngredientType[]>(MOCK_DATA_INGREDIENTS);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
+  const calculateTotal = useMemo<number>((): number => {
+    return ingredients && ingredients.length
+      ? ingredients.reduce((a, { price }) => a + price, 0)
+      : 0;
+  }, [ingredients]);
+
   useEffect(() => {
-    ingredients.length
-      ? setTotalPrice(ingredients.reduce((a, { price }) => a + price, 0))
-      : setTotalPrice(0);
+    setTotalPrice(calculateTotal);
   }, [ingredients]);
 
   const ingredientsByOrder: Record<string, IngredientType[]> = useMemo(
     () =>
-      ingredients.reduce((acc, item) => {
-        const { type } = item;
-        let order: string = ELEMENT_TYPES.MIDDLE;
+      ingredients !== null
+        ? ingredients.reduce((acc, item) => {
+            const { type } = item;
+            let order: string = ELEMENT_TYPES.MIDDLE;
 
-        if (type === "bun") {
-          order = !acc[ELEMENT_TYPES.TOP]
-            ? ELEMENT_TYPES.TOP
-            : ELEMENT_TYPES.BOTTOM;
-        }
+            if (type === "bun") {
+              order = !acc[ELEMENT_TYPES.TOP]
+                ? ELEMENT_TYPES.TOP
+                : ELEMENT_TYPES.BOTTOM;
+            }
 
-        if (!acc[order]) {
-          acc[order] = [];
-        }
+            if (!acc[order]) {
+              acc[order] = [];
+            }
 
-        acc[order].push(item);
+            acc[order].push(item);
 
-        return acc;
-      }, {} as Record<string, IngredientType[]>),
+            return acc;
+          }, {} as Record<string, IngredientType[]>)
+        : {},
     [ingredients]
   );
 

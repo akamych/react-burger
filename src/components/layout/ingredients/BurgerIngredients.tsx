@@ -7,7 +7,8 @@ import {
   IngredientType,
   Ingredient_tabs_keys,
 } from "../../../types/Ingredient.type";
-import { MOCK_DATA_INGREDIENTS } from "../../../constants/MockData";
+import { useOutletContext } from "react-router-dom";
+import { useIngredients } from "../../app/App";
 
 export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
   bun: "tabs.bun",
@@ -16,22 +17,24 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
 };
 
 const BurgerIngredients = () => {
+  const { ingredients } = useIngredients();
   const { t } = useTranslation("ingredients");
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
-  const [ingredients] = useState<IngredientType[]>(MOCK_DATA_INGREDIENTS);
   const ingredientsByType: Record<string, IngredientType[]> = useMemo(
     () =>
-      ingredients.reduce((acc, item) => {
-        const type = item.type;
+      ingredients !== null
+        ? ingredients.reduce((acc, item) => {
+            const type = item.type;
 
-        if (!acc[type]) {
-          acc[type] = [];
-        }
+            if (!acc[type]) {
+              acc[type] = [];
+            }
 
-        acc[type].push(item);
+            acc[type].push(item);
 
-        return acc;
-      }, {} as Record<string, IngredientType[]>),
+            return acc;
+          }, {} as Record<string, IngredientType[]>)
+        : {},
     [ingredients]
   );
 

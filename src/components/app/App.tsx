@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppHeader from "../layout/header/Header";
+import { Outlet, useOutletContext } from "react-router-dom";
+import { IngredientType } from "../../types/Ingredient.type";
+import { API_URL_INGREDIENTS } from "../../constants/api";
 
-type propsType = {
-  page: JSX.Element;
-};
-const App = (props: propsType) => {
-  const { page } = props;
+const App = () => {
+  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
+
+  useEffect(() => {
+    fetch(API_URL_INGREDIENTS)
+      .then((response) => response.json())
+      .then((response) => {
+        setIngredients(
+          response.success === true
+            ? (response.data as unknown as IngredientType[])
+            : []
+        );
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <>
       <AppHeader />
-      {page}
+      <Outlet context={{ ingredients: ingredients }} />
     </>
   );
 };
+
+export function useIngredients() {
+  return useOutletContext<{ ingredients: IngredientType[] | null }>();
+}
 
 export default App;
