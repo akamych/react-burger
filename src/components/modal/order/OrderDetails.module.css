@@ -1,6 +1,7 @@
 .modal_order {
   display: grid;
   justify-items: center;
+  composes: mb-15 from global;
 }
 
 .modal_order * {
@@ -20,15 +21,15 @@
   text-shadow: 0 4px 32px rgba(51, 51, 255, 0.5),
     0 0px 16px rgba(51, 51, 255, 0.25), 0 0px 24px rgba(51, 51, 255, 0.25);
 
-  composes: text from global, text_type_digits-large from global, mb-4 from global;
+  composes: text from global, text_type_digits-large from global, mb-8 from global, mt-10 from global;
 }
 
 .modal_order_id_label {
-  composes: text from global, text_type_main-small from global, mb-10 from global;
+  composes: text from global, text_type_main-small from global, mb-15 from global;
 }
 
 .modal_order_status {
-  composes: text from global, text_type_main-small from global, mt-10 from global, mb-2 from global;
+  composes: text from global, text_type_main-small from global, mt-15 from global, mb-2 from global;
 }
 
 .modal_order_hint {

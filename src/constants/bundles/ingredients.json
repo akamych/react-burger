@@ -16,6 +16,8 @@
   "buttons": {
     "order": "Оформить заказ"
   },
+  "bunTop": "(верх)",
+  "bunBottom": "(низ)",
   "calories": "Калории,ккал",
   "proteins": "Белки, г",
   "fat": "Жиры, г",

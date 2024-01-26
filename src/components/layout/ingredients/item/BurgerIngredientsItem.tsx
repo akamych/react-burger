@@ -40,7 +40,7 @@ const BurgerIngredientsItem = (props: propsType) => {
       </li>
       {isModalActive && (
         <Modal onClose={closeModal} header={t("h3.details")}>
-          <IngredientDetails {...ingredient} />
+          <IngredientDetails ingredient={ingredient} />
         </Modal>
       )}
     </>

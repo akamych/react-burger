@@ -35,79 +35,61 @@ const BurgerConstructor = () => {
     setTotalPrice(calculateTotal);
   }, [ingredients]);
 
-  const ingredientsByOrder: Record<string, IngredientType[]> = useMemo(
-    () =>
-      ingredients !== null
-        ? ingredients.reduce((acc, item) => {
-            const { type } = item;
-            let order: string = ELEMENT_TYPES.MIDDLE;
+  const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
+    if (ingredients === null) {
+      return {
+        bunTop: undefined,
+        mainIngredients: undefined,
+        bunBottom: undefined,
+      };
+    }
 
-            if (type === "bun") {
-              order = !acc[ELEMENT_TYPES.TOP]
-                ? ELEMENT_TYPES.TOP
-                : ELEMENT_TYPES.BOTTOM;
-            }
+    const bunTop = ingredients.find((item) => item.type === "bun");
 
-            if (!acc[order]) {
-              acc[order] = [];
-            }
-
-            acc[order].push(item);
-
-            return acc;
-          }, {} as Record<string, IngredientType[]>)
-        : {},
-    [ingredients]
-  );
+    return {
+      bunTop: bunTop,
+      mainIngredients: ingredients.filter((item) => item.type !== "bun"),
+      bunBottom: ingredients.find(
+        (item) => item.type === "bun" && item !== bunTop
+      ),
+    };
+  }, [ingredients]);
 
   return (
     <>
       <div className={styles.constructor_div}>
         <ul>
-          {ingredientsByOrder[ELEMENT_TYPES.TOP] &&
-          ingredientsByOrder[ELEMENT_TYPES.TOP].length
-            ? ingredientsByOrder[ELEMENT_TYPES.TOP].map((ingredient, index) => (
-                <BurgerConstructorItem
-                  key={index}
-                  text={ingredient.name}
-                  thumbnail={ingredient.image}
-                  price={ingredient.price}
-                  isLocked={true}
-                  type="top"
-                />
-              ))
-            : null}
+          {bunTop && (
+            <BurgerConstructorItem
+              text={`${bunTop.name} ${t("bunTop")}`}
+              thumbnail={bunTop.image}
+              price={bunTop.price}
+              isLocked={true}
+              type="top"
+            />
+          )}
           <ul className={styles.constructor_ul_middle}>
-            {ingredientsByOrder[ELEMENT_TYPES.MIDDLE] &&
-            ingredientsByOrder[ELEMENT_TYPES.MIDDLE].length
-              ? ingredientsByOrder[ELEMENT_TYPES.MIDDLE].map(
-                  (ingredient, index) => (
-                    <BurgerConstructorItem
-                      key={index}
-                      text={ingredient.name}
-                      thumbnail={ingredient.image}
-                      price={ingredient.price}
-                      isLocked={false}
-                    />
-                  )
-                )
-              : null}
-          </ul>
-          {ingredientsByOrder[ELEMENT_TYPES.BOTTOM] &&
-          ingredientsByOrder[ELEMENT_TYPES.BOTTOM].length
-            ? ingredientsByOrder[ELEMENT_TYPES.BOTTOM].map(
-                (ingredient, index) => (
+            {mainIngredients && mainIngredients.length
+              ? mainIngredients.map((ingredient, index) => (
                   <BurgerConstructorItem
                     key={index}
                     text={ingredient.name}
                     thumbnail={ingredient.image}
                     price={ingredient.price}
-                    isLocked={true}
-                    type="bottom"
+                    isLocked={false}
                   />
-                )
-              )
-            : null}
+                ))
+              : null}
+          </ul>
+          {bunBottom && (
+            <BurgerConstructorItem
+              text={`${bunBottom.name} ${t("bunBottom")}`}
+              thumbnail={bunBottom.image}
+              price={bunBottom.price}
+              isLocked={true}
+              type="bottom"
+            />
+          )}
         </ul>
         <span className={styles.constructor_total_price}>
           <b className={styles.constructor_total_price_b}>{totalPrice}</b>

@@ -8,7 +8,7 @@ import React from "react";
 const modalRoot = document.getElementById("modals");
 
 type propType = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   onClose: () => void;
   header?: string;
 };
@@ -16,23 +16,22 @@ type propType = {
 const Modal = (props: propType) => {
   const { children, header, onClose } = props;
 
-  const handleEscapePress = useCallback((event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  }, []);
-
   useEffect(() => {
+    const handleEscapePress = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
     document.addEventListener("keydown", handleEscapePress);
     return () => document.removeEventListener("keydown", handleEscapePress);
-  });
+  }, [onClose]);
 
   return (
     modalRoot &&
     ReactDOM.createPortal(
       <>
         <div className={styles.modal}>
-          <ModalHeader onClose={onClose}>{header}</ModalHeader>
+          <ModalHeader onClose={onClose} header={header} />
           {children}
         </div>
         <ModalOverlay onClose={onClose} />
