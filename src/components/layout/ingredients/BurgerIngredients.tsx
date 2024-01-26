@@ -22,19 +22,17 @@ const BurgerIngredients = () => {
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
   const ingredientsByType: Record<string, IngredientType[]> = useMemo(
     () =>
-      ingredients !== null
-        ? ingredients.reduce((acc, item) => {
-            const type = item.type;
+      ingredients.reduce((acc, item) => {
+        const type = item.type;
 
-            if (!acc[type]) {
-              acc[type] = [];
-            }
+        if (!acc[type]) {
+          acc[type] = [];
+        }
 
-            acc[type].push(item);
+        acc[type].push(item);
 
-            return acc;
-          }, {} as Record<string, IngredientType[]>)
-        : {},
+        return acc;
+      }, {} as Record<string, IngredientType[]>),
     [ingredients]
   );
 

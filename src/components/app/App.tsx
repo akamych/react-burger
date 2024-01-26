@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import AppHeader from "../layout/header/Header";
 import { Outlet, useOutletContext } from "react-router-dom";
 import { IngredientType } from "../../types/Ingredient.type";
-import NormaApi from "../../api/NormaApi";
+import normaApi from "../../api/normaApi";
 
 const App = () => {
   const [ingredients, setIngredients] = useState<IngredientType[]>([]);
 
   useEffect(() => {
-    NormaApi.getIngredients(setIngredients);
+    normaApi.getIngredients(setIngredients);
   }, []);
 
   return (
@@ -20,7 +20,7 @@ const App = () => {
 };
 
 export function useIngredients() {
-  return useOutletContext<{ ingredients: IngredientType[] | null }>();
+  return useOutletContext<{ ingredients: IngredientType[] }>();
 }
 
 export default App;

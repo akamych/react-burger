@@ -26,7 +26,7 @@ const BurgerConstructor = () => {
   const { isModalActive, showModal, closeModal } = useModal();
 
   const calculateTotal = useMemo<number>((): number => {
-    return ingredients && ingredients.length
+    return ingredients.length
       ? ingredients.reduce((a, { price }) => a + price, 0)
       : 0;
   }, [ingredients]);
@@ -36,14 +36,6 @@ const BurgerConstructor = () => {
   }, [ingredients]);
 
   const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
-    if (ingredients === null) {
-      return {
-        bunTop: undefined,
-        mainIngredients: undefined,
-        bunBottom: undefined,
-      };
-    }
-
     const bunTop = ingredients.find((item) => item.type === "bun");
 
     return {
