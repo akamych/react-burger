@@ -1,0 +1,20 @@
+.modal {
+  position: fixed;
+  z-index: 101;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: auto;
+  background: #1c1c21;
+  border-radius: 40px;
+  composes: p-10 from global, pb-15 from global;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
+    0px 4px 8px 0px rgba(0, 0, 0, 0.04), 0px 16px 24px 0px rgba(0, 0, 0, 0.04),
+    0px 24px 32px 0px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(76, 76, 255, 0.2);
+}
+
+.modal_h3 {
+  composes: text from global, text_type_main-large from global;
+}

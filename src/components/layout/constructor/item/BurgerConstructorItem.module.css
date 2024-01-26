@@ -1,0 +1,7 @@
+.constructor_ul_li {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(var(--offset-base-size) * 8) 1fr;
+  align-items: center;
+  column-gap: calc(var(--offset-base-size));
+}

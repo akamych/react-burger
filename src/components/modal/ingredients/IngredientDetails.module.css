@@ -1,0 +1,29 @@
+.modal_ingredient {
+  display: grid;
+  justify-items: center;
+}
+
+.modal_ingredient img {
+  display: inline-block;
+  max-width: 520px;
+}
+
+.modal_ingredient_name {
+  display: inline-block;
+  composes: text from global, text_type_main-medium from global, mt-4 from global, mb-8 from global;
+}
+
+.modal_ingredient_ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: calc(var(--offset-base-size) * 5);
+  composes: text from global, text_type_main-default from global, text_color_inactive from global;
+  text-align: center;
+  color: var(--color-sub);
+}
+
+.modal_ingredient_ul b {
+  font-weight: normal;
+  display: block;
+}

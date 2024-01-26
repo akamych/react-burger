@@ -1,0 +1,16 @@
+.ingredients_section {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.ingredients_section_ul {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  display: grid;
+  overflow: auto;
+  grid-template-columns: 1fr 1fr;
+  column-gap: calc(var(--offset-base-size) * 6);
+  row-gap: calc(var(--offset-base-size) * 10);
+  composes: pt-6 from global, pl-4 from global, pr-4 from global, pb-10 from global;
+}

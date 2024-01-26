@@ -1,0 +1,15 @@
+.ingredients_div {
+  position: relative;
+  display: block;
+  max-height: 100%;
+  overflow: hidden;
+  composes: pb-2 from global;
+}
+
+.ingredients_div_ul_holder {
+  position: relative;
+  display: block;
+  overflow: auto;
+  /* временный костыль для нормального оверфлоу */
+  max-height: calc(100% - 200px);
+}

@@ -1,0 +1,30 @@
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  background: #1c1c21;
+  composes: pt-4 from global, pb-4 from global;
+  align-items: center;
+}
+
+.header_nav_a {
+  display: inline-grid;
+  grid-template-columns: repeat(2, auto);
+  align-items: center;
+  composes: p-5 from global, mr-2 from global;
+  border-radius: calc(var(--offset-base-size) * 10);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header_nav_a_b {
+  composes: pl-2 from global, text from global, text_type_main-small from global, text_color_inactive from global;
+}
+
+.header_nav_a_active {
+  composes: header_nav_a;
+}
+
+.header_nav_a_active b {
+  color: var(--color-main);
+}

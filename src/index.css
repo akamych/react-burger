@@ -1,0 +1,25 @@
+:root {
+  --color-bg: #2f2f37;
+  --color-sub: #8585ad;
+  --color-main: #f2f2f3;
+}
+
+body {
+  max-height: 100svh;
+  position: relative;
+  overflow: hidden;
+}
+
+#root {
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--color-bg);
+  border: 1px solid #8585ad;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}

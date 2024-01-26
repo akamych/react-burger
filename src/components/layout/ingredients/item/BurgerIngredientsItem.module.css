@@ -1,0 +1,29 @@
+.ingredients_section_ul_li {
+  display: grid;
+  grid-template-rows: max-content max-content auto;
+  justify-items: center;
+  align-items: start;
+  text-align: center;
+  composes: mb-4 from global;
+  cursor: pointer;
+}
+
+.ingredients_section_ul_li_img {
+  composes: ml-4 from global, mr-4 from global;
+  aspect-ratio: 2 / 1;
+  width: 100%;
+}
+
+.ingredients_section_ul_li_i {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  column-gap: calc(var(--offset-base-size) * 2);
+  font-style: normal;
+  align-items: start;
+  composes: text from global, text_type_digits-default from global;
+}
+
+.ingredients_section_ul_li_b {
+  font-weight: normal;
+  composes: text from global, text_type_main-small from global;
+}
