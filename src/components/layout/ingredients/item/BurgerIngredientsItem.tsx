@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IngredientType } from "../../../../types/Ingredient.type";
 import styles from "./BurgerIngredientsItem.module.css";
 import {
@@ -9,6 +9,8 @@ import { AppDispatch } from "../../../../services/Store";
 import { SyntheticEvent } from "react";
 import { SHOW_MODAL_INGREDIENT } from "../../../../services/actions/ModalActions";
 import { INGREDIENT_SHOW_DETAILS } from "../../../../services/actions/IngredientsActions";
+import { useDrag } from "react-dnd";
+import { selectIngredientCount } from "../../../../services/reducers/IngredientsReducer";
 
 type propsType = {
   ingredient: IngredientType;
@@ -17,7 +19,13 @@ type propsType = {
 const BurgerIngredientsItem = (props: propsType) => {
   const dispatch = useDispatch<AppDispatch>();
   const { ingredient } = props;
-  const { name, price, image } = ingredient;
+  const { _id, name, price, image } = ingredient;
+  const count = useSelector(selectIngredientCount(_id));
+
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: ingredient,
+  });
 
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -27,12 +35,13 @@ const BurgerIngredientsItem = (props: propsType) => {
 
   return (
     <>
-      <li className={styles.ingredients_section_ul_li} onClick={handleClick}>
-        <Counter
-          count={Math.floor(Math.random() * 10)}
-          size="default"
-          extraClass="m-1"
-        />
+      <li
+        className={styles.ingredients_section_ul_li}
+        onClick={handleClick}
+        ref={dragRef}
+        draggable
+      >
+        {count > 0 && <Counter count={count} size="default" extraClass="m-1" />}
         <img
           src={image}
           alt={name}

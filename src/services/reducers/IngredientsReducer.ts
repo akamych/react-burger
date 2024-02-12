@@ -3,6 +3,8 @@ import { RootState } from "../Store";
 import { IngredientType } from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
 import {
+  CONSTRUCTOR_ADD_BUN,
+  CONSTRUCTOR_ADD_INGREDIENT,
   fetchIngredientsAction,
   INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
@@ -10,7 +12,11 @@ import {
 
 interface IngredientState {
   all: IngredientType[];
-  selected: IngredientType[];
+  selected: {
+    bun: Nullable<IngredientType>;
+    ingredients: IngredientType[];
+    count: Record<string, number>;
+  };
   observed: Nullable<IngredientType>;
   errors: {
     fetch: {
@@ -22,7 +28,11 @@ interface IngredientState {
 
 export const initialIngredientsState: IngredientState = {
   all: [],
-  selected: [],
+  selected: {
+    bun: null,
+    ingredients: [],
+    count: {},
+  },
   observed: null,
   errors: {
     fetch: {
@@ -61,6 +71,23 @@ const ingredientSlice = createSlice({
     builder.addCase(INGREDIENT_HIDE_DETAILS, (state: IngredientState) => {
       state.observed = null;
     });
+    builder.addCase(
+      CONSTRUCTOR_ADD_BUN,
+      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+        state.selected.bun = action.payload;
+      }
+    );
+    builder.addCase(
+      CONSTRUCTOR_ADD_INGREDIENT,
+      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+        state.selected.ingredients.push(action.payload);
+        state.selected.count[action.payload._id] = state.selected.count[
+          action.payload._id
+        ]
+          ? state.selected.count[action.payload._id] + 1
+          : 1;
+      }
+    );
   },
 });
 
@@ -68,7 +95,13 @@ export default ingredientSlice.reducer;
 
 export const selectFetchedIngredients = (state: RootState) =>
   state.ingredients.all;
+export const selectSelectedBun = (state: RootState) =>
+  state.ingredients.selected.bun;
 export const selectSelectedIngredients = (state: RootState) =>
-  state.ingredients.selected;
+  state.ingredients.selected.ingredients;
+export const selectIngredientCount = (id: string) => (state: RootState) =>
+  state.ingredients.selected.count[id]
+    ? state.ingredients.selected.count[id]
+    : 0;
 export const selectObservedIngredient = (state: RootState) =>
   state.ingredients.observed;

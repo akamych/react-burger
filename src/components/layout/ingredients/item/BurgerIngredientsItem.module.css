@@ -1,5 +1,6 @@
 .ingredients_section_ul_li {
   display: grid;
+  position: relative;
   grid-template-rows: max-content max-content auto;
   justify-items: center;
   align-items: start;

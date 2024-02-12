@@ -34,3 +34,10 @@ export const fetchIngredientsAction = createAsyncThunk<
 export const INGREDIENT_SHOW_DETAILS =
   createAction<IngredientType>("ingredient/show");
 export const INGREDIENT_HIDE_DETAILS = createAction("ingredient/hide");
+
+export const CONSTRUCTOR_ADD_BUN = createAction<IngredientType>(
+  "constructor/add/bun"
+);
+export const CONSTRUCTOR_ADD_INGREDIENT = createAction<IngredientType>(
+  "constructor/add/ingredient"
+);

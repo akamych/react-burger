@@ -10,20 +10,40 @@ import BurgerConstructorItem from "./item/BurgerConstructorItem";
 import useModal from "../../../hooks/useModal";
 import OrderDetails from "../../modal/order/OrderDetails";
 import Modal from "../../modal/Modal";
-import { selectSelectedIngredients } from "../../../services/reducers/IngredientsReducer";
-import { useSelector } from "react-redux";
-
-const ELEMENT_TYPES = {
-  TOP: "top",
-  MIDDLE: "middle",
-  BOTTOM: "bottom",
-};
+import {
+  selectSelectedBun,
+  selectSelectedIngredients,
+} from "../../../services/reducers/IngredientsReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import store, { AppDispatch } from "../../../services/Store";
+import {
+  CONSTRUCTOR_ADD_BUN,
+  CONSTRUCTOR_ADD_INGREDIENT,
+} from "../../../services/actions/IngredientsActions";
 
 const BurgerConstructor = () => {
+  const bun = useSelector(selectSelectedBun);
   const ingredients = useSelector(selectSelectedIngredients);
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { isModalActive, showModal, closeModal } = useModal();
+
+  const [, dropRef] = useDrop({
+    accept: "ingredient",
+    drop(droppedIngredient: IngredientType) {
+      switch (droppedIngredient.type.toLowerCase()) {
+        case "bun":
+          if (bun === null || droppedIngredient._id !== bun._id) {
+            dispatch(CONSTRUCTOR_ADD_BUN(droppedIngredient));
+          }
+          break;
+        default:
+          dispatch(CONSTRUCTOR_ADD_INGREDIENT(droppedIngredient));
+          break;
+      }
+    },
+  });
 
   const calculateTotal = useMemo<number>((): number => {
     return ingredients.length
@@ -56,13 +76,13 @@ const BurgerConstructor = () => {
 
   return (
     <>
-      <div className={styles.constructor_div}>
+      <div className={styles.constructor_div} ref={dropRef}>
         <ul>
-          {bunTop && (
+          {bun !== null && (
             <BurgerConstructorItem
-              text={`${bunTop.name} ${t("bunTop")}`}
-              thumbnail={bunTop.image}
-              price={bunTop.price}
+              text={`${bun.name} ${t("bunTop")}`}
+              thumbnail={bun.image}
+              price={bun.price}
               isLocked={true}
               type="top"
             />
@@ -82,11 +102,11 @@ const BurgerConstructor = () => {
                 )
               : null}
           </ul>
-          {bunBottom && (
+          {bun !== null && (
             <BurgerConstructorItem
-              text={`${bunBottom.name} ${t("bunBottom")}`}
-              thumbnail={bunBottom.image}
-              price={bunBottom.price}
+              text={`${bun.name} ${t("bunBottom")}`}
+              thumbnail={bun.image}
+              price={bun.price}
               isLocked={true}
               type="bottom"
             />
@@ -99,7 +119,7 @@ const BurgerConstructor = () => {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={showModal}
+            // onClick={showModal}
           >
             {t("buttons.order")}
           </Button>
