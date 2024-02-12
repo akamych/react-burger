@@ -63,6 +63,7 @@ const ingredientSlice = createSlice({
     builder.addCase(
       fetchIngredientsAction.rejected,
       (state: IngredientState, action: PayloadAction<string | undefined>) => {
+        state = initialIngredientsState;
         state.errors.fetch.isError = true;
         state.errors.fetch.text = action.payload ? action.payload : "error";
       }
