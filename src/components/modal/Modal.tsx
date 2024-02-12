@@ -1,41 +1,57 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
 import ModalOverlay from "./overlay/ModalOverlay";
 import ModalHeader from "./header/ModalHeader";
-import React from "react";
+import { AppDispatch } from "../../services/Store";
+import {
+  selectModalIsShown,
+  selectModalType,
+} from "../../services/reducers/ModalReducer";
+import { useTranslation } from "react-i18next";
+import IngredientDetails from "./ingredients/IngredientDetails";
+import { HIDE_MODAL } from "../../services/actions/ModalActions";
 
 const modalRoot = document.getElementById("modals");
 
-type propType = {
-  children: React.ReactNode;
-  onClose: () => void;
-  header?: string;
-};
+const Modal = () => {
+  const { t: ingredientT } = useTranslation("ingredients");
+  const dispatch = useDispatch<AppDispatch>();
+  const isShown = useSelector(selectModalIsShown);
+  const type = useSelector(selectModalType);
 
-const Modal = (props: propType) => {
-  const { children, header, onClose } = props;
+  const handleClose = (): void => {
+    dispatch(HIDE_MODAL());
+  };
 
   useEffect(() => {
     const handleEscapePress = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
     document.addEventListener("keydown", handleEscapePress);
     return () => document.removeEventListener("keydown", handleEscapePress);
-  }, [onClose]);
+  }, []);
+
+  const header: string = useMemo(
+    () => (type === "ingredient" ? ingredientT("h3.details") : ""),
+    [type]
+  );
 
   return (
     modalRoot &&
     ReactDOM.createPortal(
-      <>
-        <div className={styles.modal}>
-          <ModalHeader onClose={onClose} header={header} />
-          {children}
-        </div>
-        <ModalOverlay onClose={onClose} />
-      </>,
+      isShown === true && (
+        <>
+          <div className={styles.modal}>
+            <ModalHeader onClose={handleClose} header={header} />
+            {type === "ingredient" ? <IngredientDetails /> : null}
+          </div>
+          <ModalOverlay onClose={handleClose} />
+        </>
+      ),
       modalRoot
     )
   );

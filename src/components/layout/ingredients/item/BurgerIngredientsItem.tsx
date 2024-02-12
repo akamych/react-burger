@@ -1,27 +1,33 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { IngredientType } from "../../../../types/Ingredient.type";
 import styles from "./BurgerIngredientsItem.module.css";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import useModal from "../../../../hooks/useModal";
-import Modal from "../../../modal/Modal";
-import IngredientDetails from "../../../modal/ingredients/IngredientDetails";
+import { AppDispatch } from "../../../../services/Store";
+import { SyntheticEvent } from "react";
+import { SHOW_MODAL_INGREDIENT } from "../../../../services/actions/ModalActions";
+import { INGREDIENT_SHOW_DETAILS } from "../../../../services/actions/IngredientsActions";
 
 type propsType = {
   ingredient: IngredientType;
 };
 
 const BurgerIngredientsItem = (props: propsType) => {
-  const { t } = useTranslation("ingredients");
-  const { isModalActive, showModal, closeModal } = useModal();
+  const dispatch = useDispatch<AppDispatch>();
   const { ingredient } = props;
   const { name, price, image } = ingredient;
+
+  const handleClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    dispatch(INGREDIENT_SHOW_DETAILS(ingredient));
+    dispatch(SHOW_MODAL_INGREDIENT());
+  };
+
   return (
     <>
-      <li className={styles.ingredients_section_ul_li} onClick={showModal}>
+      <li className={styles.ingredients_section_ul_li} onClick={handleClick}>
         <Counter
           count={Math.floor(Math.random() * 10)}
           size="default"
@@ -38,11 +44,6 @@ const BurgerIngredientsItem = (props: propsType) => {
         </i>
         <b className={styles.ingredients_section_ul_li_b}>{name}</b>
       </li>
-      {isModalActive && (
-        <Modal onClose={closeModal} header={t("h3.details")}>
-          <IngredientDetails ingredient={ingredient} />
-        </Modal>
-      )}
     </>
   );
 };

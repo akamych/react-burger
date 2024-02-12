@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
 import { IngredientType } from "../../../types/Ingredient.type";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
-import { useOutletContext } from "react-router-dom";
-import { useIngredients } from "../../app/App";
 import useModal from "../../../hooks/useModal";
 import OrderDetails from "../../modal/order/OrderDetails";
 import Modal from "../../modal/Modal";
+import { selectSelectedIngredients } from "../../../services/reducers/IngredientsReducer";
+import { useSelector } from "react-redux";
 
 const ELEMENT_TYPES = {
   TOP: "top",
@@ -20,14 +20,17 @@ const ELEMENT_TYPES = {
 };
 
 const BurgerConstructor = () => {
-  const { ingredients } = useIngredients();
+  const ingredients = useSelector(selectSelectedIngredients);
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const { isModalActive, showModal, closeModal } = useModal();
 
   const calculateTotal = useMemo<number>((): number => {
     return ingredients.length
-      ? ingredients.reduce((a, { price }) => a + price, 0)
+      ? ingredients.reduce(
+          (a: number, { price }: { price: number }) => a + price,
+          0
+        )
       : 0;
   }, [ingredients]);
 
@@ -36,13 +39,17 @@ const BurgerConstructor = () => {
   }, [ingredients]);
 
   const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
-    const bunTop = ingredients.find((item) => item.type === "bun");
+    const bunTop = ingredients.find(
+      (item: IngredientType) => item.type === "bun"
+    );
 
     return {
       bunTop: bunTop,
-      mainIngredients: ingredients.filter((item) => item.type !== "bun"),
+      mainIngredients: ingredients.filter(
+        (item: IngredientType) => item.type !== "bun"
+      ),
       bunBottom: ingredients.find(
-        (item) => item.type === "bun" && item !== bunTop
+        (item: IngredientType) => item.type === "bun" && item !== bunTop
       ),
     };
   }, [ingredients]);
@@ -62,15 +69,17 @@ const BurgerConstructor = () => {
           )}
           <ul className={styles.constructor_ul_middle}>
             {mainIngredients && mainIngredients.length
-              ? mainIngredients.map((ingredient, index) => (
-                  <BurgerConstructorItem
-                    key={index}
-                    text={ingredient.name}
-                    thumbnail={ingredient.image}
-                    price={ingredient.price}
-                    isLocked={false}
-                  />
-                ))
+              ? mainIngredients.map(
+                  (ingredient: IngredientType, index: number) => (
+                    <BurgerConstructorItem
+                      key={index}
+                      text={ingredient.name}
+                      thumbnail={ingredient.image}
+                      price={ingredient.price}
+                      isLocked={false}
+                    />
+                  )
+                )
               : null}
           </ul>
           {bunBottom && (
@@ -97,11 +106,11 @@ const BurgerConstructor = () => {
         </span>
       </div>
 
-      {isModalActive && (
+      {/* {isModalActive && (
         <Modal onClose={closeModal}>
           <OrderDetails _id="034536" status="cooking" />
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import styles from "./BurgerIngredients.module.css";
 import Tabs, { TabsPropsType } from "../../tabs/Tabs";
 import BurgerIngredientsSection from "./section/BurgerIngredientsSection";
@@ -7,8 +8,7 @@ import {
   IngredientType,
   Ingredient_tabs_keys,
 } from "../../../types/Ingredient.type";
-import { useOutletContext } from "react-router-dom";
-import { useIngredients } from "../../app/App";
+import { selectFetchedIngredients } from "../../../services/reducers/IngredientsReducer";
 
 export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
   bun: "tabs.bun",
@@ -17,22 +17,25 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
 };
 
 const BurgerIngredients = () => {
-  const { ingredients } = useIngredients();
+  const ingredients = useSelector(selectFetchedIngredients);
   const { t } = useTranslation("ingredients");
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
   const ingredientsByType: Record<string, IngredientType[]> = useMemo(
     () =>
-      ingredients.reduce((acc, item) => {
-        const type = item.type;
+      ingredients.reduce(
+        (acc: Record<string, IngredientType[]>, item: IngredientType) => {
+          const type: string = item.type;
 
-        if (!acc[type]) {
-          acc[type] = [];
-        }
+          if (!acc[type]) {
+            acc[type] = [];
+          }
 
-        acc[type].push(item);
+          acc[type].push(item);
 
-        return acc;
-      }, {} as Record<string, IngredientType[]>),
+          return acc;
+        },
+        {} as Record<string, IngredientType[]>
+      ),
     [ingredients]
   );
 
