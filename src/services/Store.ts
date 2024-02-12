@@ -8,8 +8,6 @@ const store = configureStore({
     ingredients: ingredientsReducer,
     modal: ModalReducer,
   },
-  middleware: () => [],
-  enhancers: () => [],
 });
 
 export type RootState = ReturnType<typeof store.getState>;
