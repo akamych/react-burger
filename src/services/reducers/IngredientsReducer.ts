@@ -23,8 +23,9 @@ interface IngredientState {
     count: Record<string, number>;
   };
   observed: Nullable<IngredientType>;
-  errors: {
+  requests: {
     fetch: {
+      pending: boolean;
       isError: boolean;
       text: Nullable<string>;
     };
@@ -39,8 +40,9 @@ export const initialIngredientsState: IngredientState = {
     count: {},
   },
   observed: null,
-  errors: {
+  requests: {
     fetch: {
+      pending: false,
       isError: false,
       text: null,
     },
@@ -56,16 +58,24 @@ const ingredientSlice = createSlice({
       fetchIngredientsAction.fulfilled,
       (state: IngredientState, action: PayloadAction<IngredientType[]>) => {
         state.all = action.payload;
-        state.errors.fetch.isError = false;
-        state.errors.fetch.text = null;
+        state.requests.fetch.isError = false;
+        state.requests.fetch.text = null;
+      }
+    );
+    builder.addCase(
+      fetchIngredientsAction.pending,
+      (state: IngredientState) => {
+        state.requests.fetch.pending = true;
+        state.requests.fetch.isError = false;
+        state.requests.fetch.text = null;
       }
     );
     builder.addCase(
       fetchIngredientsAction.rejected,
       (state: IngredientState, action: PayloadAction<string | undefined>) => {
         state = initialIngredientsState;
-        state.errors.fetch.isError = true;
-        state.errors.fetch.text = action.payload ? action.payload : "error";
+        state.requests.fetch.isError = true;
+        state.requests.fetch.text = action.payload ? action.payload : "error";
       }
     );
     builder.addCase(

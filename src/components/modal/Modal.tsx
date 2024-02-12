@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 import IngredientDetails from "./ingredients/IngredientDetails";
 import { HIDE_MODAL } from "../../services/actions/ModalActions";
 import { INGREDIENT_HIDE_DETAILS } from "../../services/actions/IngredientsActions";
+import { ORDER_CLEAR } from "../../services/actions/OrderActions";
+import OrderDetails from "./order/OrderDetails";
 
 const modalRoot = document.getElementById("modals");
 
@@ -25,6 +27,7 @@ const Modal = () => {
   const handleClose = (): void => {
     dispatch(HIDE_MODAL());
     dispatch(INGREDIENT_HIDE_DETAILS());
+    dispatch(ORDER_CLEAR());
   };
 
   useEffect(() => {
@@ -49,7 +52,7 @@ const Modal = () => {
         <>
           <div className={styles.modal}>
             <ModalHeader onClose={handleClose} header={header} />
-            {type === "ingredient" ? <IngredientDetails /> : null}
+            {type === "ingredient" ? <IngredientDetails /> : <OrderDetails />}
           </div>
           <ModalOverlay onClose={handleClose} />
         </>

@@ -1,12 +1,14 @@
 // store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import ingredientsReducer from "./reducers/IngredientsReducer";
-import ModalReducer from "./reducers/ModalReducer";
+import modalReducer from "./reducers/ModalReducer";
+import orderReducer from "./reducers/OrderReducer";
 
 const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
-    modal: ModalReducer,
+    modal: modalReducer,
+    order: orderReducer,
   },
 });
 

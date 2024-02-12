@@ -7,9 +7,6 @@ import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
 import { IngredientType } from "../../../types/Ingredient.type";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
-import useModal from "../../../hooks/useModal";
-import OrderDetails from "../../modal/order/OrderDetails";
-import Modal from "../../modal/Modal";
 import {
   selectSelectedBun,
   selectSelectedIngredients,
@@ -21,6 +18,9 @@ import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
 } from "../../../services/actions/IngredientsActions";
+import { Nullable } from "../../../types/common.type";
+import { createOrderAction } from "../../../services/actions/OrderActions";
+import { SHOW_MODAL_ORDER } from "../../../services/actions/ModalActions";
 
 const BurgerConstructor = () => {
   const bun = useSelector(selectSelectedBun);
@@ -63,6 +63,27 @@ const BurgerConstructor = () => {
     setTotalPrice(calculateTotal);
   }, [ingredients, bun]);
 
+  const handleSubmit = () => {
+    const ids: string[] = [];
+
+    const bunId: Nullable<string> = bun !== null ? bun._id : null;
+
+    if (bunId !== null) {
+      ids.push(bunId);
+    }
+
+    ingredients.forEach((ingredient: IngredientType) => {
+      ids.push(ingredient._id);
+    });
+
+    if (bunId !== null) {
+      ids.push(bunId);
+    }
+
+    dispatch(createOrderAction(ids));
+    dispatch(SHOW_MODAL_ORDER());
+  };
+
   return (
     <>
       <div className={styles.constructor_div} ref={dropRef}>
@@ -103,18 +124,12 @@ const BurgerConstructor = () => {
             htmlType="button"
             type="primary"
             size="large"
-            // onClick={showModal}
+            onClick={handleSubmit}
           >
             {t("buttons.order")}
           </Button>
         </span>
       </div>
-
-      {/* {isModalActive && (
-        <Modal onClose={closeModal}>
-          <OrderDetails _id="034536" status="cooking" />
-        </Modal>
-      )} */}
     </>
   );
 };
