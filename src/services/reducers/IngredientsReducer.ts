@@ -4,6 +4,7 @@ import { IngredientType } from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
 import {
   fetchIngredientsAction,
+  INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
 } from "../actions/IngredientsActions";
 
@@ -55,6 +56,12 @@ const ingredientSlice = createSlice({
       INGREDIENT_SHOW_DETAILS,
       (state: IngredientState, action: PayloadAction<IngredientType>) => {
         state.observed = action.payload;
+      }
+    );
+    builder.addCase(
+      INGREDIENT_HIDE_DETAILS,
+      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+        state.observed = null;
       }
     );
   },

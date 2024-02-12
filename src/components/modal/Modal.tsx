@@ -12,6 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import IngredientDetails from "./ingredients/IngredientDetails";
 import { HIDE_MODAL } from "../../services/actions/ModalActions";
+import { INGREDIENT_HIDE_DETAILS } from "../../services/actions/IngredientsActions";
 
 const modalRoot = document.getElementById("modals");
 
@@ -23,6 +24,7 @@ const Modal = () => {
 
   const handleClose = (): void => {
     dispatch(HIDE_MODAL());
+    dispatch(INGREDIENT_HIDE_DETAILS());
   };
 
   useEffect(() => {
