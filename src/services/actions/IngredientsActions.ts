@@ -1,7 +1,10 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { HTTP_STATUSES } from "../../constants/httpStatuses";
 import { API_URL_NORMA } from "../../constants/api";
-import { IngredientType } from "../../types/Ingredient.type";
+import {
+  IngredientType,
+  SwapIngredientType,
+} from "../../types/Ingredient.type";
 
 const fetchIngredientsRequest = async (
   rejectWithValue: (value: string) => unknown
@@ -43,4 +46,8 @@ export const CONSTRUCTOR_ADD_INGREDIENT = createAction<IngredientType>(
 );
 export const CONSTRUCTOR_REMOVE_INGREDIENT = createAction<number>(
   "constructor/remove/ingredient"
+);
+
+export const CONSTRUCTOR_SWAP_INGREDIENT = createAction<SwapIngredientType>(
+  "constructor/swap/ingredient"
 );

@@ -14,3 +14,14 @@ export type IngredientType = {
   image_large: string;
   __v: number;
 };
+
+export type SwapIngredientType = {
+  first: {
+    index: number;
+    ingredient: IngredientType;
+  };
+  second: {
+    index: number;
+    ingredient: IngredientType;
+  };
+};

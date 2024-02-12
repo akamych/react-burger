@@ -1,11 +1,15 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../Store";
-import { IngredientType } from "../../types/Ingredient.type";
+import {
+  IngredientType,
+  SwapIngredientType,
+} from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_SWAP_INGREDIENT,
   fetchIngredientsAction,
   INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
@@ -96,6 +100,14 @@ const ingredientSlice = createSlice({
         state.selected.ingredients.splice(action.payload, 1);
         state.selected.count[id] =
           state.selected.count[id] > 1 ? state.selected.count[id] - 1 : 0;
+      }
+    );
+    builder.addCase(
+      CONSTRUCTOR_SWAP_INGREDIENT,
+      (state: IngredientState, action: PayloadAction<SwapIngredientType>) => {
+        const { first, second } = action.payload;
+        state.selected.ingredients[first.index] = second.ingredient;
+        state.selected.ingredients[second.index] = first.ingredient;
       }
     );
   },

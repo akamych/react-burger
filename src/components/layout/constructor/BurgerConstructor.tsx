@@ -16,7 +16,7 @@ import {
 } from "../../../services/reducers/IngredientsReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import store, { AppDispatch } from "../../../services/Store";
+import { AppDispatch } from "../../../services/Store";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
@@ -48,7 +48,7 @@ const BurgerConstructor = () => {
   const calculateTotal = useMemo<number>((): number => {
     let ingredientsPrice: number = ingredients.length
       ? ingredients.reduce(
-          (a: number, { price }: { price: number }) => a + price,
+          (a: number, ingredient: IngredientType) => a + ingredient.price,
           0
         )
       : 0;
@@ -63,22 +63,6 @@ const BurgerConstructor = () => {
     setTotalPrice(calculateTotal);
   }, [ingredients, bun]);
 
-  const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
-    const bunTop = ingredients.find(
-      (item: IngredientType) => item.type === "bun"
-    );
-
-    return {
-      bunTop: bunTop,
-      mainIngredients: ingredients.filter(
-        (item: IngredientType) => item.type !== "bun"
-      ),
-      bunBottom: ingredients.find(
-        (item: IngredientType) => item.type === "bun" && item !== bunTop
-      ),
-    };
-  }, [ingredients]);
-
   return (
     <>
       <div className={styles.constructor_div} ref={dropRef}>
@@ -86,33 +70,27 @@ const BurgerConstructor = () => {
           {bun !== null && (
             <BurgerConstructorItem
               text={`${bun.name} ${t("bunTop")}`}
-              thumbnail={bun.image}
-              price={bun.price}
+              ingredient={bun}
               isLocked={true}
               type="top"
             />
           )}
           <ul className={styles.constructor_ul_middle}>
-            {mainIngredients && mainIngredients.length
-              ? mainIngredients.map(
-                  (ingredient: IngredientType, index: number) => (
-                    <BurgerConstructorItem
-                      key={index}
-                      index={index}
-                      text={ingredient.name}
-                      thumbnail={ingredient.image}
-                      price={ingredient.price}
-                      isLocked={false}
-                    />
-                  )
-                )
+            {ingredients && ingredients.length
+              ? ingredients.map((ingredient: IngredientType, index: number) => (
+                  <BurgerConstructorItem
+                    key={`${ingredient._id}-${index}`}
+                    index={index}
+                    ingredient={ingredient}
+                    isLocked={false}
+                  />
+                ))
               : null}
           </ul>
           {bun !== null && (
             <BurgerConstructorItem
               text={`${bun.name} ${t("bunBottom")}`}
-              thumbnail={bun.image}
-              price={bun.price}
+              ingredient={bun}
               isLocked={true}
               type="bottom"
             />
