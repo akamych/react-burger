@@ -58,12 +58,9 @@ const ingredientSlice = createSlice({
         state.observed = action.payload;
       }
     );
-    builder.addCase(
-      INGREDIENT_HIDE_DETAILS,
-      (state: IngredientState, action: PayloadAction<IngredientType>) => {
-        state.observed = null;
-      }
-    );
+    builder.addCase(INGREDIENT_HIDE_DETAILS, (state: IngredientState) => {
+      state.observed = null;
+    });
   },
 });
 
