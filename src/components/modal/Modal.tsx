@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
@@ -24,11 +24,11 @@ const Modal = () => {
   const isShown = useSelector(selectModalIsShown);
   const type = useSelector(selectModalType);
 
-  const handleClose = (): void => {
+  const handleClose = useCallback((): void => {
     dispatch(HIDE_MODAL());
     dispatch(INGREDIENT_HIDE_DETAILS());
     dispatch(ORDER_CLEAR());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     const handleEscapePress = (event: KeyboardEvent) => {
@@ -38,11 +38,11 @@ const Modal = () => {
     };
     document.addEventListener("keydown", handleEscapePress);
     return () => document.removeEventListener("keydown", handleEscapePress);
-  }, []);
+  }, [handleClose]);
 
   const header: string = useMemo(
     () => (type === "ingredient" ? ingredientT("h3.details") : ""),
-    [type]
+    [type, ingredientT]
   );
 
   return (

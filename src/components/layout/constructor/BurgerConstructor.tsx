@@ -61,7 +61,7 @@ const BurgerConstructor = () => {
 
   useEffect(() => {
     setTotalPrice(calculateTotal);
-  }, [ingredients, bun]);
+  }, [ingredients, bun, calculateTotal]);
 
   const handleSubmit = () => {
     const ids: string[] = [];

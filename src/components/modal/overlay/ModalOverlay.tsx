@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import styles from "./ModalOverlay.module.css";
 
 type propType = {

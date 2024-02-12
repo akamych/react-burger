@@ -1,4 +1,3 @@
-import { IngredientType } from "../../../types/Ingredient.type";
 import { useTranslation } from "react-i18next";
 import styles from "./IngredientDetails.module.css";
 import { selectObservedIngredient } from "../../../services/reducers/IngredientsReducer";

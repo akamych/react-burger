@@ -1,6 +1,10 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../Store";
-import { HIDE_MODAL, SHOW_MODAL_INGREDIENT, SHOW_MODAL_ORDER } from "../actions/ModalActions";
+import {
+  HIDE_MODAL,
+  SHOW_MODAL_INGREDIENT,
+  SHOW_MODAL_ORDER,
+} from "../actions/ModalActions";
 
 interface ModalState {
   isShown: boolean;
