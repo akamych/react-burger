@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import styles from "./BurgerIngredients.module.css";
@@ -16,9 +16,12 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
   main: "tabs.main",
 };
 
+const TABS_ORDER: Ingredient_tabs_keys[] = ["bun", "sauce", "main"];
+
 const BurgerIngredients = () => {
   const ingredients = useSelector(selectFetchedIngredients);
   const { t } = useTranslation("ingredients");
+  const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
   const ingredientsByType: Record<string, IngredientType[]> = useMemo(
     () =>
@@ -39,6 +42,45 @@ const BurgerIngredients = () => {
     [ingredients]
   );
 
+  const [scrollPositions, setScrollPositions] = useState<{
+    [key: string]: number;
+  }>({});
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollableRef.current === null) {
+        return;
+      }
+
+      const holderTop = scrollableRef.current.getBoundingClientRect().top;
+      const sections = scrollableRef.current.querySelectorAll(
+        ".ingredientsSection"
+      );
+
+      let newActiveTab: Ingredient_tabs_keys = "bun";
+
+      for (let i = 1; i < sections.length; i++) {
+        const top = sections[i].getBoundingClientRect().top - holderTop;
+        if (top < 0) {
+          newActiveTab = TABS_ORDER[i];
+        }
+      }
+
+      setActiveTab(newActiveTab);
+    };
+
+    if (scrollableRef.current !== null) {
+      scrollableRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollableRef.current === null) {
+        return;
+      }
+      scrollableRef.current.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrollPositions, scrollableRef.current]);
+
   const tabs: TabsPropsType[] = Object.entries(INGREDIENTS_TABS).map(
     ([key, value]) => ({
       value: key,
@@ -50,7 +92,7 @@ const BurgerIngredients = () => {
     <div className={styles.ingredients_div}>
       <h1 className="text text_type_main-large mt-10 mb-5">{t("h1")}</h1>
       <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className={styles.ingredients_div_ul_holder}>
+      <div className={styles.ingredients_div_ul_holder} ref={scrollableRef}>
         {Object.keys(INGREDIENTS_TABS).map((key) => (
           <BurgerIngredientsSection
             key={key}
