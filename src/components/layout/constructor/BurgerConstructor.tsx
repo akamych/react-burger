@@ -46,17 +46,22 @@ const BurgerConstructor = () => {
   });
 
   const calculateTotal = useMemo<number>((): number => {
-    return ingredients.length
+    let ingredientsPrice: number = ingredients.length
       ? ingredients.reduce(
           (a: number, { price }: { price: number }) => a + price,
           0
         )
       : 0;
-  }, [ingredients]);
+
+    if (bun !== null) {
+      ingredientsPrice += bun.price * 2;
+    }
+    return ingredientsPrice;
+  }, [ingredients, bun]);
 
   useEffect(() => {
     setTotalPrice(calculateTotal);
-  }, [ingredients]);
+  }, [ingredients, bun]);
 
   const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
     const bunTop = ingredients.find(
@@ -93,6 +98,7 @@ const BurgerConstructor = () => {
                   (ingredient: IngredientType, index: number) => (
                     <BurgerConstructorItem
                       key={index}
+                      index={index}
                       text={ingredient.name}
                       thumbnail={ingredient.image}
                       price={ingredient.price}

@@ -41,3 +41,6 @@ export const CONSTRUCTOR_ADD_BUN = createAction<IngredientType>(
 export const CONSTRUCTOR_ADD_INGREDIENT = createAction<IngredientType>(
   "constructor/add/ingredient"
 );
+export const CONSTRUCTOR_REMOVE_INGREDIENT = createAction<number>(
+  "constructor/remove/ingredient"
+);

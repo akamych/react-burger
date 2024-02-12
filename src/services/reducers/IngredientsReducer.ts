@@ -5,6 +5,7 @@ import { Nullable } from "../../types/common.type";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
+  CONSTRUCTOR_REMOVE_INGREDIENT,
   fetchIngredientsAction,
   INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
@@ -86,6 +87,15 @@ const ingredientSlice = createSlice({
         ]
           ? state.selected.count[action.payload._id] + 1
           : 1;
+      }
+    );
+    builder.addCase(
+      CONSTRUCTOR_REMOVE_INGREDIENT,
+      (state: IngredientState, action: PayloadAction<number>) => {
+        const id = state.selected.ingredients[action.payload]._id;
+        state.selected.ingredients.splice(action.payload, 1);
+        state.selected.count[id] =
+          state.selected.count[id] > 1 ? state.selected.count[id] - 1 : 0;
       }
     );
   },
