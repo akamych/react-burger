@@ -122,9 +122,40 @@ const ingredientSlice = createSlice({
     builder.addCase(
       CONSTRUCTOR_SWAP_INGREDIENT,
       (state: IngredientState, action: PayloadAction<SwapIngredientType>) => {
-        const { first, second } = action.payload;
-        state.selected.ingredients[first.index] = second.ingredient;
-        state.selected.ingredients[second.index] = first.ingredient;
+        const { from, to } = action.payload;
+        const isAscending = from.index < to.index;
+
+        let nextItem = null;
+
+        if (isAscending) {
+          for (let i = 0; i < state.selected.ingredients.length; i++) {
+            if (
+              (i < from.index && i < to.index) ||
+              (i > from.index && i > to.index)
+            ) {
+              continue;
+            } else if (i === to.index) {
+              state.selected.ingredients[i] = from.ingredient;
+            } else if (from.index <= i) {
+              nextItem = state.selected.ingredients[i + 1];
+              state.selected.ingredients[i] = nextItem;
+            }
+          }
+        } else {
+          for (let i = state.selected.ingredients.length - 1; i >= 0; i--) {
+            if (
+              (i < from.index && i < to.index) ||
+              (i > from.index && i > to.index)
+            ) {
+              continue;
+            } else if (i === to.index) {
+              state.selected.ingredients[i] = from.ingredient;
+            } else if (from.index >= i) {
+              nextItem = state.selected.ingredients[i - 1];
+              state.selected.ingredients[i] = nextItem;
+            }
+          }
+        }
       }
     );
     builder.addCase(CONSTRUCTOR_CLEAR, (state: IngredientState) => {

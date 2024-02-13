@@ -15,6 +15,7 @@ import {
   IngredientTypeWithUuid,
 } from "../../../../types/Ingredient.type";
 import { Undef } from "../../../../types/common.type";
+import { useMemo, useCallback } from "react";
 
 type propsType = {
   index?: number;
@@ -29,13 +30,17 @@ const BurgerConstructorItem = (props: propsType) => {
   const { name, image, price } = ingredient;
   const dispatch = useDispatch<AppDispatch>();
 
-  const [, dragRef] = useDrag({
+  const [{ yDiff, isDragging }, dragRef] = useDrag({
     type: "constructorElement",
     item: { ingredient, index },
+    collect: (monitor) => ({
+      yDiff: monitor.getDifferenceFromInitialOffset()?.y,
+      isDragging: monitor.isDragging(),
+    }),
   });
 
-  const [, dropRef] = useDrop({
-    accept: "constructorElement",
+  const [{ isHover, dragIndex }, dropRef] = useDrop({
+    accept: isLocked ? "nonDroppable" : "constructorElement",
     drop(droppedIngredient: {
       ingredient: IngredientTypeWithUuid;
       index: Undef<number>;
@@ -43,18 +48,19 @@ const BurgerConstructorItem = (props: propsType) => {
       if (index !== undefined && droppedIngredient.index !== undefined) {
         dispatch(
           CONSTRUCTOR_SWAP_INGREDIENT({
-            first: {
-              index: index,
-              ingredient: ingredient as IngredientTypeWithUuid,
-            },
-            second: {
+            from: {
               index: droppedIngredient.index,
               ingredient: droppedIngredient.ingredient,
             },
+            to: { index },
           })
         );
       }
     },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+      dragIndex: monitor.getItem()?.index,
+    }),
   });
 
   const handleDelete = () => {
@@ -63,20 +69,49 @@ const BurgerConstructorItem = (props: propsType) => {
     }
   };
 
+  const liClassName = useMemo(
+    () =>
+      isHover &&
+      !isDragging &&
+      dragIndex !== undefined &&
+      index !== undefined &&
+      dragIndex > index
+        ? styles.constructor_ul_li_hovered_asc
+        : isHover && !isDragging
+        ? styles.constructor_ul_li_hovered_desc
+        : isDragging
+        ? styles.constructor_ul_li_dragging
+        : styles.constructor_ul_li,
+    [isHover, isDragging, dragIndex, index]
+  );
+
   return (
-    <li className={styles.constructor_ul_li} ref={dropRef}>
-      <span className={styles.constructor_ul_li_dragger} ref={dragRef}>
-        {!isLocked && <DragIcon type="primary" />}
-      </span>
-      <ConstructorElement
-        text={text ? text : name}
-        thumbnail={image}
-        price={price}
-        isLocked={isLocked}
-        type={type}
-        handleClose={handleDelete}
-      />
-    </li>
+    <>
+      <li
+        className={liClassName}
+        ref={dropRef}
+        style={
+          yDiff && isDragging
+            ? {
+                transform: `translateY(
+        ${yDiff}px`,
+              }
+            : {}
+        }
+      >
+        <span className={styles.constructor_ul_li_dragger} ref={dragRef}>
+          {!isLocked && <DragIcon type="primary" />}
+        </span>
+        <ConstructorElement
+          text={text ? text : name}
+          thumbnail={image}
+          price={price}
+          isLocked={isLocked}
+          type={type}
+          handleClose={handleDelete}
+        />
+      </li>
+    </>
   );
 };
 

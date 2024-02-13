@@ -20,12 +20,11 @@ export type IngredientTypeWithUuid = IngredientType & {
 };
 
 export type SwapIngredientType = {
-  first: {
+  from: {
     index: number;
     ingredient: IngredientTypeWithUuid;
   };
-  second: {
+  to: {
     index: number;
-    ingredient: IngredientTypeWithUuid;
   };
 };
