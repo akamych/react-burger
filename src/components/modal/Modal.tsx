@@ -30,7 +30,7 @@ const Modal = (props: propType) => {
     ReactDOM.createPortal(
       <>
         <div className={styles.modal}>
-          <ModalHeader onClose={onClose} header={header} />
+          {header && <ModalHeader onClose={onClose} header={header} />}
           {children}
         </div>
         <ModalOverlay onClose={onClose} />

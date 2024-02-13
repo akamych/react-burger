@@ -2,7 +2,7 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
 import { IngredientType } from "../../../types/Ingredient.type";
@@ -17,14 +17,29 @@ import { AppDispatch } from "../../../services/Store";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
+  CONSTRUCTOR_CLEAR,
 } from "../../../services/actions/IngredientsActions";
 import { Nullable } from "../../../types/common.type";
-import { createOrderAction } from "../../../services/actions/OrderActions";
-import { SHOW_MODAL_ORDER } from "../../../services/actions/ModalActions";
+import {
+  ORDER_CLEAR,
+  createOrderAction,
+} from "../../../services/actions/OrderActions";
+import {
+  HIDE_MODAL,
+  SHOW_MODAL_ORDER,
+} from "../../../services/actions/ModalActions";
+import OrderDetails from "../../modal/order/OrderDetails";
+import {
+  selectModalIsShown,
+  selectModalType,
+} from "../../../services/reducers/ModalReducer";
+import Modal from "../../modal/Modal";
 
 const BurgerConstructor = () => {
   const bun = useSelector(selectSelectedBun);
   const ingredients = useSelector(selectSelectedIngredients);
+  const modalIsShown = useSelector(selectModalIsShown);
+  const modalType = useSelector(selectModalType);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -84,6 +99,12 @@ const BurgerConstructor = () => {
     dispatch(SHOW_MODAL_ORDER());
   };
 
+  const closeModal = useCallback((): void => {
+    dispatch(HIDE_MODAL());
+    dispatch(ORDER_CLEAR());
+    dispatch(CONSTRUCTOR_CLEAR());
+  }, [dispatch]);
+
   return (
     <>
       <div className={styles.constructor_div} ref={dropRef}>
@@ -125,11 +146,18 @@ const BurgerConstructor = () => {
             type="primary"
             size="large"
             onClick={handleSubmit}
+            disabled={bun === null}
           >
             {t("buttons.order")}
           </Button>
         </span>
       </div>
+
+      {modalIsShown && modalType === "order" && (
+        <Modal onClose={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 };

@@ -9,6 +9,7 @@ import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_CLEAR,
   CONSTRUCTOR_SWAP_INGREDIENT,
   fetchIngredientsAction,
   INGREDIENT_HIDE_DETAILS,
@@ -121,6 +122,9 @@ const ingredientSlice = createSlice({
         state.selected.ingredients[second.index] = first.ingredient;
       }
     );
+    builder.addCase(CONSTRUCTOR_CLEAR, (state: IngredientState) => {
+      state.selected = initialIngredientsState.selected;
+    });
   },
 });
 

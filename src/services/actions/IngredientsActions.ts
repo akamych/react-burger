@@ -51,3 +51,4 @@ export const CONSTRUCTOR_REMOVE_INGREDIENT = createAction<number>(
 export const CONSTRUCTOR_SWAP_INGREDIENT = createAction<SwapIngredientType>(
   "constructor/swap/ingredient"
 );
+export const CONSTRUCTOR_CLEAR = createAction("constructor/reset");
