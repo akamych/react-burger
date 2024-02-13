@@ -5,7 +5,10 @@ import {
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
-import { IngredientType } from "../../../types/Ingredient.type";
+import {
+  IngredientType,
+  IngredientTypeWithUuid,
+} from "../../../types/Ingredient.type";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
 import {
   selectSelectedBun,
@@ -119,14 +122,16 @@ const BurgerConstructor = () => {
           )}
           <ul className={styles.constructor_ul_middle}>
             {ingredients && ingredients.length
-              ? ingredients.map((ingredient: IngredientType, index: number) => (
-                  <BurgerConstructorItem
-                    key={`${ingredient._id}-${index}`}
-                    index={index}
-                    ingredient={ingredient}
-                    isLocked={false}
-                  />
-                ))
+              ? ingredients.map(
+                  (ingredient: IngredientTypeWithUuid, index: number) => (
+                    <BurgerConstructorItem
+                      key={ingredient.uuid}
+                      index={index}
+                      ingredient={ingredient}
+                      isLocked={false}
+                    />
+                  )
+                )
               : null}
           </ul>
           {bun !== null && (

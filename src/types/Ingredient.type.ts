@@ -15,13 +15,17 @@ export type IngredientType = {
   __v: number;
 };
 
+export type IngredientTypeWithUuid = IngredientType & {
+  uuid: string;
+};
+
 export type SwapIngredientType = {
   first: {
     index: number;
-    ingredient: IngredientType;
+    ingredient: IngredientTypeWithUuid;
   };
   second: {
     index: number;
-    ingredient: IngredientType;
+    ingredient: IngredientTypeWithUuid;
   };
 };

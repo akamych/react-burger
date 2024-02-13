@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../Store";
 import {
   IngredientType,
+  IngredientTypeWithUuid,
   SwapIngredientType,
 } from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
@@ -15,12 +16,13 @@ import {
   INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
 } from "../actions/IngredientsActions";
+import { v4 as uuid } from "uuid";
 
 interface IngredientState {
   all: IngredientType[];
   selected: {
     bun: Nullable<IngredientType>;
-    ingredients: IngredientType[];
+    ingredients: IngredientTypeWithUuid[];
     count: Record<string, number>;
   };
   observed: Nullable<IngredientType>;
@@ -97,7 +99,10 @@ const ingredientSlice = createSlice({
     builder.addCase(
       CONSTRUCTOR_ADD_INGREDIENT,
       (state: IngredientState, action: PayloadAction<IngredientType>) => {
-        state.selected.ingredients.push(action.payload);
+        state.selected.ingredients.push({
+          ...action.payload,
+          uuid: uuid(),
+        });
         state.selected.count[action.payload._id] = state.selected.count[
           action.payload._id
         ]

@@ -10,12 +10,15 @@ import {
   CONSTRUCTOR_SWAP_INGREDIENT,
 } from "../../../../services/actions/IngredientsActions";
 import { useDrag, useDrop } from "react-dnd";
-import { IngredientType } from "../../../../types/Ingredient.type";
+import {
+  IngredientType,
+  IngredientTypeWithUuid,
+} from "../../../../types/Ingredient.type";
 import { Undef } from "../../../../types/common.type";
 
 type propsType = {
   index?: number;
-  ingredient: IngredientType;
+  ingredient: IngredientType | IngredientTypeWithUuid;
   text?: string;
   isLocked: boolean;
   type?: "top" | "bottom";
@@ -34,7 +37,7 @@ const BurgerConstructorItem = (props: propsType) => {
   const [, dropRef] = useDrop({
     accept: "constructorElement",
     drop(droppedIngredient: {
-      ingredient: IngredientType;
+      ingredient: IngredientTypeWithUuid;
       index: Undef<number>;
     }) {
       if (index !== undefined && droppedIngredient.index !== undefined) {
@@ -42,7 +45,7 @@ const BurgerConstructorItem = (props: propsType) => {
           CONSTRUCTOR_SWAP_INGREDIENT({
             first: {
               index: index,
-              ingredient: ingredient,
+              ingredient: ingredient as IngredientTypeWithUuid,
             },
             second: {
               index: droppedIngredient.index,
