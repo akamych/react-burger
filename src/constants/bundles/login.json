@@ -1,0 +1,13 @@
+{
+  "h1": "Вход",
+  "labels": {
+    "email": "E-mail",
+    "password": "Пароль",
+    "newUser": "Вы — новый пользователь?",
+    "forgotPassword": "Забыли пароль?"
+  },
+  "buttons": {
+    "resetPassword": "Восстановить пароль",
+    "signup": "Зарегистрироваться"
+  }
+}
