@@ -1,9 +1,8 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
 import ModalOverlay from "./overlay/ModalOverlay";
 import ModalHeader from "./header/ModalHeader";
-import React from "react";
 
 const modalRoot = document.getElementById("modals");
 
@@ -31,7 +30,7 @@ const Modal = (props: propType) => {
     ReactDOM.createPortal(
       <>
         <div className={styles.modal}>
-          <ModalHeader onClose={onClose} header={header} />
+          {header && <ModalHeader onClose={onClose} header={header} />}
           {children}
         </div>
         <ModalOverlay onClose={onClose} />

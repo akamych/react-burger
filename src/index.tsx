@@ -13,6 +13,8 @@ import orders from "./constants/bundles/orders.json";
 import ingredients from "./constants/bundles/ingredients.json";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/Router";
+import store from "./services/Store";
+import { Provider } from "react-redux";
 
 const resources = {
   ru: {
@@ -41,7 +43,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </I18nextProvider>
   </React.StrictMode>
 );

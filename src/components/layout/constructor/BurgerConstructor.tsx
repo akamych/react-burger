@@ -2,82 +2,142 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./BurgerConstructor.module.css";
-import { IngredientType } from "../../../types/Ingredient.type";
+import {
+  IngredientType,
+  IngredientTypeWithUuid,
+} from "../../../types/Ingredient.type";
 import BurgerConstructorItem from "./item/BurgerConstructorItem";
-import { useOutletContext } from "react-router-dom";
-import { useIngredients } from "../../app/App";
-import useModal from "../../../hooks/useModal";
+import {
+  selectSelectedBun,
+  selectSelectedIngredients,
+} from "../../../services/reducers/IngredientsReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import { AppDispatch } from "../../../services/Store";
+import {
+  CONSTRUCTOR_ADD_BUN,
+  CONSTRUCTOR_ADD_INGREDIENT,
+  CONSTRUCTOR_CLEAR,
+} from "../../../services/actions/IngredientsActions";
+import { Nullable } from "../../../types/common.type";
+import {
+  ORDER_CLEAR,
+  createOrderAction,
+} from "../../../services/actions/OrderActions";
+import {
+  HIDE_MODAL,
+  SHOW_MODAL_ORDER,
+} from "../../../services/actions/ModalActions";
 import OrderDetails from "../../modal/order/OrderDetails";
+import {
+  selectModalIsShown,
+  selectModalType,
+} from "../../../services/reducers/ModalReducer";
 import Modal from "../../modal/Modal";
 
-const ELEMENT_TYPES = {
-  TOP: "top",
-  MIDDLE: "middle",
-  BOTTOM: "bottom",
-};
-
 const BurgerConstructor = () => {
-  const { ingredients } = useIngredients();
+  const bun = useSelector(selectSelectedBun);
+  const ingredients = useSelector(selectSelectedIngredients);
+  const modalIsShown = useSelector(selectModalIsShown);
+  const modalType = useSelector(selectModalType);
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { isModalActive, showModal, closeModal } = useModal();
+
+  const [, dropRef] = useDrop({
+    accept: "ingredient",
+    drop(droppedIngredient: IngredientType) {
+      switch (droppedIngredient.type.toLowerCase()) {
+        case "bun":
+          if (bun === null || droppedIngredient._id !== bun._id) {
+            dispatch(CONSTRUCTOR_ADD_BUN(droppedIngredient));
+          }
+          break;
+        default:
+          dispatch(CONSTRUCTOR_ADD_INGREDIENT(droppedIngredient));
+          break;
+      }
+    },
+  });
 
   const calculateTotal = useMemo<number>((): number => {
-    return ingredients.length
-      ? ingredients.reduce((a, { price }) => a + price, 0)
+    let ingredientsPrice: number = ingredients.length
+      ? ingredients.reduce(
+          (a: number, ingredient: IngredientType) => a + ingredient.price,
+          0
+        )
       : 0;
-  }, [ingredients]);
+
+    if (bun !== null) {
+      ingredientsPrice += bun.price * 2;
+    }
+    return ingredientsPrice;
+  }, [ingredients, bun]);
 
   useEffect(() => {
     setTotalPrice(calculateTotal);
-  }, [ingredients]);
+  }, [ingredients, bun, calculateTotal]);
 
-  const { bunTop, mainIngredients, bunBottom } = useMemo(() => {
-    const bunTop = ingredients.find((item) => item.type === "bun");
+  const handleSubmit = () => {
+    const ids: string[] = [];
 
-    return {
-      bunTop: bunTop,
-      mainIngredients: ingredients.filter((item) => item.type !== "bun"),
-      bunBottom: ingredients.find(
-        (item) => item.type === "bun" && item !== bunTop
-      ),
-    };
-  }, [ingredients]);
+    const bunId: Nullable<string> = bun !== null ? bun._id : null;
+
+    if (bunId !== null) {
+      ids.push(bunId);
+    }
+
+    ingredients.forEach((ingredient: IngredientType) => {
+      ids.push(ingredient._id);
+    });
+
+    if (bunId !== null) {
+      ids.push(bunId);
+    }
+
+    dispatch(createOrderAction(ids));
+    dispatch(SHOW_MODAL_ORDER());
+  };
+
+  const closeModal = useCallback((): void => {
+    dispatch(HIDE_MODAL());
+    dispatch(ORDER_CLEAR());
+    dispatch(CONSTRUCTOR_CLEAR());
+  }, [dispatch]);
 
   return (
     <>
-      <div className={styles.constructor_div}>
+      <div className={styles.constructor_div} ref={dropRef}>
         <ul>
-          {bunTop && (
+          {bun !== null && (
             <BurgerConstructorItem
-              text={`${bunTop.name} ${t("bunTop")}`}
-              thumbnail={bunTop.image}
-              price={bunTop.price}
+              text={`${bun.name} ${t("bunTop")}`}
+              ingredient={bun}
               isLocked={true}
               type="top"
             />
           )}
           <ul className={styles.constructor_ul_middle}>
-            {mainIngredients && mainIngredients.length
-              ? mainIngredients.map((ingredient, index) => (
-                  <BurgerConstructorItem
-                    key={index}
-                    text={ingredient.name}
-                    thumbnail={ingredient.image}
-                    price={ingredient.price}
-                    isLocked={false}
-                  />
-                ))
+            {ingredients && ingredients.length
+              ? ingredients.map(
+                  (ingredient: IngredientTypeWithUuid, index: number) => (
+                    <BurgerConstructorItem
+                      key={ingredient.uuid}
+                      index={index}
+                      ingredient={ingredient}
+                      isLocked={false}
+                    />
+                  )
+                )
               : null}
           </ul>
-          {bunBottom && (
+          {bun !== null && (
             <BurgerConstructorItem
-              text={`${bunBottom.name} ${t("bunBottom")}`}
-              thumbnail={bunBottom.image}
-              price={bunBottom.price}
+              text={`${bun.name} ${t("bunBottom")}`}
+              ingredient={bun}
               isLocked={true}
               type="bottom"
             />
@@ -90,16 +150,17 @@ const BurgerConstructor = () => {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={showModal}
+            onClick={handleSubmit}
+            disabled={bun === null}
           >
             {t("buttons.order")}
           </Button>
         </span>
       </div>
 
-      {isModalActive && (
+      {modalIsShown && modalType === "order" && (
         <Modal onClose={closeModal}>
-          <OrderDetails _id="034536" status="cooking" />
+          <OrderDetails />
         </Modal>
       )}
     </>

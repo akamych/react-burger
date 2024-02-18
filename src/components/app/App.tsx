@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AppHeader from "../layout/header/Header";
-import { Outlet, useOutletContext } from "react-router-dom";
-import { IngredientType } from "../../types/Ingredient.type";
-import normaApi from "../../api/normaApi";
+import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../services/Store";
+import { fetchIngredientsAction } from "../../services/actions/IngredientsActions";
+import Modal from "../modal/Modal";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    normaApi.getIngredients(setIngredients);
-  }, []);
+    dispatch(fetchIngredientsAction());
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
-      <Outlet context={{ ingredients: ingredients }} />
+      <Outlet />
     </>
   );
 };
-
-export function useIngredients() {
-  return useOutletContext<{ ingredients: IngredientType[] }>();
-}
 
 export default App;

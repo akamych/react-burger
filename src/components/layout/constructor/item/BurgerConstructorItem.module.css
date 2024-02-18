@@ -4,4 +4,21 @@
   grid-template-columns: calc(var(--offset-base-size) * 8) 1fr;
   align-items: center;
   column-gap: calc(var(--offset-base-size));
+  transition: transform 0.2s ease-out, height 0.2s ease-out;
+}
+
+.constructor_ul_li_hovered_asc {
+  composes: constructor_ul_li;
+  transform: translateY(20px);
+}
+
+.constructor_ul_li_hovered_desc {
+  composes: constructor_ul_li;
+  transform: translateY(-20px);
+}
+
+.constructor_ul_li_dragging {
+  composes: constructor_ul_li;
+  z-index: -1;
+  overflow: visible;
 }

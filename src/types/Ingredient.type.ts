@@ -14,3 +14,17 @@ export type IngredientType = {
   image_large: string;
   __v: number;
 };
+
+export type IngredientTypeWithUuid = IngredientType & {
+  uuid: string;
+};
+
+export type SwapIngredientType = {
+  from: {
+    index: number;
+    ingredient: IngredientTypeWithUuid;
+  };
+  to: {
+    index: number;
+  };
+};
