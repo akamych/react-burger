@@ -6,7 +6,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { PAGES_URL } from "../../../constants/RoutesUrls";
 
 // оставлю пока здесь закомментированным пример, чтобы вернуть,
 // когда будет реализован роутер и другие страницы
@@ -28,7 +29,7 @@ const AppHeader = () => {
   return (
     <header className={styles.header}>
       <nav>
-        <NavLink to="/" className={styles.header_nav_a_active}>
+        <NavLink to={PAGES_URL.INDEX} className={styles.header_nav_a_active}>
           <BurgerIcon type="primary" />
           <b className={styles.header_nav_a_b}>{t("builder")}</b>
         </NavLink>
@@ -37,7 +38,9 @@ const AppHeader = () => {
           <b className={styles.header_nav_a_b}>{t("feed")}</b>
         </NavLink>
       </nav>
-      <Logo />
+      <Link to={PAGES_URL.INDEX}>
+        <Logo />
+      </Link>
       <nav>
         <NavLink to="/" className={styles.header_nav_a}>
           <ProfileIcon type="secondary" />
