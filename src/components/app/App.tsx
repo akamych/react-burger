@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import AppHeader from "../layout/header/Header";
-import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../services/Store";
 import { fetchIngredientsAction } from "../../services/actions/IngredientsActions";
@@ -11,6 +10,9 @@ import SignUpPage from "../../pages/register/SignUpPage";
 import LoginPage from "../../pages/login/LoginPage";
 import ForgotPasswordPage from "../../pages/forgot-password/ForgotPasswordPage";
 import ResetPasswordPage from "../../pages/reset-password/ResetPasswordPage";
+import ProtectedRoute, {
+  ACCESS_TYPES,
+} from "../layout/protected/ProtectedRoute";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,8 +26,21 @@ const App = () => {
       <AppHeader />
       <Routes>
         <Route path={PAGES_URL.INDEX} element={<IndexPage />} />
-        <Route path={PAGES_URL.SIGN_UP} element={<SignUpPage />} />
-        <Route path={PAGES_URL.LOGIN} element={<LoginPage />} />
+        <Route
+          path={PAGES_URL.SIGN_UP}
+          element={
+            <ProtectedRoute
+              page={<SignUpPage />}
+              access={ACCESS_TYPES.GUESTS}
+            />
+          }
+        />
+        <Route
+          path={PAGES_URL.LOGIN}
+          element={
+            <ProtectedRoute page={<LoginPage />} access={ACCESS_TYPES.GUESTS} />
+          }
+        />
         <Route
           path={PAGES_URL.FORGOT_PASSWORD}
           element={<ForgotPasswordPage />}

@@ -8,10 +8,25 @@ import styles from "./LoginPage.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
+import { AppDispatch } from "../../services/Store";
+import { useDispatch } from "react-redux";
+import { LoginRequestType } from "../../types/auth.type";
+import { loginAction } from "../../services/actions/AuthActions";
 
 const LoginPage = () => {
   const { t } = useTranslation("login");
-  const [name, setName] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const form: LoginRequestType = {
+      email,
+      password,
+    };
+    dispatch(loginAction(form));
+  };
 
   return (
     <>
@@ -20,18 +35,17 @@ const LoginPage = () => {
           {t("h1")}
         </h1>
         <EmailInput
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder={t("labels.email")}
-          value={name}
+          value={email}
           name={"email"}
           isIcon={false}
           extraClass="mb-6"
         />
-
         <PasswordInput
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder={t("labels.password")}
-          value={name}
+          value={password}
           name={"password"}
           icon="ShowIcon"
           extraClass="mb-6"
@@ -41,8 +55,9 @@ const LoginPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={handleSubmit}
         >
-          {t("buttons.signup")}
+          {t("buttons.login")}
         </Button>
         <span
           className={`text text_type_main-default text_color_inactive mb-4 ${styles.span}`}

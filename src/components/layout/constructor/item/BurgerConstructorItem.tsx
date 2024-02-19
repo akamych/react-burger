@@ -15,7 +15,7 @@ import {
   IngredientTypeWithUuid,
 } from "../../../../types/Ingredient.type";
 import { Undef } from "../../../../types/common.type";
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 
 type propsType = {
   index?: number;

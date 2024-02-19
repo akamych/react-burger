@@ -9,10 +9,27 @@ import styles from "./SignUpPage.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
+import { useDispatch } from "react-redux";
+import { registerAction } from "../../services/actions/AuthActions";
+import { SignUpRequestType } from "../../types/auth.type";
+import { AppDispatch } from "../../services/Store";
 
 const SignUpPage = () => {
   const { t } = useTranslation("signup");
+  const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const form: SignUpRequestType = {
+      name,
+      email,
+      password,
+    };
+    dispatch(registerAction(form));
+  };
 
   return (
     <>
@@ -32,18 +49,17 @@ const SignUpPage = () => {
           extraClass="mb-6"
         />
         <EmailInput
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder={t("labels.email")}
-          value={name}
+          value={email}
           name={"email"}
           isIcon={false}
           extraClass="mb-6"
         />
-
         <PasswordInput
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder={t("labels.password")}
-          value={name}
+          value={password}
           name={"password"}
           icon="ShowIcon"
           extraClass="mb-6"
@@ -53,6 +69,7 @@ const SignUpPage = () => {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={handleSubmit}
         >
           {t("buttons.signup")}
         </Button>

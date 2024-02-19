@@ -1,28 +1,24 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { HTTP_STATUSES } from "../../constants/httpStatuses";
+import { HTTP_METHODS } from "../../constants/http";
 import { API_URL_NORMA } from "../../constants/api";
 import {
   IngredientType,
   SwapIngredientType,
 } from "../../types/Ingredient.type";
+import { fetchWithRefresh } from "../../utils/ApiUtils";
 
 const fetchIngredientsRequest = async (
   rejectWithValue: (value: string) => unknown
-) => {
-  try {
-    const response = await fetch(`${API_URL_NORMA}/ingredients`);
-
-    if (response.status !== HTTP_STATUSES.SUCCESS) {
-      const error = await response.json();
-      return rejectWithValue(error.reason);
-    }
-
-    const jsonRespone = await response.json();
-    return jsonRespone.data;
-  } catch (error) {
-    return rejectWithValue("Возникла ошибка");
-  }
-};
+) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/ingredients`, {
+    method: HTTP_METHODS.GET,
+  })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
 
 export const fetchIngredientsAction = createAsyncThunk<
   IngredientType[],

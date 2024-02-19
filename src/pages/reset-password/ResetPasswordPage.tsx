@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
