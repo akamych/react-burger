@@ -1,4 +1,6 @@
 import { API_URL_NORMA } from "../constants/api";
+import { Nullable } from "../types/common.type";
+import { setCookie } from "./CookieUtils";
 
 type ResponseType = {
   success: boolean;
@@ -7,6 +9,13 @@ type ResponseType = {
 
 export const checkResponse = (res: Response): ResponseType | Promise<any> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+export const setAccessTokenCookie = (token: string) => {
+  if (token.indexOf("Bearer") !== 0) {
+    return;
+  }
+  setCookie("token", token.split("Bearer ")[1]);
 };
 
 export const refreshToken = () => {
@@ -25,7 +34,7 @@ export const refreshToken = () => {
         return Promise.reject(refreshData);
       }
       localStorage.setItem("refreshToken", refreshData.refreshToken);
-      localStorage.setItem("accessToken", refreshData.accessToken);
+      setAccessTokenCookie(refreshData.accessToken);
       return refreshData;
     });
 };

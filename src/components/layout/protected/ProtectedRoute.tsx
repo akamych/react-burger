@@ -6,6 +6,7 @@ import { PAGES_URL } from "../../../constants/RoutesUrls";
 export const ACCESS_TYPES: Record<string, string> = {
   USERS: "USERS",
   GUESTS: "GUESTS",
+  ALL: "ALL",
 };
 
 type propTypes = {

@@ -1,12 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { HTTP_METHODS } from "../../constants/http";
 import { API_URL_NORMA } from "../../constants/api";
-import { fetchWithRefresh } from "../../utils/ApiUtils";
+import {
+  fetchWithRefresh,
+  refreshToken,
+  setAccessTokenCookie,
+} from "../../utils/ApiUtils";
 import {
   AuthUserType,
   LoginRequestType,
   SignUpRequestType,
 } from "../../types/auth.type";
+import { getCookie } from "../../utils/CookieUtils";
 
 const registerRequest = async (
   form: SignUpRequestType,
@@ -20,11 +25,9 @@ const registerRequest = async (
     body: JSON.stringify(form),
   })
     .then((response) => {
-      console.log({ response });
       return response.user;
     })
     .catch((error) => {
-      console.log({ error });
       return rejectWithValue(error);
     });
 
@@ -48,11 +51,10 @@ const loginRequest = async (
     body: JSON.stringify(form),
   })
     .then((response) => {
-      console.log({ response });
+      setAccessTokenCookie(response.accessToken);
       return response.user;
     })
     .catch((error) => {
-      console.log({ error });
       return rejectWithValue(error);
     });
 
@@ -62,4 +64,26 @@ export const loginAction = createAsyncThunk<
   { rejectValue: string }
 >("auth/login", async (form, { rejectWithValue }) => {
   return await loginRequest(form, rejectWithValue);
+});
+
+const authRequest = async (rejectWithValue: (value: string) => unknown) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/auth/user`, {
+    method: HTTP_METHODS.GET,
+    headers: {
+      Authorization: "Bearer " + getCookie("token"),
+    },
+  })
+    .then((response) => {
+      return response.user;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const authAction = createAsyncThunk<
+  AuthUserType,
+  undefined,
+  { rejectValue: string }
+>("auth/user", async (form, { rejectWithValue }) => {
+  return await authRequest(rejectWithValue);
 });

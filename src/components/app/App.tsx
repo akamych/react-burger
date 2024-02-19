@@ -13,12 +13,14 @@ import ResetPasswordPage from "../../pages/reset-password/ResetPasswordPage";
 import ProtectedRoute, {
   ACCESS_TYPES,
 } from "../layout/protected/ProtectedRoute";
+import { authAction } from "../../services/actions/AuthActions";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchIngredientsAction());
+    dispatch(authAction());
   }, [dispatch]);
 
   return (

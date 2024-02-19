@@ -2,7 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../Store";
 import { Nullable } from "../../types/common.type";
 import { AuthUserType } from "../../types/auth.type";
-import { loginAction, registerAction } from "../actions/AuthActions";
+import {
+  authAction,
+  loginAction,
+  registerAction,
+} from "../actions/AuthActions";
 
 interface AuthState {
   user: Nullable<AuthUserType>;
@@ -63,6 +67,27 @@ const authSlice = createSlice({
     });
     builder.addCase(
       loginAction.rejected,
+      (state: AuthState, action: PayloadAction<string | undefined>) => {
+        state.user = null;
+        state.request.isError = true;
+        state.request.text = action.payload ? action.payload : "error";
+      }
+    );
+    builder.addCase(
+      authAction.fulfilled,
+      (state: AuthState, action: PayloadAction<AuthUserType>) => {
+        state.user = action.payload;
+        state.request.isError = false;
+        state.request.text = null;
+      }
+    );
+    builder.addCase(authAction.pending, (state: AuthState) => {
+      state.request.pending = true;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(
+      authAction.rejected,
       (state: AuthState, action: PayloadAction<string | undefined>) => {
         state.user = null;
         state.request.isError = true;
