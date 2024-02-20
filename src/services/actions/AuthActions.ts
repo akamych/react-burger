@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { HTTP_METHODS } from "../../constants/http";
 import { API_URL_NORMA } from "../../constants/api";
-import {
-  fetchWithRefresh,
-  refreshToken,
-  setAccessTokenCookie,
-} from "../../utils/ApiUtils";
+import { fetchWithRefresh, setAccessTokenCookie } from "../../utils/ApiUtils";
 import {
   AuthUserType,
   LoginRequestType,
+  ResetPasswordRequestType,
   SignUpRequestType,
 } from "../../types/auth.type";
 import { getCookie } from "../../utils/CookieUtils";
@@ -86,4 +83,30 @@ export const authAction = createAsyncThunk<
   { rejectValue: string }
 >("auth/user", async (form, { rejectWithValue }) => {
   return await authRequest(rejectWithValue);
+});
+
+const resetPasswordRequest = async (
+  form: ResetPasswordRequestType,
+  rejectWithValue: (value: string) => unknown
+) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/password-reset`, {
+    method: HTTP_METHODS.POST,
+    headers: {
+      Authorization: "Bearer " + getCookie("token"),
+    },
+    body: JSON.stringify(form),
+  })
+    .then((response) => {
+      return response.success;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const resetPasswordAction = createAsyncThunk<
+  boolean,
+  ResetPasswordRequestType,
+  { rejectValue: string }
+>("auth/password-reset", async (form, { rejectWithValue }) => {
+  return await resetPasswordRequest(form, rejectWithValue);
 });

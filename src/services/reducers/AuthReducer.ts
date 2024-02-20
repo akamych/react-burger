@@ -3,12 +3,13 @@ import { RootState } from "../Store";
 import { Nullable } from "../../types/common.type";
 import { AuthUserType } from "../../types/auth.type";
 import {
-  authAction,
+  resetPasswordAction,
   loginAction,
   registerAction,
 } from "../actions/AuthActions";
 
 interface AuthState {
+  passwordIsSent: boolean;
   user: Nullable<AuthUserType>;
   request: {
     pending: boolean;
@@ -18,6 +19,7 @@ interface AuthState {
 }
 
 export const initialAuthState: AuthState = {
+  passwordIsSent: false,
   user: null,
   request: {
     pending: false,
@@ -74,22 +76,22 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(
-      authAction.fulfilled,
-      (state: AuthState, action: PayloadAction<AuthUserType>) => {
-        state.user = action.payload;
+      resetPasswordAction.fulfilled,
+      (state: AuthState, action: PayloadAction<boolean>) => {
+        state.passwordIsSent = action.payload;
         state.request.isError = false;
         state.request.text = null;
       }
     );
-    builder.addCase(authAction.pending, (state: AuthState) => {
+    builder.addCase(resetPasswordAction.pending, (state: AuthState) => {
       state.request.pending = true;
       state.request.isError = false;
       state.request.text = null;
     });
     builder.addCase(
-      authAction.rejected,
+      resetPasswordAction.rejected,
       (state: AuthState, action: PayloadAction<string | undefined>) => {
-        state.user = null;
+        state.passwordIsSent = false;
         state.request.isError = true;
         state.request.text = action.payload ? action.payload : "error";
       }
@@ -100,4 +102,6 @@ const authSlice = createSlice({
 export default authSlice.reducer;
 
 export const selectUser = (state: RootState) => state.auth.user;
+export const selectPasswordIsSent = (state: RootState) =>
+  state.auth.passwordIsSent;
 export const selectAuthRequestError = (state: RootState) => state.auth.request;
