@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import AppHeader from "../layout/header/Header";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../services/Store";
+import { useDispatch, useSelector } from "react-redux";
+import store, { AppDispatch } from "../../services/Store";
 import { fetchIngredientsAction } from "../../services/actions/IngredientsActions";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
 import IndexPage from "../../pages/index/IndexPage";
 import SignUpPage from "../../pages/register/SignUpPage";
@@ -17,9 +17,27 @@ import { authAction } from "../../services/actions/AuthActions";
 import ProfilePage from "../../pages/profile/ProfilePage";
 import OrdersHistory from "../layout/orders-history/OrdersHistory";
 import ProfileData from "../layout/profile-data/ProfileData";
+import Modal from "../modal/Modal";
+import IngredientDetails from "../modal/ingredients/IngredientDetails";
+import { INGREDIENT_HIDE_DETAILS } from "../../services/actions/IngredientsActions";
+import { HIDE_MODAL } from "../../services/actions/ModalActions";
+import { useTranslation } from "react-i18next";
+import { selectObservedIngredient } from "../../services/reducers/IngredientsReducer";
+import IngredientPage from "../../pages/ingredient/IngredientPage";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t: ingredientsT } = useTranslation("ingredients");
+  const ingredient = useSelector(selectObservedIngredient);
+  const location = useLocation();
+  const state = location.state;
+  const navigate = useNavigate();
+
+  const onCloseModal = () => {
+    navigate(-1);
+    dispatch(INGREDIENT_HIDE_DETAILS());
+    dispatch(HIDE_MODAL());
+  };
 
   useEffect(() => {
     dispatch(fetchIngredientsAction());
@@ -27,9 +45,9 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <>
       <AppHeader />
-      <Routes>
+      <Routes location={ingredient ? state?.bgLocation || location : location}>
         <Route path={PAGES_URL.INDEX} element={<IndexPage />} />
         <Route
           path={PAGES_URL.SIGN_UP}
@@ -54,7 +72,15 @@ const App = () => {
           path={PAGES_URL.RESET_PASSWORD}
           element={<ResetPasswordPage />}
         />
-        <Route path={PAGES_URL.PROFILE} element={<ProfilePage />}>
+        <Route
+          path={PAGES_URL.PROFILE}
+          element={
+            <ProtectedRoute
+              page={<ProfilePage />}
+              access={ACCESS_TYPES.USERS}
+            />
+          }
+        >
           <Route
             index
             path={PAGES_URL.PROFILE}
@@ -65,9 +91,29 @@ const App = () => {
             element={<OrdersHistory />}
           ></Route>
         </Route>
-        <Route path={PAGES_URL.INGREDIENTS} element={<LoginPage />}></Route>
+        <Route path={PAGES_URL.INGREDIENTS}>
+          <Route path=":ingredientId" element={<IngredientPage />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+
+      {state?.bgLocation && ingredient && (
+        <Routes>
+          <Route path={PAGES_URL.INGREDIENTS}>
+            <Route
+              path=":ingredientId"
+              element={
+                <Modal
+                  onClose={onCloseModal}
+                  header={ingredientsT("h3.details")}
+                >
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Route>
+        </Routes>
+      )}
+    </>
   );
 };
 

@@ -11,12 +11,15 @@ import { SHOW_MODAL_INGREDIENT } from "../../../../services/actions/ModalActions
 import { INGREDIENT_SHOW_DETAILS } from "../../../../services/actions/IngredientsActions";
 import { useDrag } from "react-dnd";
 import { selectIngredientCount } from "../../../../services/reducers/IngredientsReducer";
+import { Link, useLocation } from "react-router-dom";
+import { PAGES_URL } from "../../../../constants/RoutesUrls";
 
 type propsType = {
   ingredient: IngredientType;
 };
 
 const BurgerIngredientsItem = (props: propsType) => {
+  const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const { ingredient } = props;
   const { _id, name, price, image } = ingredient;
@@ -27,20 +30,19 @@ const BurgerIngredientsItem = (props: propsType) => {
     item: ingredient,
   });
 
-  const handleClick = (event: SyntheticEvent) => {
-    event.preventDefault();
+  const handleClick = () => {
     dispatch(INGREDIENT_SHOW_DETAILS(ingredient));
     dispatch(SHOW_MODAL_INGREDIENT());
   };
 
   return (
-    <>
-      <li
-        className={styles.ingredients_section_ul_li}
-        onClick={handleClick}
-        ref={dragRef}
-        draggable
-      >
+    <Link
+      to={`${PAGES_URL.INGREDIENTS}/${_id}`}
+      state={{ bgLocation: location }}
+      style={{ textDecoration: "none" }}
+      onClick={handleClick}
+    >
+      <li className={styles.ingredients_section_ul_li} ref={dragRef} draggable>
         {count > 0 && <Counter count={count} size="default" extraClass="m-1" />}
         <img
           src={image}
@@ -53,7 +55,7 @@ const BurgerIngredientsItem = (props: propsType) => {
         </i>
         <b className={styles.ingredients_section_ul_li_b}>{name}</b>
       </li>
-    </>
+    </Link>
   );
 };
 

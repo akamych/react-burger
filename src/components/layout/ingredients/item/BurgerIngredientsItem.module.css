@@ -21,10 +21,14 @@
   column-gap: calc(var(--offset-base-size) * 2);
   font-style: normal;
   align-items: start;
+  text-decoration: none;
+  color: white;
   composes: text from global, text_type_digits-default from global;
 }
 
 .ingredients_section_ul_li_b {
   font-weight: normal;
+  color: white;
+  text-decoration: none;
   composes: text from global, text_type_main-small from global;
 }

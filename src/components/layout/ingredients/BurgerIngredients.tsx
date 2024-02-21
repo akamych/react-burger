@@ -13,8 +13,6 @@ import {
   selectModalIsShown,
   selectModalType,
 } from "../../../services/reducers/ModalReducer";
-import Modal from "../../modal/Modal";
-import IngredientDetails from "../../modal/ingredients/IngredientDetails";
 import { HIDE_MODAL } from "../../../services/actions/ModalActions";
 import { INGREDIENT_HIDE_DETAILS } from "../../../services/actions/IngredientsActions";
 import { AppDispatch } from "../../../services/Store";
@@ -29,8 +27,6 @@ const TABS_ORDER: Ingredient_tabs_keys[] = ["bun", "sauce", "main"];
 
 const BurgerIngredients = () => {
   const ingredients = useSelector(selectFetchedIngredients);
-  const modalIsShown = useSelector(selectModalIsShown);
-  const modalType = useSelector(selectModalType);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("ingredients");
   const scrollableRef = useRef<HTMLDivElement>(null);
@@ -114,11 +110,6 @@ const BurgerIngredients = () => {
           />
         ))}
       </div>
-      {modalIsShown && modalType === "ingredient" && (
-        <Modal onClose={closeModal} header={t("h3.details")}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </div>
   );
 };

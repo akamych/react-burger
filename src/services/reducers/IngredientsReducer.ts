@@ -15,6 +15,7 @@ import {
   fetchIngredientsAction,
   INGREDIENT_HIDE_DETAILS,
   INGREDIENT_SHOW_DETAILS,
+  INGREDIENT_SHOW_DETAILS_BY_ID,
 } from "../actions/IngredientsActions";
 import { v4 as uuid } from "uuid";
 
@@ -85,6 +86,14 @@ const ingredientSlice = createSlice({
       INGREDIENT_SHOW_DETAILS,
       (state: IngredientState, action: PayloadAction<IngredientType>) => {
         state.observed = action.payload;
+      }
+    );
+    builder.addCase(
+      INGREDIENT_SHOW_DETAILS_BY_ID,
+      (state: IngredientState, action: PayloadAction<string>) => {
+        state.observed =
+          state.all.find((ingredient) => ingredient._id === action.payload) ||
+          null;
       }
     );
     builder.addCase(INGREDIENT_HIDE_DETAILS, (state: IngredientState) => {

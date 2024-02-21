@@ -9,7 +9,7 @@ import {
   ResetPasswordRequestType,
   SignUpRequestType,
 } from "../../types/auth.type";
-import { getCookie } from "../../utils/CookieUtils";
+import { getCookie, setCookie } from "../../utils/CookieUtils";
 
 const registerRequest = async (
   form: SignUpRequestType,
@@ -18,11 +18,12 @@ const registerRequest = async (
   await fetchWithRefresh(`${API_URL_NORMA}/auth/register`, {
     method: HTTP_METHODS.POST,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
   })
     .then((response) => {
+      localStorage.setItem("refreshToken", response.refreshToken);
       return response.user;
     })
     .catch((error) => {
@@ -44,11 +45,12 @@ const loginRequest = async (
   await fetchWithRefresh(`${API_URL_NORMA}/auth/login`, {
     method: HTTP_METHODS.POST,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
   })
     .then((response) => {
+      localStorage.setItem("refreshToken", response.refreshToken);
       setAccessTokenCookie(response.accessToken);
       return response.user;
     })
@@ -94,6 +96,7 @@ const resetPasswordRequest = async (
     method: HTTP_METHODS.POST,
     headers: {
       Authorization: "Bearer " + getCookie("token"),
+      "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
   })
@@ -120,6 +123,7 @@ const resetPasswordConfirmRequest = async (
     method: HTTP_METHODS.POST,
     headers: {
       Authorization: "Bearer " + getCookie("token"),
+      "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
   })
@@ -136,4 +140,30 @@ export const resetPasswordConfirmAction = createAsyncThunk<
   { rejectValue: string }
 >("auth/password-reset/reset", async (form, { rejectWithValue }) => {
   return await resetPasswordConfirmRequest(form, rejectWithValue);
+});
+
+const logoutRequest = async (rejectWithValue: (value: string) => unknown) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/auth/logout`, {
+    method: HTTP_METHODS.POST,
+    headers: {
+      Authorization: "Bearer " + getCookie("token"),
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
+  })
+    .then((response) => {
+      setCookie("token", "", { expires: 0 });
+      localStorage.removeItem("refreshToken");
+      return response.success;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const logoutAction = createAsyncThunk<
+  boolean,
+  undefined,
+  { rejectValue: string }
+>("auth/logout", async (form, { rejectWithValue }) => {
+  return await logoutRequest(rejectWithValue);
 });

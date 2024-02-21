@@ -18,6 +18,7 @@ import profile from "./constants/bundles/profile.json";
 import store from "./services/Store";
 import { Provider } from "react-redux";
 import App from "./components/app/App";
+import { BrowserRouter } from "react-router-dom";
 
 const resources = {
   ru: {
@@ -51,7 +52,9 @@ root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     </I18nextProvider>
   </React.StrictMode>

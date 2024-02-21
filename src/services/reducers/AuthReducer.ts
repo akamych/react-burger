@@ -8,6 +8,7 @@ import {
   registerAction,
   resetPasswordConfirmAction,
   authAction,
+  logoutAction,
 } from "../actions/AuthActions";
 
 interface AuthState {
@@ -134,6 +135,23 @@ const authSlice = createSlice({
     });
     builder.addCase(
       resetPasswordConfirmAction.rejected,
+      (state: AuthState, action: PayloadAction<string | undefined>) => {
+        state.request.isError = true;
+        state.request.text = action.payload ? action.payload : "error";
+      }
+    );
+    builder.addCase(logoutAction.fulfilled, (state: AuthState) => {
+      state.user = null;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(logoutAction.pending, (state: AuthState) => {
+      state.request.pending = true;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(
+      logoutAction.rejected,
       (state: AuthState, action: PayloadAction<string | undefined>) => {
         state.request.isError = true;
         state.request.text = action.payload ? action.payload : "error";
