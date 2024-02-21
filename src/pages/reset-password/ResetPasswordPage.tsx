@@ -21,7 +21,7 @@ const ResetPasswordPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const passwordIsSent = useSelector(selectPasswordIsSent);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form: ResetPasswordConfirmRequestType = {
       password,
@@ -39,35 +39,36 @@ const ResetPasswordPage = () => {
           <h1 className={`text text_type_main-large mt-10 mb-6 ${styles.h1}`}>
             {t("h1")}
           </h1>
-          <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={t("labels.password")}
-            value={password}
-            name={"password"}
-            autoComplete="new-password"
-            icon="ShowIcon"
-            extraClass="mb-6"
-          />
-          <Input
-            type={"text"}
-            placeholder={t("labels.code")}
-            onChange={(e) => setToken(e.target.value)}
-            value={token}
-            name={"token"}
-            error={false}
-            errorText={"Ошибка"}
-            size={"default"}
-            extraClass="mb-6"
-          />
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            extraClass="mb-20"
-            onClick={handleSubmit}
-          >
-            {t("buttons.save")}
-          </Button>
+          <form onSubmit={handleSubmit}>
+            <PasswordInput
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t("labels.password")}
+              value={password}
+              name={"password"}
+              autoComplete="new-password"
+              icon="ShowIcon"
+              extraClass="mb-6"
+            />
+            <Input
+              type={"text"}
+              placeholder={t("labels.code")}
+              onChange={(e) => setToken(e.target.value)}
+              value={token}
+              name={"token"}
+              error={false}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="mb-6"
+            />
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              extraClass="mb-20"
+            >
+              {t("buttons.save")}
+            </Button>
+          </form>
           <span
             className={`text text_type_main-default text_color_inactive ${styles.span}`}
           >

@@ -19,7 +19,7 @@ const ForgotPasswordPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const passwordIsSent = useSelector(selectPasswordIsSent);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form: ResetPasswordRequestType = {
       email,
@@ -36,25 +36,26 @@ const ForgotPasswordPage = () => {
           <h1 className={`text text_type_main-large mt-10 mb-6 ${styles.h1}`}>
             {t("h1")}
           </h1>
-          <EmailInput
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            name={"email"}
-            autoComplete="email"
-            isIcon={false}
-            extraClass="mb-6"
-            placeholder={t("labels.email")}
-          />
+          <form onSubmit={handleSubmit}>
+            <EmailInput
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              name={"email"}
+              autoComplete="email"
+              isIcon={false}
+              extraClass="mb-6"
+              placeholder={t("labels.email")}
+            />
 
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            extraClass="mb-20"
-            onClick={handleSubmit}
-          >
-            {t("buttons.reset")}
-          </Button>
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              extraClass="mb-20"
+            >
+              {t("buttons.reset")}
+            </Button>
+          </form>
           <span
             className={`text text_type_main-default text_color_inactive ${styles.span}`}
           >

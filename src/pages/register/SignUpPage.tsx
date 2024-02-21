@@ -21,7 +21,7 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form: SignUpRequestType = {
       name,
@@ -37,45 +37,46 @@ const SignUpPage = () => {
         <h1 className={`text text_type_main-large mt-10 mb-6 ${styles.h1}`}>
           {t("h1")}
         </h1>
-        <Input
-          type={"text"}
-          placeholder={t("labels.name")}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          name={"name"}
-          error={false}
-          errorText={"Ошибка"}
-          size={"default"}
-          autoComplete="name"
-          extraClass="mb-6"
-        />
-        <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t("labels.email")}
-          value={email}
-          name={"email"}
-          autoComplete="email"
-          isIcon={false}
-          extraClass="mb-6"
-        />
-        <PasswordInput
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={t("labels.password")}
-          value={password}
-          name={"password"}
-          icon="ShowIcon"
-          autoComplete="new-password"
-          extraClass="mb-6"
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          extraClass="mb-20"
-          onClick={handleSubmit}
-        >
-          {t("buttons.signup")}
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type={"text"}
+            placeholder={t("labels.name")}
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            autoComplete="name"
+            extraClass="mb-6"
+          />
+          <EmailInput
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t("labels.email")}
+            value={email}
+            name={"email"}
+            autoComplete="email"
+            isIcon={false}
+            extraClass="mb-6"
+          />
+          <PasswordInput
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t("labels.password")}
+            value={password}
+            name={"password"}
+            icon="ShowIcon"
+            autoComplete="new-password"
+            extraClass="mb-6"
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+            extraClass="mb-20"
+          >
+            {t("buttons.signup")}
+          </Button>
+        </form>
         <span
           className={`text text_type_main-default text_color_inactive ${styles.span}`}
         >
