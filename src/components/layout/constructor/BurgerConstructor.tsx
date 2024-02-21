@@ -37,6 +37,9 @@ import {
   selectModalType,
 } from "../../../services/reducers/ModalReducer";
 import Modal from "../../modal/Modal";
+import { selectUser } from "../../../services/reducers/AuthReducer";
+import { useNavigate } from "react-router-dom";
+import { PAGES_URL } from "../../../constants/RoutesUrls";
 
 const BurgerConstructor = () => {
   const bun = useSelector(selectSelectedBun);
@@ -46,6 +49,8 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const [, dropRef] = useDrop({
     accept: "ingredient",
@@ -82,6 +87,9 @@ const BurgerConstructor = () => {
   }, [ingredients, bun, calculateTotal]);
 
   const handleSubmit = () => {
+    if (user === null) {
+      navigate(PAGES_URL.LOGIN);
+    }
     const ids: string[] = [];
 
     const bunId: Nullable<string> = bun !== null ? bun._id : null;
