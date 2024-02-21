@@ -40,6 +40,7 @@ const ForgotPasswordPage = () => {
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             name={"email"}
+            autoComplete="email"
             isIcon={false}
             extraClass="mb-6"
             placeholder={t("labels.email")}

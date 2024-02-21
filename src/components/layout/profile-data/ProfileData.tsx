@@ -23,6 +23,7 @@ const ProfileData = () => {
         onChange={(e) => setName(e.target.value)}
         value={name}
         name={"name"}
+        autoComplete="name"
         error={false}
         errorText={"Ошибка"}
         size={"default"}
@@ -34,6 +35,7 @@ const ProfileData = () => {
         placeholder={t("labels.email")}
         value={email}
         name={"email"}
+        autoComplete="email"
         isIcon
         extraClass="mb-6"
       />
@@ -43,6 +45,7 @@ const ProfileData = () => {
         value={password}
         name={"password"}
         icon="EditIcon"
+        autoComplete="off"
         extraClass="mb-6"
       />
     </div>

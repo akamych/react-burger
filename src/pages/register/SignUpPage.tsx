@@ -46,6 +46,7 @@ const SignUpPage = () => {
           error={false}
           errorText={"Ошибка"}
           size={"default"}
+          autoComplete="name"
           extraClass="mb-6"
         />
         <EmailInput
@@ -53,6 +54,7 @@ const SignUpPage = () => {
           placeholder={t("labels.email")}
           value={email}
           name={"email"}
+          autoComplete="email"
           isIcon={false}
           extraClass="mb-6"
         />
@@ -62,6 +64,7 @@ const SignUpPage = () => {
           value={password}
           name={"password"}
           icon="ShowIcon"
+          autoComplete="off"
           extraClass="mb-6"
         />
         <Button
