@@ -6,7 +6,6 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { AppDispatch } from "../../../../services/Store";
-import { SyntheticEvent } from "react";
 import { SHOW_MODAL_INGREDIENT } from "../../../../services/actions/ModalActions";
 import { INGREDIENT_SHOW_DETAILS } from "../../../../services/actions/IngredientsActions";
 import { useDrag } from "react-dnd";

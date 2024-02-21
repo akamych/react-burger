@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AppHeader from "../layout/header/Header";
 import { useDispatch, useSelector } from "react-redux";
-import store, { AppDispatch } from "../../services/Store";
+import { AppDispatch } from "../../services/Store";
 import { fetchIngredientsAction } from "../../services/actions/IngredientsActions";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
