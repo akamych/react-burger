@@ -18,7 +18,7 @@ const IngredientDetails = (props: propTypes) => {
     useState<Nullable<IngredientType>>(observedIngredient);
 
   useEffect(() => {
-    if (!propIngredient || propIngredient === null) {
+    if (!propIngredient) {
       return;
     }
     setIngredient(propIngredient);
