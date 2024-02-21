@@ -45,7 +45,7 @@ const ProfileData = () => {
         value={password}
         name={"password"}
         icon="EditIcon"
-        autoComplete="off"
+        autoComplete="current-password"
         extraClass="mb-6"
       />
     </div>

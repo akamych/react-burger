@@ -64,7 +64,7 @@ const SignUpPage = () => {
           value={password}
           name={"password"}
           icon="ShowIcon"
-          autoComplete="off"
+          autoComplete="new-password"
           extraClass="mb-6"
         />
         <Button

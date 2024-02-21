@@ -40,6 +40,7 @@ const LoginPage = () => {
           value={email}
           name={"email"}
           isIcon={false}
+          autoComplete="email"
           extraClass="mb-6"
         />
         <PasswordInput
@@ -48,6 +49,7 @@ const LoginPage = () => {
           value={password}
           name={"password"}
           icon="ShowIcon"
+          autoComplete="current-password"
           extraClass="mb-6"
         />
         <Button

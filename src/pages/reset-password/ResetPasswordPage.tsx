@@ -44,6 +44,7 @@ const ResetPasswordPage = () => {
             placeholder={t("labels.password")}
             value={password}
             name={"password"}
+            autoComplete="new-password"
             icon="ShowIcon"
             extraClass="mb-6"
           />
