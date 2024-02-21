@@ -8,14 +8,13 @@ import styles from "./LoginPage.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
-import { AppDispatch } from "../../services/Store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../services/Store";
 import { LoginRequestType } from "../../types/auth.type";
 import { loginAction } from "../../services/actions/AuthActions";
 
 const LoginPage = () => {
   const { t } = useTranslation("login");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

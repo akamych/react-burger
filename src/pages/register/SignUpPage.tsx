@@ -9,14 +9,13 @@ import styles from "./SignUpPage.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
-import { useDispatch } from "react-redux";
 import { registerAction } from "../../services/actions/AuthActions";
 import { SignUpRequestType } from "../../types/auth.type";
-import { AppDispatch } from "../../services/Store";
+import { useAppDispatch } from "../../services/Store";
 
 const SignUpPage = () => {
   const { t } = useTranslation("signup");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
 import { IngredientType } from "../../../../types/Ingredient.type";
 import styles from "./BurgerIngredientsItem.module.css";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { AppDispatch } from "../../../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../../../services/Store";
 import { SHOW_MODAL_INGREDIENT } from "../../../../services/actions/ModalActions";
 import { INGREDIENT_SHOW_DETAILS } from "../../../../services/actions/IngredientsActions";
 import { useDrag } from "react-dnd";
@@ -19,10 +18,10 @@ type propsType = {
 
 const BurgerIngredientsItem = (props: propsType) => {
   const location = useLocation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { ingredient } = props;
   const { _id, name, price, image } = ingredient;
-  const count = useSelector(selectIngredientCount(_id));
+  const count = useAppSelector(selectIngredientCount(_id));
 
   const [, dragRef] = useDrag({
     type: "ingredient",

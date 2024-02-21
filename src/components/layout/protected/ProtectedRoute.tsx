@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
 import { selectUser } from "../../../services/reducers/AuthReducer";
 import { Navigate } from "react-router-dom";
 import { PAGES_URL } from "../../../constants/RoutesUrls";
+import { useAppSelector } from "../../../services/Store";
 
 export const ACCESS_TYPES: Record<string, string> = {
   USERS: "USERS",
@@ -15,7 +15,7 @@ type propTypes = {
 };
 
 const ProtectedRoute = (props: propTypes) => {
-  const user = useSelector(selectUser);
+  const user = useAppSelector(selectUser);
   const { page, access } = props;
 
   if (user === null && access === ACCESS_TYPES.USERS) {

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import AppHeader from "../layout/header/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../services/Store";
 import { fetchIngredientsAction } from "../../services/actions/IngredientsActions";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
@@ -26,9 +25,9 @@ import { selectObservedIngredient } from "../../services/reducers/IngredientsRed
 import IngredientPage from "../../pages/ingredient/IngredientPage";
 
 const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { t: ingredientsT } = useTranslation("ingredients");
-  const ingredient = useSelector(selectObservedIngredient);
+  const ingredient = useAppSelector(selectObservedIngredient);
   const location = useLocation();
   const state = location.state;
   const navigate = useNavigate();

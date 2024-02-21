@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import styles from "./IngredientDetails.module.css";
 import { selectObservedIngredient } from "../../../services/reducers/IngredientsReducer";
-import { useSelector } from "react-redux";
 import { IngredientType } from "../../../types/Ingredient.type";
 import { Nullable } from "../../../types/common.type";
 import { useEffect, useState } from "react";
+import { useAppSelector } from "../../../services/Store";
 
 type propTypes = {
   ingredient?: Nullable<IngredientType>;
@@ -13,7 +13,7 @@ type propTypes = {
 const IngredientDetails = (props: propTypes) => {
   const { t } = useTranslation("ingredients");
   const { ingredient: propIngredient } = props;
-  const observedIngredient = useSelector(selectObservedIngredient);
+  const observedIngredient = useAppSelector(selectObservedIngredient);
   const [ingredient, setIngredient] =
     useState<Nullable<IngredientType>>(observedIngredient);
 

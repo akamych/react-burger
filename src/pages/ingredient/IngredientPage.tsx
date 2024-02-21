@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AppDispatch } from "../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../services/Store";
 import { selectFetchedIngredients } from "../../services/reducers/IngredientsReducer";
 import { IngredientType } from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
@@ -12,9 +11,9 @@ import styles from "./IngredientPage.module.css";
 const IngredientPage = () => {
   let { ingredientId } = useParams();
   const { t } = useTranslation("ingredients");
-  const ingredients = useSelector(selectFetchedIngredients);
+  const ingredients = useAppSelector(selectFetchedIngredients);
   const [ingredient, setIngredient] = useState<Nullable<IngredientType>>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const found =

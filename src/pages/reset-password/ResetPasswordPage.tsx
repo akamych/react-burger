@@ -8,8 +8,7 @@ import styles from "./ResetPasswordPage.module.css";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
-import { AppDispatch } from "../../services/Store";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../services/Store";
 import { selectPasswordIsSent } from "../../services/reducers/AuthReducer";
 import { ResetPasswordConfirmRequestType } from "../../types/auth.type";
 import { resetPasswordConfirmAction } from "../../services/actions/AuthActions";
@@ -18,8 +17,8 @@ const ResetPasswordPage = () => {
   const { t } = useTranslation("password");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
-  const passwordIsSent = useSelector(selectPasswordIsSent);
+  const dispatch = useAppDispatch();
+  const passwordIsSent = useAppSelector(selectPasswordIsSent);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

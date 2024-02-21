@@ -8,16 +8,15 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { PAGES_URL } from "../../constants/RoutesUrls";
 import { resetPasswordAction } from "../../services/actions/AuthActions";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../services/Store";
 import { selectPasswordIsSent } from "../../services/reducers/AuthReducer";
 import { ResetPasswordRequestType } from "../../types/auth.type";
 
 const ForgotPasswordPage = () => {
   const { t } = useTranslation("password");
   const [email, setEmail] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
-  const passwordIsSent = useSelector(selectPasswordIsSent);
+  const dispatch = useAppDispatch();
+  const passwordIsSent = useAppSelector(selectPasswordIsSent);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

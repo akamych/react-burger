@@ -6,10 +6,9 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../../services/reducers/AuthReducer";
 import { DataChangeRequestType } from "../../../types/auth.type";
-import { AppDispatch } from "../../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../../services/Store";
 import { changeDataAction } from "../../../services/actions/AuthActions";
 
 const initialData: DataChangeRequestType = {
@@ -20,8 +19,8 @@ const initialData: DataChangeRequestType = {
 
 const ProfileData = () => {
   const { t } = useTranslation("profile");
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch<AppDispatch>();
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   const [values, setValues] = useState<DataChangeRequestType>(initialData);
   const [isChanged, setIsChanged] = useState(false);
 

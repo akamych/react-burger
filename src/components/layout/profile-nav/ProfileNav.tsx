@@ -2,13 +2,12 @@ import { useTranslation } from "react-i18next";
 import styles from "./ProfileNav.module.css";
 import { NavLink } from "react-router-dom";
 import { PAGES_URL } from "../../../constants/RoutesUrls";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../services/Store";
+import { useAppDispatch } from "../../../services/Store";
 import { logoutAction } from "../../../services/actions/AuthActions";
 
 const ProfileNav = () => {
   const { t } = useTranslation("profile");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleLogout = (event: React.SyntheticEvent) => {
     event.preventDefault();

@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import styles from "./BurgerIngredients.module.css";
 import Tabs, { TabsPropsType } from "../../tabs/Tabs";
 import BurgerIngredientsSection from "./section/BurgerIngredientsSection";
@@ -9,6 +8,7 @@ import {
   Ingredient_tabs_keys,
 } from "../../../types/Ingredient.type";
 import { selectFetchedIngredients } from "../../../services/reducers/IngredientsReducer";
+import { useAppSelector } from "../../../services/Store";
 
 export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
   bun: "tabs.bun",
@@ -19,7 +19,7 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
 const TABS_ORDER: Ingredient_tabs_keys[] = ["bun", "sauce", "main"];
 
 const BurgerIngredients = () => {
-  const ingredients = useSelector(selectFetchedIngredients);
+  const ingredients = useAppSelector(selectFetchedIngredients);
   const { t } = useTranslation("ingredients");
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
