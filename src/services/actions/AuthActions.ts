@@ -182,7 +182,6 @@ const changeDataRequest = async (
     body: JSON.stringify(form),
   })
     .then((response) => {
-      localStorage.setItem("refreshToken", response.refreshToken);
       return response.user;
     })
     .catch((error) => {

@@ -5,7 +5,7 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../../services/reducers/AuthReducer";
 import { DataChangeRequestType } from "../../../types/auth.type";

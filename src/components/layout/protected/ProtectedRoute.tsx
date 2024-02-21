@@ -7,7 +7,7 @@ export const ACCESS_TYPES: Record<string, string> = {
   USERS: "USERS",
   GUESTS: "GUESTS",
   ALL: "ALL",
-};
+} as const;
 
 type propTypes = {
   page: JSX.Element;
