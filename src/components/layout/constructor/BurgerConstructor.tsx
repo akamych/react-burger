@@ -89,6 +89,7 @@ const BurgerConstructor = () => {
   const handleSubmit = () => {
     if (user === null) {
       navigate(PAGES_URL.LOGIN);
+      return;
     }
     const ids: string[] = [];
 
