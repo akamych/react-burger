@@ -87,7 +87,7 @@ const BurgerConstructor = () => {
   }, [ingredients, bun, calculateTotal]);
 
   const handleSubmit = () => {
-    if (user === null) {
+    if (!user || user === null) {
       navigate(PAGES_URL.LOGIN);
       return;
     }
