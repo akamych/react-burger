@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../Store";
-import { Nullable } from "../../types/common.type";
+import { Nullable, UndefNullable } from "../../types/common.type";
 import { AuthUserType } from "../../types/auth.type";
 import {
   resetPasswordAction,
@@ -13,7 +13,7 @@ import {
 
 interface AuthState {
   passwordIsSent: boolean;
-  user: Nullable<AuthUserType>;
+  user: UndefNullable<AuthUserType>;
   request: {
     pending: boolean;
     isError: boolean;
@@ -23,7 +23,7 @@ interface AuthState {
 
 export const initialAuthState: AuthState = {
   passwordIsSent: false,
-  user: null,
+  user: undefined,
   request: {
     pending: false,
     isError: false,

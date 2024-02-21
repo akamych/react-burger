@@ -11,8 +11,8 @@ import { selectUser } from "../../../services/reducers/AuthReducer";
 const ProfileData = () => {
   const { t } = useTranslation("profile");
   const user = useSelector(selectUser);
-  const [name, setName] = useState(user === null ? "" : user.name);
-  const [email, setEmail] = useState(user === null ? "" : user.email);
+  const [name, setName] = useState(!user || user === null ? "" : user.name);
+  const [email, setEmail] = useState(!user || user === null ? "" : user.email);
   const [password, setPassword] = useState("");
 
   return (
