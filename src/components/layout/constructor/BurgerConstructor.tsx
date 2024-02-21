@@ -14,9 +14,8 @@ import {
   selectSelectedBun,
   selectSelectedIngredients,
 } from "../../../services/reducers/IngredientsReducer";
-import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import { AppDispatch } from "../../../services/Store";
+import { useAppDispatch, useAppSelector } from "../../../services/Store";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INGREDIENT,
@@ -37,15 +36,20 @@ import {
   selectModalType,
 } from "../../../services/reducers/ModalReducer";
 import Modal from "../../modal/Modal";
+import { selectUser } from "../../../services/reducers/AuthReducer";
+import { useNavigate } from "react-router-dom";
+import { PAGES_URL } from "../../../constants/RoutesUrls";
 
 const BurgerConstructor = () => {
-  const bun = useSelector(selectSelectedBun);
-  const ingredients = useSelector(selectSelectedIngredients);
-  const modalIsShown = useSelector(selectModalIsShown);
-  const modalType = useSelector(selectModalType);
-  const dispatch = useDispatch<AppDispatch>();
+  const bun = useAppSelector(selectSelectedBun);
+  const ingredients = useAppSelector(selectSelectedIngredients);
+  const modalIsShown = useAppSelector(selectModalIsShown);
+  const modalType = useAppSelector(selectModalType);
+  const dispatch = useAppDispatch();
   const { t } = useTranslation("ingredients");
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
 
   const [, dropRef] = useDrop({
     accept: "ingredient",
@@ -82,6 +86,10 @@ const BurgerConstructor = () => {
   }, [ingredients, bun, calculateTotal]);
 
   const handleSubmit = () => {
+    if (!user || user === null) {
+      navigate(PAGES_URL.LOGIN);
+      return;
+    }
     const ids: string[] = [];
 
     const bunId: Nullable<string> = bun !== null ? bun._id : null;

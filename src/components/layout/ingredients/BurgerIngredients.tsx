@@ -1,6 +1,5 @@
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./BurgerIngredients.module.css";
 import Tabs, { TabsPropsType } from "../../tabs/Tabs";
 import BurgerIngredientsSection from "./section/BurgerIngredientsSection";
@@ -9,15 +8,7 @@ import {
   Ingredient_tabs_keys,
 } from "../../../types/Ingredient.type";
 import { selectFetchedIngredients } from "../../../services/reducers/IngredientsReducer";
-import {
-  selectModalIsShown,
-  selectModalType,
-} from "../../../services/reducers/ModalReducer";
-import Modal from "../../modal/Modal";
-import IngredientDetails from "../../modal/ingredients/IngredientDetails";
-import { HIDE_MODAL } from "../../../services/actions/ModalActions";
-import { INGREDIENT_HIDE_DETAILS } from "../../../services/actions/IngredientsActions";
-import { AppDispatch } from "../../../services/Store";
+import { useAppSelector } from "../../../services/Store";
 
 export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
   bun: "tabs.bun",
@@ -28,10 +19,7 @@ export const INGREDIENTS_TABS: Record<Ingredient_tabs_keys, string> = {
 const TABS_ORDER: Ingredient_tabs_keys[] = ["bun", "sauce", "main"];
 
 const BurgerIngredients = () => {
-  const ingredients = useSelector(selectFetchedIngredients);
-  const modalIsShown = useSelector(selectModalIsShown);
-  const modalType = useSelector(selectModalType);
-  const dispatch = useDispatch<AppDispatch>();
+  const ingredients = useAppSelector(selectFetchedIngredients);
   const { t } = useTranslation("ingredients");
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<Ingredient_tabs_keys>("bun");
@@ -89,11 +77,6 @@ const BurgerIngredients = () => {
     };
   }, [scrollableRef.current]);
 
-  const closeModal = useCallback((): void => {
-    dispatch(HIDE_MODAL());
-    dispatch(INGREDIENT_HIDE_DETAILS());
-  }, [dispatch]);
-
   const tabs: TabsPropsType[] = Object.entries(INGREDIENTS_TABS).map(
     ([key, value]) => ({
       value: key,
@@ -114,11 +97,6 @@ const BurgerIngredients = () => {
           />
         ))}
       </div>
-      {modalIsShown && modalType === "ingredient" && (
-        <Modal onClose={closeModal} header={t("h3.details")}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </div>
   );
 };

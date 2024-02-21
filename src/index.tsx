@@ -11,16 +11,24 @@ import { I18nextProvider } from "react-i18next";
 import common from "./constants/bundles/common.json";
 import orders from "./constants/bundles/orders.json";
 import ingredients from "./constants/bundles/ingredients.json";
-import { RouterProvider } from "react-router-dom";
-import router from "./router/Router";
+import signup from "./constants/bundles/signup.json";
+import login from "./constants/bundles/login.json";
+import password from "./constants/bundles/password.json";
+import profile from "./constants/bundles/profile.json";
 import store from "./services/Store";
 import { Provider } from "react-redux";
+import App from "./components/app/App";
+import { BrowserRouter } from "react-router-dom";
 
 const resources = {
   ru: {
-    common: common,
-    ingredients: ingredients,
-    orders: orders,
+    common,
+    ingredients,
+    orders,
+    signup,
+    login,
+    password,
+    profile,
   },
 };
 
@@ -44,7 +52,9 @@ root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     </I18nextProvider>
   </React.StrictMode>

@@ -1,36 +1,53 @@
 import { useTranslation } from "react-i18next";
 import styles from "./IngredientDetails.module.css";
 import { selectObservedIngredient } from "../../../services/reducers/IngredientsReducer";
-import { useSelector } from "react-redux";
+import { IngredientType } from "../../../types/Ingredient.type";
+import { Nullable } from "../../../types/common.type";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../../services/Store";
 
-const IngredientDetails = () => {
+type propTypes = {
+  ingredient?: Nullable<IngredientType>;
+};
+
+const IngredientDetails = (props: propTypes) => {
   const { t } = useTranslation("ingredients");
-  const ingredient = useSelector(selectObservedIngredient);
-  const { name, proteins, carbohydrates, fat, image_large, calories } =
-    ingredient || {};
+  const { ingredient: propIngredient } = props;
+  const observedIngredient = useAppSelector(selectObservedIngredient);
+  const [ingredient, setIngredient] =
+    useState<Nullable<IngredientType>>(observedIngredient);
+
+  useEffect(() => {
+    if (!propIngredient) {
+      return;
+    }
+    setIngredient(propIngredient);
+  }, [propIngredient]);
 
   return (
     <>
       {ingredient !== null && (
         <div className={styles.modal_ingredient}>
-          <img src={image_large} alt={name} />
-          <span className={styles.modal_ingredient_name}>{name}</span>
+          <img src={ingredient.image_large} alt={ingredient.name} />
+          <span className={styles.modal_ingredient_name}>
+            {ingredient.name}
+          </span>
           <ul className={styles.modal_ingredient_ul}>
             <li>
               <b>{t("calories")}</b>
-              {calories}
+              {ingredient.calories}
             </li>
             <li>
               <b>{t("proteins")}</b>
-              {proteins}
+              {ingredient.proteins}
             </li>
             <li>
               <b>{t("fat")}</b>
-              {fat}
+              {ingredient.fat}
             </li>
             <li>
               <b>{t("carbohydrates")}</b>
-              {carbohydrates}
+              {ingredient.carbohydrates}
             </li>
           </ul>
         </div>

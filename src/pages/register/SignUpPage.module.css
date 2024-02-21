@@ -1,0 +1,28 @@
+.main {
+  display: grid;
+  position: relative;
+  grid-template-columns: 480px;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  height: calc(100svh - 96px);
+}
+
+.main form {
+  text-align: center;
+}
+
+.h1 {
+  text-align: center;
+}
+
+.span {
+  text-align: center;
+}
+
+.span a {
+  display: inline-block;
+  margin-left: 0.4em;
+  text-decoration: none;
+  color: #4c4cff;
+}

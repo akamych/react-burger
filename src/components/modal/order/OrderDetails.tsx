@@ -1,16 +1,16 @@
 import { useTranslation } from "react-i18next";
 import styles from "./OrderDetails.module.css";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
 import {
   selectOrderFetchError,
   selectOrderId,
 } from "../../../services/reducers/OrderReducer";
+import { useAppSelector } from "../../../services/Store";
 
 const OrderDetails = () => {
   const { t } = useTranslation("orders");
-  const _id = useSelector(selectOrderId);
-  const { isError, text: errorText } = useSelector(selectOrderFetchError);
+  const _id = useAppSelector(selectOrderId);
+  const { isError, text: errorText } = useAppSelector(selectOrderFetchError);
   const status: string = "cooking";
   return (
     <>

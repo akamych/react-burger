@@ -3,8 +3,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructorItem.module.css";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../services/Store";
+import { useAppDispatch } from "../../../../services/Store";
 import {
   CONSTRUCTOR_REMOVE_INGREDIENT,
   CONSTRUCTOR_SWAP_INGREDIENT,
@@ -15,7 +14,7 @@ import {
   IngredientTypeWithUuid,
 } from "../../../../types/Ingredient.type";
 import { Undef } from "../../../../types/common.type";
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 
 type propsType = {
   index?: number;
@@ -28,7 +27,7 @@ type propsType = {
 const BurgerConstructorItem = (props: propsType) => {
   const { index, ingredient, isLocked, type, text } = props;
   const { name, image, price } = ingredient;
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const [{ yDiff, isDragging }, dragRef] = useDrag({
     type: "constructorElement",
