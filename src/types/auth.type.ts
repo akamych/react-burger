@@ -11,6 +11,11 @@ export type ResetPasswordRequestType = {
   email: string;
 };
 
+export type ResetPasswordConfirmRequestType = {
+  password: string;
+  token: string;
+};
+
 export type AuthUserType = {
   email: string;
   name: string;

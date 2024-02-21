@@ -6,6 +6,8 @@ import {
   resetPasswordAction,
   loginAction,
   registerAction,
+  resetPasswordConfirmAction,
+  authAction,
 } from "../actions/AuthActions";
 
 interface AuthState {
@@ -33,6 +35,27 @@ const authSlice = createSlice({
   initialState: initialAuthState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(
+      authAction.fulfilled,
+      (state: AuthState, action: PayloadAction<AuthUserType>) => {
+        state.user = action.payload;
+        state.request.isError = false;
+        state.request.text = null;
+      }
+    );
+    builder.addCase(authAction.pending, (state: AuthState) => {
+      state.request.pending = true;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(
+      authAction.rejected,
+      (state: AuthState, action: PayloadAction<string | undefined>) => {
+        state.user = null;
+        state.request.isError = true;
+        state.request.text = action.payload ? action.payload : "error";
+      }
+    );
     builder.addCase(
       registerAction.fulfilled,
       (state: AuthState, action: PayloadAction<AuthUserType>) => {
@@ -92,6 +115,26 @@ const authSlice = createSlice({
       resetPasswordAction.rejected,
       (state: AuthState, action: PayloadAction<string | undefined>) => {
         state.passwordIsSent = false;
+        state.request.isError = true;
+        state.request.text = action.payload ? action.payload : "error";
+      }
+    );
+    builder.addCase(
+      resetPasswordConfirmAction.fulfilled,
+      (state: AuthState) => {
+        state.passwordIsSent = false;
+        state.request.isError = false;
+        state.request.text = null;
+      }
+    );
+    builder.addCase(resetPasswordConfirmAction.pending, (state: AuthState) => {
+      state.request.pending = true;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(
+      resetPasswordConfirmAction.rejected,
+      (state: AuthState, action: PayloadAction<string | undefined>) => {
         state.request.isError = true;
         state.request.text = action.payload ? action.payload : "error";
       }

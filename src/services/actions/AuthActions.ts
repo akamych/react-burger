@@ -5,6 +5,7 @@ import { fetchWithRefresh, setAccessTokenCookie } from "../../utils/ApiUtils";
 import {
   AuthUserType,
   LoginRequestType,
+  ResetPasswordConfirmRequestType,
   ResetPasswordRequestType,
   SignUpRequestType,
 } from "../../types/auth.type";
@@ -109,4 +110,30 @@ export const resetPasswordAction = createAsyncThunk<
   { rejectValue: string }
 >("auth/password-reset", async (form, { rejectWithValue }) => {
   return await resetPasswordRequest(form, rejectWithValue);
+});
+
+const resetPasswordConfirmRequest = async (
+  form: ResetPasswordConfirmRequestType,
+  rejectWithValue: (value: string) => unknown
+) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/password-reset/reset`, {
+    method: HTTP_METHODS.POST,
+    headers: {
+      Authorization: "Bearer " + getCookie("token"),
+    },
+    body: JSON.stringify(form),
+  })
+    .then((response) => {
+      return response.success;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const resetPasswordConfirmAction = createAsyncThunk<
+  boolean,
+  ResetPasswordConfirmRequestType,
+  { rejectValue: string }
+>("auth/password-reset/reset", async (form, { rejectWithValue }) => {
+  return await resetPasswordConfirmRequest(form, rejectWithValue);
 });

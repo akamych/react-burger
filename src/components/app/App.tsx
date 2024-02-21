@@ -14,6 +14,9 @@ import ProtectedRoute, {
   ACCESS_TYPES,
 } from "../layout/protected/ProtectedRoute";
 import { authAction } from "../../services/actions/AuthActions";
+import ProfilePage from "../../pages/profile/ProfilePage";
+import OrdersHistory from "../layout/orders-history/OrdersHistory";
+import ProfileData from "../layout/profile-data/ProfileData";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,7 +54,17 @@ const App = () => {
           path={PAGES_URL.RESET_PASSWORD}
           element={<ResetPasswordPage />}
         />
-        <Route path={PAGES_URL.PROFILE} element={<LoginPage />} />
+        <Route path={PAGES_URL.PROFILE} element={<ProfilePage />}>
+          <Route
+            index
+            path={PAGES_URL.PROFILE}
+            element={<ProfileData />}
+          ></Route>
+          <Route
+            path={PAGES_URL.PROFILE_ORDERS}
+            element={<OrdersHistory />}
+          ></Route>
+        </Route>
         <Route path={PAGES_URL.INGREDIENTS} element={<LoginPage />}></Route>
       </Routes>
     </BrowserRouter>

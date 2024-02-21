@@ -1,0 +1,13 @@
+.profile_nav {
+  display: grid;
+}
+
+.profile_nav a {
+  height: 64px;
+  text-decoration: none;
+  color: #8585ad;
+}
+
+.profile_nav_a_active {
+  color: #f2f2f3;
+}

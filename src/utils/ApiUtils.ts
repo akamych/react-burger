@@ -1,5 +1,4 @@
 import { API_URL_NORMA } from "../constants/api";
-import { Nullable } from "../types/common.type";
 import { setCookie } from "./CookieUtils";
 
 type ResponseType = {

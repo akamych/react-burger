@@ -1,5 +1,3 @@
-import { Nullable } from "../types/common.type";
-
 export function setCookie(
   name: string,
   value: string,
