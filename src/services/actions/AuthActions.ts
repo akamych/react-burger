@@ -4,6 +4,7 @@ import { API_URL_NORMA } from "../../constants/api";
 import { fetchWithRefresh, setAccessTokenCookie } from "../../utils/ApiUtils";
 import {
   AuthUserType,
+  DataChangeRequestType,
   LoginRequestType,
   ResetPasswordConfirmRequestType,
   ResetPasswordRequestType,
@@ -166,4 +167,32 @@ export const logoutAction = createAsyncThunk<
   { rejectValue: string }
 >("auth/logout", async (form, { rejectWithValue }) => {
   return await logoutRequest(rejectWithValue);
+});
+
+const changeDataRequest = async (
+  form: DataChangeRequestType,
+  rejectWithValue: (value: string) => unknown
+) =>
+  await fetchWithRefresh(`${API_URL_NORMA}/auth/user `, {
+    method: HTTP_METHODS.PATCH,
+    headers: {
+      Authorization: "Bearer " + getCookie("token"),
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify(form),
+  })
+    .then((response) => {
+      localStorage.setItem("refreshToken", response.refreshToken);
+      return response.user;
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const changeDataAction = createAsyncThunk<
+  AuthUserType,
+  DataChangeRequestType,
+  { rejectValue: string }
+>("auth/data/change", async (form, { rejectWithValue }) => {
+  return await changeDataRequest(form, rejectWithValue);
 });

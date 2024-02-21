@@ -9,6 +9,7 @@ import {
   resetPasswordConfirmAction,
   authAction,
   logoutAction,
+  changeDataAction,
 } from "../actions/AuthActions";
 
 interface AuthState {
@@ -152,6 +153,26 @@ const authSlice = createSlice({
     });
     builder.addCase(
       logoutAction.rejected,
+      (state: AuthState, action: PayloadAction<string | undefined>) => {
+        state.request.isError = true;
+        state.request.text = action.payload ? action.payload : "error";
+      }
+    );
+    builder.addCase(
+      changeDataAction.fulfilled,
+      (state: AuthState, action: PayloadAction<AuthUserType>) => {
+        state.user = action.payload;
+        state.request.isError = false;
+        state.request.text = null;
+      }
+    );
+    builder.addCase(changeDataAction.pending, (state: AuthState) => {
+      state.request.pending = true;
+      state.request.isError = false;
+      state.request.text = null;
+    });
+    builder.addCase(
+      changeDataAction.rejected,
       (state: AuthState, action: PayloadAction<string | undefined>) => {
         state.request.isError = true;
         state.request.text = action.payload ? action.payload : "error";

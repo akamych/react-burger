@@ -1,27 +1,64 @@
 import { useTranslation } from "react-i18next";
 import {
+  Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDebugValue, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../../services/reducers/AuthReducer";
+import { DataChangeRequestType } from "../../../types/auth.type";
+import { AppDispatch } from "../../../services/Store";
+import { changeDataAction } from "../../../services/actions/AuthActions";
+
+const initialData: DataChangeRequestType = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 const ProfileData = () => {
   const { t } = useTranslation("profile");
   const user = useSelector(selectUser);
-  const [name, setName] = useState(!user || user === null ? "" : user.name);
-  const [email, setEmail] = useState(!user || user === null ? "" : user.email);
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const [values, setValues] = useState<DataChangeRequestType>(initialData);
+  const [isChanged, setIsChanged] = useState(false);
+
+  useEffect(() => {
+    if (!user || user === null) {
+      return;
+    }
+    setValues((prevData) => ({
+      ...prevData,
+      ...user,
+    }));
+  }, [user]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!isChanged) {
+      return;
+    }
+    dispatch(changeDataAction(values));
+    setIsChanged(false);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    }));
+    setIsChanged(true);
+  };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <Input
         type={"text"}
         placeholder={t("labels.name")}
-        onChange={(e) => setName(e.target.value)}
-        value={name}
+        onChange={handleChange}
+        value={values.name}
         name={"name"}
         autoComplete="name"
         error={false}
@@ -31,24 +68,34 @@ const ProfileData = () => {
         extraClass="mb-6"
       />
       <EmailInput
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange}
         placeholder={t("labels.email")}
-        value={email}
+        value={values.email}
         name={"email"}
         autoComplete="email"
         isIcon
         extraClass="mb-6"
       />
       <PasswordInput
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange}
         placeholder={t("labels.password")}
-        value={password}
+        value={values.password}
         name={"password"}
         icon="EditIcon"
         autoComplete="current-password"
         extraClass="mb-6"
       />
-    </div>
+      {isChanged && (
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+        >
+          {t("buttons.save")}
+        </Button>
+      )}
+    </form>
   );
 };
 

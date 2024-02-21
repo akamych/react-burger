@@ -7,6 +7,8 @@ export type SignUpRequestType = LoginRequestType & {
   name: string;
 };
 
+export type DataChangeRequestType = SignUpRequestType;
+
 export type ResetPasswordRequestType = {
   email: string;
 };
