@@ -9,7 +9,7 @@ import { fetchWithRefresh } from "../../utils/ApiUtils";
 
 const fetchIngredientsRequest = async (
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<IngredientType[]> =>
   await fetchWithRefresh(`${API_URL_NORMA}/ingredients`, {
     method: HTTP_METHODS.GET,
   })

@@ -6,7 +6,7 @@ import { fetchWithRefresh } from "../../utils/ApiUtils";
 const createOrderRequest = async (
   ingredientsIds: string[],
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<number> =>
   await fetchWithRefresh(`${API_URL_NORMA}/orders`, {
     method: HTTP_METHODS.POST,
     headers: {

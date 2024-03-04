@@ -15,7 +15,7 @@ import { getCookie, setCookie } from "../../utils/CookieUtils";
 const registerRequest = async (
   form: SignUpRequestType,
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<AuthUserType> =>
   await fetchWithRefresh(`${API_URL_NORMA}/auth/register`, {
     method: HTTP_METHODS.POST,
     headers: {
@@ -42,7 +42,7 @@ export const registerAction = createAsyncThunk<
 const loginRequest = async (
   form: LoginRequestType,
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<AuthUserType> =>
   await fetchWithRefresh(`${API_URL_NORMA}/auth/login`, {
     method: HTTP_METHODS.POST,
     headers: {
@@ -67,7 +67,9 @@ export const loginAction = createAsyncThunk<
   return await loginRequest(form, rejectWithValue);
 });
 
-const authRequest = async (rejectWithValue: (value: string) => unknown) =>
+const authRequest = async (
+  rejectWithValue: (value: string) => unknown
+): Promise<AuthUserType> =>
   await fetchWithRefresh(`${API_URL_NORMA}/auth/user`, {
     method: HTTP_METHODS.GET,
     headers: {
@@ -92,7 +94,7 @@ export const authAction = createAsyncThunk<
 const resetPasswordRequest = async (
   form: ResetPasswordRequestType,
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<boolean> =>
   await fetchWithRefresh(`${API_URL_NORMA}/password-reset`, {
     method: HTTP_METHODS.POST,
     headers: {
@@ -119,7 +121,7 @@ export const resetPasswordAction = createAsyncThunk<
 const resetPasswordConfirmRequest = async (
   form: ResetPasswordConfirmRequestType,
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<boolean> =>
   await fetchWithRefresh(`${API_URL_NORMA}/password-reset/reset`, {
     method: HTTP_METHODS.POST,
     headers: {
@@ -143,7 +145,9 @@ export const resetPasswordConfirmAction = createAsyncThunk<
   return await resetPasswordConfirmRequest(form, rejectWithValue);
 });
 
-const logoutRequest = async (rejectWithValue: (value: string) => unknown) =>
+const logoutRequest = async (
+  rejectWithValue: (value: string) => unknown
+): Promise<boolean> =>
   await fetchWithRefresh(`${API_URL_NORMA}/auth/logout`, {
     method: HTTP_METHODS.POST,
     headers: {
@@ -172,7 +176,7 @@ export const logoutAction = createAsyncThunk<
 const changeDataRequest = async (
   form: DataChangeRequestType,
   rejectWithValue: (value: string) => unknown
-) =>
+): Promise<AuthUserType> =>
   await fetchWithRefresh(`${API_URL_NORMA}/auth/user `, {
     method: HTTP_METHODS.PATCH,
     headers: {
