@@ -1,9 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { applyMiddleware, configureStore } from "@reduxjs/toolkit";
 import ingredientsReducer from "./reducers/IngredientsReducer";
 import modalReducer from "./reducers/ModalReducer";
 import orderReducer from "./reducers/OrderReducer";
 import authReducer from "./reducers/AuthReducer";
 import { useDispatch, useSelector } from "react-redux";
+import WebSocketReducer from "./reducers/WebSocketReducer";
+import { WebSocketMiddleware } from "./middleware/WebSocketMiddleware";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +13,12 @@ const store = configureStore({
     modal: modalReducer,
     order: orderReducer,
     auth: authReducer,
+    webSocket: WebSocketReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      WebSocketMiddleware("wss://norma.nomoreparties.space/orders/all")
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
