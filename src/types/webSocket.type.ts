@@ -3,6 +3,7 @@ export type TSocketMessageOrder = {
   _id: string;
   status: "done" | "created" | "pending";
   number: number;
+  name: string;
   createdAt: string;
   updatedAt: string;
 };
