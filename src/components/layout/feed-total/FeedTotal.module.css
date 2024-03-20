@@ -1,0 +1,18 @@
+.profile_nav {
+  display: grid;
+}
+
+.profile_nav_a {
+  height: 64px;
+  text-decoration: none;
+}
+
+.profile_nav_a_notactive {
+  composes: profile_nav_a;
+  color: #8585ad;
+}
+
+.profile_nav_a_active {
+  composes: profile_nav_a;
+  color: #f2f2f3;
+}

@@ -9,13 +9,13 @@ import {
 } from "../actions/WebSocketActions";
 import {
   TSocketMessage,
-  TSocketMessageOrders,
+  TSocketMessageOrder,
 } from "../../types/webSocket.type";
 import { Undef } from "../../types/common.type";
 
 interface WebSocketState {
   wsConnected: boolean;
-  orders: TSocketMessageOrders[];
+  orders: TSocketMessageOrder[];
   total: number;
   totalToday: number;
   error?: Undef<string>;

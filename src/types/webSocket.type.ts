@@ -1,4 +1,4 @@
-export type TSocketMessageOrders = {
+export type TSocketMessageOrder = {
   ingredients: string[];
   _id: string;
   status: "done" | "created" | "pending";
@@ -9,7 +9,7 @@ export type TSocketMessageOrders = {
 
 export type TSocketMessage = {
   success: boolean;
-  orders: TSocketMessageOrders[];
+  orders: TSocketMessageOrder[];
   total: number;
   totalToday: number;
 };

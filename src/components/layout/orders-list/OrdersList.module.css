@@ -1,0 +1,7 @@
+.orders_list_holder {
+  position: relative;
+  display: block;
+  overflow: auto;
+  /* временный костыль для нормального оверфлоу */
+  max-height: calc(100% - 200px);
+}
