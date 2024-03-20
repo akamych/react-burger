@@ -23,6 +23,7 @@ import { HIDE_MODAL } from "../../services/actions/ModalActions";
 import { useTranslation } from "react-i18next";
 import { selectObservedIngredient } from "../../services/reducers/IngredientsReducer";
 import IngredientPage from "../../pages/ingredient/IngredientPage";
+import FeedPage from "../../pages/feed/FeedPage";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -89,6 +90,13 @@ const App = () => {
             path={PAGES_URL.PROFILE_ORDERS}
             element={<OrdersHistory />}
           ></Route>
+        </Route>
+        <Route path={PAGES_URL.FEED}>
+          <Route index path={PAGES_URL.FEED} element={<FeedPage />}></Route>
+          {/* <Route
+            path={PAGES_URL.PROFILE_ORDERS}
+            element={<OrdersHistory />}
+          ></Route> */}
         </Route>
         <Route path={PAGES_URL.INGREDIENTS}>
           <Route path=":ingredientId" element={<IngredientPage />} />
