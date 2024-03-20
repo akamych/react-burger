@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { selectObservedIngredient } from "../../services/reducers/IngredientsReducer";
 import IngredientPage from "../../pages/ingredient/IngredientPage";
 import FeedPage from "../../pages/feed/FeedPage";
+import OrderPage from "../../pages/order/OrderPage";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -93,10 +94,7 @@ const App = () => {
         </Route>
         <Route path={PAGES_URL.FEED}>
           <Route index path={PAGES_URL.FEED} element={<FeedPage />}></Route>
-          {/* <Route
-            path={PAGES_URL.PROFILE_ORDERS}
-            element={<OrdersHistory />}
-          ></Route> */}
+          <Route path=":orderId" element={<OrderPage />} />
         </Route>
         <Route path={PAGES_URL.INGREDIENTS}>
           <Route path=":ingredientId" element={<IngredientPage />} />
