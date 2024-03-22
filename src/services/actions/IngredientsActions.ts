@@ -12,13 +12,9 @@ const fetchIngredientsRequest = async (
 ): Promise<IngredientType[]> =>
   await fetchWithRefresh(`${API_URL_NORMA}/ingredients`, {
     method: HTTP_METHODS.GET,
-  })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.data;
+  });
 
 export const fetchIngredientsAction = createAsyncThunk<
   IngredientType[],

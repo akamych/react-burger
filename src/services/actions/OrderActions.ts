@@ -16,13 +16,9 @@ const createOrderRequest = async (
       Authorization: `Bearer ${getCookie("token")}`,
     },
     body: JSON.stringify({ ingredients: ingredientsIds }),
-  })
-    .then((response) => {
-      return response.order.number;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.order.number;
+  });
 
 export const createOrderAction = createAsyncThunk<
   number,
@@ -44,17 +40,13 @@ const fetchOrderByIdRequest = async (
 ): Promise<TSocketMessageOrder> =>
   await fetchWithRefresh(`${API_URL_NORMA}/orders/${orderId}`, {
     method: HTTP_METHODS.GET,
-  })
-    .then((response) => {
-      const { orders } = response;
-      if (!orders) {
-        return rejectWithValue("");
-      }
-      return orders[0];
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    const { orders } = response;
+    if (!orders) {
+      return rejectWithValue("");
+    }
+    return orders[0];
+  });
 
 export const fetchOrderByIdAction = createAsyncThunk<
   TSocketMessageOrder,
