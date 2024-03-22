@@ -7,4 +7,6 @@ export const WS_SUCCESS = createAction("ws/success");
 export const WS_CLOSED = createAction("ws/closed");
 export const WS_ERROR = createAction("ws/error");
 export const WS_GET_ORDERS = createAction<TSocketMessage>("ws/get/orders");
-export const WS_SEND = createAction("ws/send");
+
+export const WS_ACTIONS =
+  WS_START || WS_CLOSE || WS_SUCCESS || WS_CLOSED || WS_ERROR || WS_GET_ORDERS;

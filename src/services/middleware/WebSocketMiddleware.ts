@@ -40,12 +40,6 @@ export const WebSocketMiddleware = (): Middleware => {
           const response = JSON.parse(data) as TSocketMessage;
           dispatch(WS_GET_ORDERS(response));
         };
-
-        // if (type === "WS_SEND_MESSAGE") {
-        //   const message = payload;
-        //   // функция для отправки сообщения на сервер
-        //   socket.send(JSON.stringify(message));
-        // }
       }
 
       next(action);
