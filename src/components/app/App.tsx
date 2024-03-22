@@ -25,11 +25,15 @@ import { selectObservedIngredient } from "../../services/reducers/IngredientsRed
 import IngredientPage from "../../pages/ingredient/IngredientPage";
 import FeedPage from "../../pages/feed/FeedPage";
 import OrderPage from "../../pages/order/OrderPage";
+import OrderData from "../modal/order-data/OrderData";
+import { ORDER_HIDE_DETAILS } from "../../services/actions/OrderActions";
+import { selectObservedOrder } from "../../services/reducers/OrderReducer";
 
 const App = () => {
   const dispatch = useAppDispatch();
   const { t: ingredientsT } = useTranslation("ingredients");
   const ingredient = useAppSelector(selectObservedIngredient);
+  const order = useAppSelector(selectObservedOrder);
   const location = useLocation();
   const state = location.state;
   const navigate = useNavigate();
@@ -37,6 +41,7 @@ const App = () => {
   const onCloseModal = () => {
     navigate(-1);
     dispatch(INGREDIENT_HIDE_DETAILS());
+    dispatch(ORDER_HIDE_DETAILS());
     dispatch(HIDE_MODAL());
   };
 
@@ -112,6 +117,21 @@ const App = () => {
                   header={ingredientsT("h3.details")}
                 >
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Route>
+        </Routes>
+      )}
+
+      {state?.bgLocation && order && (
+        <Routes>
+          <Route path={PAGES_URL.FEED}>
+            <Route
+              path=":orderId"
+              element={
+                <Modal onClose={onCloseModal} header={`#0${order.number}`}>
+                  <OrderData />
                 </Modal>
               }
             />
