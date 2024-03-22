@@ -6,6 +6,7 @@ import authReducer from "./reducers/AuthReducer";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketReducer from "./reducers/WebSocketReducer";
 import { WebSocketMiddleware } from "./middleware/WebSocketMiddleware";
+import { WEBSOCKET_API } from "../constants/api";
 
 const store = configureStore({
   reducer: {
@@ -16,9 +17,7 @@ const store = configureStore({
     webSocket: WebSocketReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      WebSocketMiddleware("wss://norma.nomoreparties.space/orders/all")
-    ),
+    getDefaultMiddleware().concat(WebSocketMiddleware()),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

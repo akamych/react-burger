@@ -17,13 +17,18 @@
   column-gap: -0.5em;
 }
 
-.order_ingredients_b {
+.order_ingredients_b,
+.order_ingredients_status {
   display: inline-block;
   grid-column: 1/-1;
   max-width: 90%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.order_ingredients_status_pending {
+  color: #049d9e;
 }
 
 .order_ingredients_date {
@@ -39,6 +44,7 @@
   border: 2px solid #2b1f54;
   margin-left: -16px;
   background: var(--background-alt);
+  object-fit: contain;
 }
 
 .order_ingredients_more img {

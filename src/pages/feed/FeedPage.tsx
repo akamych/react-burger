@@ -2,7 +2,7 @@ import styles from "./FeedPage.module.css";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../services/Store";
-import { WS_START } from "../../services/actions/WebSocketActions";
+import { WS_CLOSE, WS_START } from "../../services/actions/WebSocketActions";
 import FeedTotal from "../../components/layout/feed-total/FeedTotal";
 import OrdersList from "../../components/layout/orders-list/OrdersList";
 import FeedStatuses from "../../components/layout/feed-statuses/FeedStatuses";
@@ -12,7 +12,10 @@ const FeedPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(WS_START("wss://norma.nomoreparties.space/orders/all"));
+    dispatch(WS_START());
+    return () => {
+      dispatch(WS_CLOSE());
+    };
   }, []);
 
   return (

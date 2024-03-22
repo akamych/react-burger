@@ -3,6 +3,7 @@ import { HTTP_METHODS } from "../../constants/http";
 import { API_URL_NORMA } from "../../constants/api";
 import { fetchWithRefresh } from "../../utils/ApiUtils";
 import { TSocketMessageOrder } from "../../types/webSocket.type";
+import { getCookie } from "../../utils/CookieUtils";
 
 const createOrderRequest = async (
   ingredientsIds: string[],
@@ -12,6 +13,7 @@ const createOrderRequest = async (
     method: HTTP_METHODS.POST,
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getCookie("token")}`,
     },
     body: JSON.stringify({ ingredients: ingredientsIds }),
   })

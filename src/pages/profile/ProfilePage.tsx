@@ -1,14 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import ProfileNav from "../../components/layout/profile-nav/ProfileNav";
 import styles from "./ProfilePage.module.css";
 
 const ProfilePage = () => {
+  const { orderId } = useParams();
   return (
     <>
-      <main className={styles.main}>
-        <ProfileNav />
+      {orderId ? (
         <Outlet />
-      </main>
+      ) : (
+        <main className={styles.main}>
+          <ProfileNav />
+          <Outlet />
+        </main>
+      )}
     </>
   );
 };

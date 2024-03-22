@@ -72,7 +72,10 @@ const OrderData = () => {
           </h3>
           <div className={`mb-10 ${styles.modal_orderdata_ingredients}`}>
             {Object.values(ingredientsList).map((ingredient) => (
-              <OrderDataIngredient ingredient={ingredient} />
+              <OrderDataIngredient
+                key={ingredient.ingredient._id}
+                ingredient={ingredient}
+              />
             ))}
           </div>
           <div className={styles.modal_orderdata_bottom}>

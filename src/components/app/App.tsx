@@ -28,12 +28,14 @@ import OrderPage from "../../pages/order/OrderPage";
 import OrderData from "../modal/order-data/OrderData";
 import { ORDER_HIDE_DETAILS } from "../../services/actions/OrderActions";
 import { selectObservedOrder } from "../../services/reducers/OrderReducer";
+import { selectIsMyOrder } from "../../services/reducers/WebSocketReducer";
 
 const App = () => {
   const dispatch = useAppDispatch();
   const { t: ingredientsT } = useTranslation("ingredients");
   const ingredient = useAppSelector(selectObservedIngredient);
   const order = useAppSelector(selectObservedOrder);
+  const isMy = useAppSelector(selectIsMyOrder);
   const location = useLocation();
   const state = location.state;
   const navigate = useNavigate();
@@ -92,13 +94,17 @@ const App = () => {
             path={PAGES_URL.PROFILE}
             element={<ProfileData />}
           ></Route>
-          <Route
-            path={PAGES_URL.PROFILE_ORDERS}
-            element={<OrdersHistory />}
-          ></Route>
+          <Route path={PAGES_URL.PROFILE_ORDERS}>
+            <Route
+              index
+              path={PAGES_URL.PROFILE_ORDERS}
+              element={<OrdersHistory />}
+            ></Route>
+            <Route path=":orderId" element={<OrderPage />} />
+          </Route>
         </Route>
         <Route path={PAGES_URL.FEED}>
-          <Route index path={PAGES_URL.FEED} element={<FeedPage />}></Route>
+          <Route index path={PAGES_URL.FEED} element={<FeedPage />} />
           <Route path=":orderId" element={<OrderPage />} />
         </Route>
         <Route path={PAGES_URL.INGREDIENTS}>
@@ -124,9 +130,24 @@ const App = () => {
         </Routes>
       )}
 
-      {state?.bgLocation && order && (
+      {state?.bgLocation && order && !isMy && (
         <Routes>
           <Route path={PAGES_URL.FEED}>
+            <Route
+              path=":orderId"
+              element={
+                <Modal onClose={onCloseModal} header={`#0${order.number}`}>
+                  <OrderData />
+                </Modal>
+              }
+            />
+          </Route>
+        </Routes>
+      )}
+
+      {state?.bgLocation && order && isMy && (
+        <Routes>
+          <Route path={PAGES_URL.PROFILE_ORDERS}>
             <Route
               path=":orderId"
               element={
