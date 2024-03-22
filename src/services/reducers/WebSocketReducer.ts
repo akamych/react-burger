@@ -11,14 +11,14 @@ import {
   TSocketMessage,
   TSocketMessageOrder,
 } from "../../types/webSocket.type";
-import { Undef } from "../../types/common.type";
+import { Nullable } from "../../types/common.type";
 
 interface WebSocketState {
   wsConnected: boolean;
   orders: TSocketMessageOrder[];
   total: number;
   totalToday: number;
-  error?: Undef<string>;
+  error: boolean;
 }
 
 export const initialWebSocketState: WebSocketState = {
@@ -26,6 +26,7 @@ export const initialWebSocketState: WebSocketState = {
   orders: [],
   total: 0,
   totalToday: 0,
+  error: false,
 };
 
 const webSocketSlice = createSlice({
@@ -34,28 +35,25 @@ const webSocketSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(WS_START, (state: WebSocketState) => {
-      state.error = undefined;
+      state.error = false;
       state.wsConnected = false;
     });
     builder.addCase(WS_SUCCESS, (state: WebSocketState) => {
-      state.error = undefined;
+      state.error = false;
       state.wsConnected = true;
     });
     builder.addCase(WS_CLOSED, (state: WebSocketState) => {
-      state.error = undefined;
+      state.error = false;
       state.wsConnected = false;
     });
-    // builder.addCase(
-    //   WS_ERROR,
-    //   (state: WebSocketState, action: PayloadAction<MessageEvent>) => {
-    //     state.error = action.payload.data;
-    //     state.wsConnected = true;
-    //   }
-    // );
+    builder.addCase(WS_ERROR, (state: WebSocketState) => {
+      state.error = true;
+      state.wsConnected = false;
+    });
     builder.addCase(
       WS_GET_ORDERS,
       (state: WebSocketState, action: PayloadAction<TSocketMessage>) => {
-        state.error = undefined;
+        state.error = false;
         state.orders = [...action.payload.orders];
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;

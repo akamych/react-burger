@@ -1,34 +1,28 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/Store";
-import { selectFetchedIngredients } from "../../services/reducers/IngredientsReducer";
-import { IngredientType } from "../../types/Ingredient.type";
-import { Nullable } from "../../types/common.type";
-import IngredientDetails from "../../components/modal/ingredients/IngredientDetails";
-import { useTranslation } from "react-i18next";
 import styles from "./OrderPage.module.css";
-import { selectFeedOrders } from "../../services/reducers/WebSocketReducer";
+import OrderData from "../../components/modal/order-data/OrderData";
+import { selectObservedOrder } from "../../services/reducers/OrderReducer";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchOrderByIdAction } from "../../services/actions/OrderActions";
 
 const OrderPage = () => {
   let { orderId } = useParams();
-  const { t } = useTranslation("ingredients");
-  const ingredients = useAppSelector(selectFetchedIngredients);
-  const orders = useAppSelector(selectFeedOrders);
-  const [order, setOrder] = useState<Nullable<IngredientType>>(null);
+  const order = useAppSelector(selectObservedOrder);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const found =
-      ingredients.find((ingredient) => ingredient._id === orderId) || null;
-    setOrder(found);
-  }, [ingredients, orders, orderId, dispatch]);
+    if (orderId && order === null) {
+      dispatch(fetchOrderByIdAction(orderId));
+    }
+  }, [order, orderId, dispatch]);
 
   return (
     <main className={styles.main}>
-      <h1 className="text text_type_main-large mt-10 mb-5">
-        {t("h3.details")}
+      <h1 className="text text_type_digits-default mt-20 mb-5">
+        {orderId ? `#0${orderId}` : "#???"}
       </h1>
-      {order !== null && <IngredientDetails ingredient={order} />}
+      {order !== null && <OrderData />}
     </main>
   );
 };

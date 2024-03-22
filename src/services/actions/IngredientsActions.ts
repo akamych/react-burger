@@ -30,9 +30,6 @@ export const fetchIngredientsAction = createAsyncThunk<
     await fetchIngredientsRequest(rejectWithValue)
 );
 
-export const INGREDIENT_SHOW_DETAILS_BY_ID =
-  createAction<string>("ingredient/show/id");
-
 export const INGREDIENT_SHOW_DETAILS =
   createAction<IngredientType>("ingredient/show");
 export const INGREDIENT_HIDE_DETAILS = createAction("ingredient/hide");

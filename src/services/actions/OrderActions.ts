@@ -2,6 +2,7 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { HTTP_METHODS } from "../../constants/http";
 import { API_URL_NORMA } from "../../constants/api";
 import { fetchWithRefresh } from "../../utils/ApiUtils";
+import { TSocketMessageOrder } from "../../types/webSocket.type";
 
 const createOrderRequest = async (
   ingredientsIds: string[],
@@ -30,3 +31,35 @@ export const createOrderAction = createAsyncThunk<
 });
 
 export const ORDER_CLEAR = createAction("order/clear");
+
+export const ORDER_SHOW_DETAILS =
+  createAction<TSocketMessageOrder>("order/show");
+export const ORDER_HIDE_DETAILS = createAction("order/hide");
+
+const fetchOrderByIdRequest = async (
+  orderId: string,
+  rejectWithValue: (value: string) => unknown
+): Promise<TSocketMessageOrder> =>
+  await fetchWithRefresh(`${API_URL_NORMA}/orders/${orderId}`, {
+    method: HTTP_METHODS.GET,
+  })
+    .then((response) => {
+      const { orders } = response;
+      if (!orders) {
+        return rejectWithValue("");
+      }
+      return orders[0];
+    })
+    .catch((error) => {
+      return rejectWithValue(error);
+    });
+
+export const fetchOrderByIdAction = createAsyncThunk<
+  TSocketMessageOrder,
+  string,
+  { rejectValue: string }
+>(
+  "orderById",
+  async (orderId, { rejectWithValue }) =>
+    await fetchOrderByIdRequest(orderId, rejectWithValue)
+);

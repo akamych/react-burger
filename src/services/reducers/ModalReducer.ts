@@ -4,11 +4,12 @@ import {
   HIDE_MODAL,
   SHOW_MODAL_INGREDIENT,
   SHOW_MODAL_ORDER,
+  SHOW_MODAL_ORDER_DATA,
 } from "../actions/ModalActions";
 
 interface ModalState {
   isShown: boolean;
-  type: "ingredient" | "order";
+  type: "ingredient" | "order" | "orderData";
 }
 
 export const initialModalState: ModalState = {
@@ -28,6 +29,10 @@ const modalSlice = createSlice({
     builder.addCase(SHOW_MODAL_ORDER, (state: ModalState) => {
       state.isShown = true;
       state.type = "order";
+    });
+    builder.addCase(SHOW_MODAL_ORDER_DATA, (state: ModalState) => {
+      state.isShown = true;
+      state.type = "orderData";
     });
     builder.addCase(HIDE_MODAL, (state: ModalState) => {
       state.isShown = false;

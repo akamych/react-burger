@@ -56,7 +56,7 @@ const FeedStatuses = () => {
               {group.map((element, elementIndex) => (
                 <span
                   key={elementIndex}
-                  className={`text text_type_digits-default ${styles.feed_statuses_column_pending_number}`}
+                  className={`text text_type_digits-default ${styles.feed_statuses_column_ready_number}`}
                 >
                   {element}
                 </span>
