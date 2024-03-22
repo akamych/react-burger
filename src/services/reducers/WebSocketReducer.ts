@@ -5,7 +5,6 @@ import {
   WS_CLOSED,
   WS_ERROR,
   WS_GET_ORDERS,
-  WS_MY_START,
   WS_START,
   WS_SUCCESS,
 } from "../actions/WebSocketActions";
@@ -37,18 +36,15 @@ const webSocketSlice = createSlice({
   initialState: initialWebSocketState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(WS_START, (state: WebSocketState) => {
-      state.isMy = false;
-      state.error = false;
-      state.wsConnected = false;
-      state.orders = [];
-    });
-    builder.addCase(WS_MY_START, (state: WebSocketState) => {
-      state.isMy = true;
-      state.error = false;
-      state.wsConnected = false;
-      state.orders = [];
-    });
+    builder.addCase(
+      WS_START,
+      (state: WebSocketState, action: PayloadAction<string>) => {
+        state.isMy = action.payload !== "/all";
+        state.error = false;
+        state.wsConnected = false;
+        state.orders = [];
+      }
+    );
     builder.addCase(WS_SUCCESS, (state: WebSocketState) => {
       state.error = false;
       state.wsConnected = true;

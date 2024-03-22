@@ -1,20 +1,18 @@
 // socketMiddleware.ts
 import type { Middleware, MiddlewareAPI } from "redux";
 
-import { AppDispatch, RootState, useAppDispatch } from "../Store";
+import { AppDispatch, RootState } from "../Store";
 import {
   WS_CLOSE,
   WS_CLOSED,
   WS_ERROR,
   WS_GET_ORDERS,
-  WS_MY_START,
   WS_START,
   WS_SUCCESS,
 } from "../actions/WebSocketActions";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { TSocketMessage } from "../../types/webSocket.type";
 import { WEBSOCKET_API } from "../../constants/api";
-import { getCookie } from "../../utils/CookieUtils";
 
 export const WebSocketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -22,14 +20,10 @@ export const WebSocketMiddleware = (): Middleware => {
 
     return (next) => (action: UnknownAction) => {
       const { dispatch } = store;
-      const { type } = action;
+      const { type, payload } = action;
 
       if (type === WS_START.type) {
-        socket = new WebSocket(`${WEBSOCKET_API}/all`);
-      }
-
-      if (type === WS_MY_START.type) {
-        socket = new WebSocket(`${WEBSOCKET_API}?token=${getCookie("token")}`);
+        socket = new WebSocket(`${WEBSOCKET_API}${payload}`);
       }
 
       if (type === WS_CLOSE.type) {

@@ -12,7 +12,7 @@ const FeedPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(WS_START());
+    dispatch(WS_START("/all"));
     return () => {
       dispatch(WS_CLOSE());
     };
