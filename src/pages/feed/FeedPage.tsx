@@ -6,13 +6,14 @@ import { WS_CLOSE, WS_START } from "../../services/actions/WebSocketActions";
 import FeedTotal from "../../components/layout/feed-total/FeedTotal";
 import OrdersList from "../../components/layout/orders-list/OrdersList";
 import FeedStatuses from "../../components/layout/feed-statuses/FeedStatuses";
+import { WEBSOCKET_API } from "../../constants/api";
 
 const FeedPage = () => {
   const { t } = useTranslation("feed");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(WS_START("/all"));
+    dispatch(WS_START(`${WEBSOCKET_API}/all`));
     return () => {
       dispatch(WS_CLOSE());
     };

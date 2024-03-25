@@ -2,43 +2,57 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 
 import { AppDispatch, RootState } from "../Store";
-import {
-  WS_CLOSE,
-  WS_CLOSED,
-  WS_ERROR,
-  WS_GET_ORDERS,
-  WS_START,
-  WS_SUCCESS,
-} from "../actions/WebSocketActions";
-import { UnknownAction } from "@reduxjs/toolkit";
 import { TSocketMessage } from "../../types/webSocket.type";
-import { WEBSOCKET_API } from "../../constants/api";
+import { WS_ACTIONS } from "../actions/WebSocketActions";
+import {
+  ActionCreatorWithPayload,
+  ActionCreatorWithoutPayload,
+} from "@reduxjs/toolkit";
 
-export const WebSocketMiddleware = (): Middleware => {
+export type TwsActionTypes = {
+  wsInit: ActionCreatorWithPayload<string>;
+  wsClose: ActionCreatorWithoutPayload;
+  onOpen: ActionCreatorWithoutPayload;
+  onClose: ActionCreatorWithoutPayload;
+  onError: ActionCreatorWithPayload<string>;
+  onMessage: ActionCreatorWithPayload<TSocketMessage>;
+};
+
+export const WebSocketMiddleware = (wsActions: TwsActionTypes): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
-    return (next) => (action: UnknownAction) => {
+    return (next) => (action: WS_ACTIONS) => {
       const { dispatch } = store;
-      const { type, payload } = action;
+      const { payload } = action;
+      const { wsInit, wsClose, onOpen, onClose, onError, onMessage } =
+        wsActions;
 
-      if (type === WS_START.type) {
-        socket = new WebSocket(`${WEBSOCKET_API}${payload}`);
+      if (wsInit.match(action)) {
+        socket = new WebSocket(payload as string);
       }
 
-      if (type === WS_CLOSE.type) {
+      if (wsClose.match(action)) {
         socket?.close();
       }
 
       if (socket) {
-        socket.onopen = () => dispatch(WS_SUCCESS());
-        socket.onerror = () => dispatch(WS_ERROR());
-        socket.onclose = () => dispatch(WS_CLOSED());
+        socket.onopen = (event) => {
+          dispatch(onOpen());
+        };
+
+        socket.onerror = (event) => {
+          dispatch(onError(event.type.toString()));
+        };
+
+        socket.onclose = (event) => {
+          dispatch(onClose());
+        };
 
         socket.onmessage = (event) => {
           const { data } = event;
-          const response = JSON.parse(data) as TSocketMessage;
-          dispatch(WS_GET_ORDERS(response));
+          const parsedData: TSocketMessage = JSON.parse(data);
+          dispatch(onMessage(parsedData));
         };
       }
 
