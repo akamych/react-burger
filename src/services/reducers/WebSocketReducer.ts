@@ -19,7 +19,7 @@ interface WebSocketState {
   orders: TSocketMessageOrder[];
   total: number;
   totalToday: number;
-  error: boolean;
+  error: string;
 }
 
 export const initialWebSocketState: WebSocketState = {
@@ -28,7 +28,7 @@ export const initialWebSocketState: WebSocketState = {
   orders: [],
   total: 0,
   totalToday: 0,
-  error: false,
+  error: "",
 };
 
 const webSocketSlice = createSlice({
@@ -40,33 +40,36 @@ const webSocketSlice = createSlice({
       WS_START,
       (state: WebSocketState, action: PayloadAction<string>) => {
         state.isMy = action.payload !== "/all";
-        state.error = false;
+        state.error = "";
         state.wsConnected = false;
         state.orders = [];
       }
     );
     builder.addCase(WS_SUCCESS, (state: WebSocketState) => {
-      state.error = false;
+      state.error = "";
       state.wsConnected = true;
     });
     builder.addCase(WS_CLOSE, (state: WebSocketState) => {
-      state.error = false;
+      state.error = "";
       state.wsConnected = false;
       state.orders = [];
     });
     builder.addCase(WS_CLOSED, (state: WebSocketState) => {
-      state.error = false;
+      state.error = "";
       state.wsConnected = false;
       state.orders = [];
     });
-    builder.addCase(WS_ERROR, (state: WebSocketState) => {
-      state.error = true;
-      state.wsConnected = false;
-    });
+    builder.addCase(
+      WS_ERROR,
+      (state: WebSocketState, action: PayloadAction<string>) => {
+        state.error = action.payload;
+        state.wsConnected = false;
+      }
+    );
     builder.addCase(
       WS_GET_ORDERS,
       (state: WebSocketState, action: PayloadAction<TSocketMessage>) => {
-        state.error = false;
+        state.error = "";
         state.orders = action.payload.orders ? [...action.payload.orders] : [];
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
