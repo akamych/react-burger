@@ -1,0 +1,15 @@
+.orders_list_holder {
+  position: relative;
+  display: block;
+  overflow: auto;
+  max-height: 100%;
+  grid-row: span 2;
+}
+
+.orders_list_holder_my {
+  position: relative;
+  display: block;
+  overflow: auto;
+  max-height: calc(100vh - 200px);
+  grid-row: span 2;
+}

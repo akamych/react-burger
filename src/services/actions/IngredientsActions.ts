@@ -12,13 +12,9 @@ const fetchIngredientsRequest = async (
 ): Promise<IngredientType[]> =>
   await fetchWithRefresh(`${API_URL_NORMA}/ingredients`, {
     method: HTTP_METHODS.GET,
-  })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.data;
+  });
 
 export const fetchIngredientsAction = createAsyncThunk<
   IngredientType[],
@@ -29,9 +25,6 @@ export const fetchIngredientsAction = createAsyncThunk<
   async (ingredients, { rejectWithValue }) =>
     await fetchIngredientsRequest(rejectWithValue)
 );
-
-export const INGREDIENT_SHOW_DETAILS_BY_ID =
-  createAction<string>("ingredient/show/id");
 
 export const INGREDIENT_SHOW_DETAILS =
   createAction<IngredientType>("ingredient/show");

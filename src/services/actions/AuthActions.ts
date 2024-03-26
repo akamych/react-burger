@@ -22,14 +22,10 @@ const registerRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
-  })
-    .then((response) => {
-      localStorage.setItem("refreshToken", response.refreshToken);
-      return response.user;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    localStorage.setItem("refreshToken", response.refreshToken);
+    return response.user;
+  });
 
 export const registerAction = createAsyncThunk<
   AuthUserType,
@@ -49,15 +45,11 @@ const loginRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
-  })
-    .then((response) => {
-      localStorage.setItem("refreshToken", response.refreshToken);
-      setAccessTokenCookie(response.accessToken);
-      return response.user;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    localStorage.setItem("refreshToken", response.refreshToken);
+    setAccessTokenCookie(response.accessToken);
+    return response.user;
+  });
 
 export const loginAction = createAsyncThunk<
   AuthUserType,
@@ -75,13 +67,9 @@ const authRequest = async (
     headers: {
       Authorization: "Bearer " + getCookie("token"),
     },
-  })
-    .then((response) => {
-      return response.user;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.user;
+  });
 
 export const authAction = createAsyncThunk<
   AuthUserType,
@@ -102,13 +90,9 @@ const resetPasswordRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
-  })
-    .then((response) => {
-      return response.success;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.success;
+  });
 
 export const resetPasswordAction = createAsyncThunk<
   boolean,
@@ -129,13 +113,9 @@ const resetPasswordConfirmRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
-  })
-    .then((response) => {
-      return response.success;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.success;
+  });
 
 export const resetPasswordConfirmAction = createAsyncThunk<
   boolean,
@@ -155,15 +135,11 @@ const logoutRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
-  })
-    .then((response) => {
-      setCookie("token", "", { expires: 0 });
-      localStorage.removeItem("refreshToken");
-      return response.success;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    setCookie("token", "", { expires: 0 });
+    localStorage.removeItem("refreshToken");
+    return response.success;
+  });
 
 export const logoutAction = createAsyncThunk<
   boolean,
@@ -184,13 +160,9 @@ const changeDataRequest = async (
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify(form),
-  })
-    .then((response) => {
-      return response.user;
-    })
-    .catch((error) => {
-      return rejectWithValue(error);
-    });
+  }).then((response) => {
+    return response.user;
+  });
 
 export const changeDataAction = createAsyncThunk<
   AuthUserType,

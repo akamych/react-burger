@@ -15,6 +15,7 @@ import signup from "./constants/bundles/signup.json";
 import login from "./constants/bundles/login.json";
 import password from "./constants/bundles/password.json";
 import profile from "./constants/bundles/profile.json";
+import feed from "./constants/bundles/feed.json";
 import store from "./services/Store";
 import { Provider } from "react-redux";
 import App from "./components/app/App";
@@ -29,6 +30,7 @@ const resources = {
     login,
     password,
     profile,
+    feed,
   },
 };
 

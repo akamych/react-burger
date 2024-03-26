@@ -1,0 +1,28 @@
+.modal_orderdata {
+  display: grid;
+  max-width: 640px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.modal_orderdata_status {
+  color: #049d9e;
+}
+.modal_orderdata_bottom {
+  display: grid;
+  grid-template-columns: auto max-content;
+  align-items: center;
+}
+.modal_orderdata_bottom div {
+  display: grid;
+  grid-template-columns: auto max-content;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.modal_orderdata_ingredients {
+  display: grid;
+  row-gap: 4px;
+  max-height: 250px;
+  overflow: auto;
+}

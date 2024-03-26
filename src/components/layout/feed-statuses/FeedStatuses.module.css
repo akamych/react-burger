@@ -1,0 +1,24 @@
+.feed_statuses {
+  display: grid;
+  grid-template-columns: auto max-content;
+}
+
+.feed_statuses_column {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 80px);
+  column-gap: 12px;
+}
+
+.feed_statuses_column h2 {
+  grid-column: 1 / -1;
+  white-space: nowrap;
+}
+
+.feed_statuses_column_numbers {
+  display: grid;
+  margin-bottom: 20px;
+}
+
+.feed_statuses_column_ready_number {
+  color: #049d9e;
+}

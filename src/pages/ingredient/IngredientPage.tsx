@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../services/Store";
+import { useAppSelector } from "../../services/Store";
 import { selectFetchedIngredients } from "../../services/reducers/IngredientsReducer";
 import { IngredientType } from "../../types/Ingredient.type";
 import { Nullable } from "../../types/common.type";
@@ -13,13 +13,12 @@ const IngredientPage = () => {
   const { t } = useTranslation("ingredients");
   const ingredients = useAppSelector(selectFetchedIngredients);
   const [ingredient, setIngredient] = useState<Nullable<IngredientType>>(null);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const found =
       ingredients.find((ingredient) => ingredient._id === ingredientId) || null;
     setIngredient(found);
-  }, [ingredients, ingredientId, dispatch]);
+  }, [ingredients, ingredientId]);
 
   return (
     <main className={styles.main}>
