@@ -1,3 +1,9 @@
+### Ссылка на GitHub Pages:
+
+[https://akamych.github.io/react-burger/](https://akamych.github.io/react-burger/)
+
+### Вопрос:
+
 Возник вопрос по типизации моковых сторов в джесте:
 
 При конфигурации моковых сторов получаю ошибку в OrderReducer.test.ts:
