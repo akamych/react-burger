@@ -6,7 +6,13 @@ type propType = {
 
 const ModalOverlay = (props: propType) => {
   const { onClose } = props;
-  return <div className={styles.modal_overlay} onClick={onClose}></div>;
+  return (
+    <div
+      className={styles.modal_overlay}
+      onClick={onClose}
+      data-testId="modalOverlay"
+    ></div>
+  );
 };
 
 export default ModalOverlay;
