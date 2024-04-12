@@ -23,6 +23,11 @@ describe("Ordering a burger", () => {
       JSON.stringify("test-refreshToken")
     );
     cy.setCookie("accessToken", "test-accessToken");
+
+    cy.visit("/");
+
+    cy.get(".ingredientsSection ul li:first").as("bun");
+    cy.get('[data-testId="constructor"]').as("constructor");
   });
 
   afterEach(() => {
@@ -31,49 +36,46 @@ describe("Ordering a burger", () => {
   });
 
   it("open & close modal card", () => {
-    cy.visit("/");
-    cy.get(".ingredientsSection ul li:first").click();
-    cy.get('[data-testId="modalHolder"] > div > span').should(
-      "have.text",
-      firstIngredient.name
-    );
-    cy.get('[data-testId="modalHolder"] > div:has(h3) > svg').click();
-    cy.get('[data-testId="modalHolder"]').should("not.exist");
+    cy.get("@bun").click();
+    cy.get("[data-testId='modalHolder']").as("modalHolder");
+    cy.get("@modalHolder")
+      .find("div > span")
+      .should("have.text", firstIngredient.name);
+    cy.get("@modalHolder").find("div:has(h3) > svg").click();
+    cy.get("@modalHolder").should("not.exist");
   });
 
   it("drag ingredients", () => {
-    cy.visit("/");
-
-    cy.get(".ingredientsSection ul li:first").trigger("dragstart");
-    cy.get('[data-testId="constructor"]').trigger("drop");
-    cy.get(
-      `[data-testId="constructor"] img[src="${firstIngredient.image}"]`
-    ).should("have.length", 2);
+    cy.get("@bun").trigger("dragstart");
+    cy.get("@constructor").trigger("drop");
+    cy.get(`@constructor`)
+      .find(`img[src="${firstIngredient.image}"]`)
+      .should("have.length", 2);
 
     cy.get(".ingredientsSection ul")
       .eq(1)
       .find("li:first")
       .trigger("dragstart");
-    cy.get('[data-testId="constructor"]').trigger("drop");
-    cy.get(
-      `[data-testId="constructor"] img[src="${secondIngredient.image}"]`
-    ).should("have.length", 1);
+    cy.get("@constructor").trigger("drop");
+    cy.get(`@constructor`)
+      .find(`img[src="${secondIngredient.image}"]`)
+      .should("have.length", 1);
 
     cy.get(".ingredientsSection ul")
       .eq(1)
       .find("li")
       .eq(1)
       .trigger("dragstart");
-    cy.get('[data-testId="constructor"]').trigger("drop");
-    cy.get(
-      `[data-testId="constructor"] img[src="${thirdIngredient.image}"]`
-    ).should("have.length", 1);
+    cy.get("@constructor").trigger("drop");
+    cy.get(`@constructor`)
+      .find(`img[src="${thirdIngredient.image}"]`)
+      .should("have.length", 1);
 
     cy.get('[data-testId="constructorButton"]').click();
 
-    cy.get('[data-testId="modalHolder"] b:first').should("have.text", 123);
+    cy.get("[data-testId='modalHolder'] b:first").should("have.text", 123);
 
     cy.get('[data-testId="modalOverlay"]').click({ force: true });
-    cy.get('[data-testId="modalHolder"]').should("not.exist");
+    cy.get("[data-testId='modalHolder']").should("not.exist");
   });
 });
