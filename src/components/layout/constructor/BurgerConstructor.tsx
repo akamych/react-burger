@@ -118,7 +118,11 @@ const BurgerConstructor = () => {
 
   return (
     <>
-      <div className={styles.constructor_div} ref={dropRef}>
+      <div
+        className={styles.constructor_div}
+        ref={dropRef}
+        data-testId="constructor"
+      >
         <ul>
           {bun !== null && (
             <BurgerConstructorItem
@@ -160,6 +164,7 @@ const BurgerConstructor = () => {
             size="large"
             onClick={handleSubmit}
             disabled={bun === null}
+            data-testId="constructorButton"
           >
             {t("buttons.order")}
           </Button>

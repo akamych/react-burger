@@ -9,12 +9,12 @@ import {
 
 interface ModalState {
   isShown: boolean;
-  type: "ingredient" | "order" | "orderData";
+  type: "ingredient" | "order" | "orderData" | "none";
 }
 
 export const initialModalState: ModalState = {
   isShown: false,
-  type: "ingredient",
+  type: "none",
 };
 
 const modalSlice = createSlice({
@@ -36,6 +36,7 @@ const modalSlice = createSlice({
     });
     builder.addCase(HIDE_MODAL, (state: ModalState) => {
       state.isShown = false;
+      state.type = "none";
     });
   },
 });

@@ -18,7 +18,7 @@ import {
 } from "../actions/IngredientsActions";
 import { v4 as uuid } from "uuid";
 
-interface IngredientState {
+export interface IngredientSpliceState {
   all: IngredientType[];
   selected: {
     bun: Nullable<IngredientType>;
@@ -35,7 +35,7 @@ interface IngredientState {
   };
 }
 
-export const initialIngredientsState: IngredientState = {
+export const initialIngredientsState: IngredientSpliceState = {
   all: [],
   selected: {
     bun: null,
@@ -59,7 +59,10 @@ const ingredientSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchIngredientsAction.fulfilled,
-      (state: IngredientState, action: PayloadAction<IngredientType[]>) => {
+      (
+        state: IngredientSpliceState,
+        action: PayloadAction<IngredientType[]>
+      ) => {
         state.all = action.payload;
         state.requests.fetch.isError = false;
         state.requests.fetch.text = null;
@@ -67,7 +70,7 @@ const ingredientSlice = createSlice({
     );
     builder.addCase(
       fetchIngredientsAction.pending,
-      (state: IngredientState) => {
+      (state: IngredientSpliceState) => {
         state.requests.fetch.pending = true;
         state.requests.fetch.isError = false;
         state.requests.fetch.text = null;
@@ -75,30 +78,32 @@ const ingredientSlice = createSlice({
     );
     builder.addCase(
       fetchIngredientsAction.rejected,
-      (state: IngredientState, action: PayloadAction<string | undefined>) => {
-        state = initialIngredientsState;
+      (
+        state: IngredientSpliceState,
+        action: PayloadAction<string | undefined>
+      ) => {
         state.requests.fetch.isError = true;
         state.requests.fetch.text = action.payload ? action.payload : "error";
       }
     );
     builder.addCase(
       INGREDIENT_SHOW_DETAILS,
-      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+      (state: IngredientSpliceState, action: PayloadAction<IngredientType>) => {
         state.observed = action.payload;
       }
     );
-    builder.addCase(INGREDIENT_HIDE_DETAILS, (state: IngredientState) => {
+    builder.addCase(INGREDIENT_HIDE_DETAILS, (state: IngredientSpliceState) => {
       state.observed = null;
     });
     builder.addCase(
       CONSTRUCTOR_ADD_BUN,
-      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+      (state: IngredientSpliceState, action: PayloadAction<IngredientType>) => {
         state.selected.bun = action.payload;
       }
     );
     builder.addCase(
       CONSTRUCTOR_ADD_INGREDIENT,
-      (state: IngredientState, action: PayloadAction<IngredientType>) => {
+      (state: IngredientSpliceState, action: PayloadAction<IngredientType>) => {
         state.selected.ingredients.push({
           ...action.payload,
           uuid: uuid(),
@@ -112,7 +117,7 @@ const ingredientSlice = createSlice({
     );
     builder.addCase(
       CONSTRUCTOR_REMOVE_INGREDIENT,
-      (state: IngredientState, action: PayloadAction<number>) => {
+      (state: IngredientSpliceState, action: PayloadAction<number>) => {
         const id = state.selected.ingredients[action.payload]._id;
         state.selected.ingredients.splice(action.payload, 1);
         state.selected.count[id] =
@@ -121,7 +126,10 @@ const ingredientSlice = createSlice({
     );
     builder.addCase(
       CONSTRUCTOR_SWAP_INGREDIENT,
-      (state: IngredientState, action: PayloadAction<SwapIngredientType>) => {
+      (
+        state: IngredientSpliceState,
+        action: PayloadAction<SwapIngredientType>
+      ) => {
         const { from, to } = action.payload;
         const isAscending = from.index < to.index;
 
@@ -158,7 +166,7 @@ const ingredientSlice = createSlice({
         }
       }
     );
-    builder.addCase(CONSTRUCTOR_CLEAR, (state: IngredientState) => {
+    builder.addCase(CONSTRUCTOR_CLEAR, (state: IngredientSpliceState) => {
       state.selected = initialIngredientsState.selected;
     });
   },

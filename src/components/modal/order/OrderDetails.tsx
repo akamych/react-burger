@@ -1,10 +1,7 @@
 import { useTranslation } from "react-i18next";
 import styles from "./OrderDetails.module.css";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  selectOrderFetchError,
-  selectOrderId,
-} from "../../../services/reducers/OrderReducer";
+import { selectOrderId } from "../../../services/reducers/OrderReducer";
 import { useAppSelector } from "../../../services/Store";
 
 const OrderDetails = () => {

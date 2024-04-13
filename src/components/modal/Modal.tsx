@@ -29,7 +29,7 @@ const Modal = (props: propType) => {
     modalRoot &&
     ReactDOM.createPortal(
       <>
-        <div className={styles.modal}>
+        <div className={styles.modal} data-testId="modalHolder">
           {header && <ModalHeader onClose={onClose} header={header} />}
           {children}
         </div>
